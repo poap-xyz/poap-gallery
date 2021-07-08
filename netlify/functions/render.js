@@ -98,12 +98,7 @@ router.get('/', async (req, res) => {
     const xdai = await fulfillWithTimeLimit(1000, getxDaiTokens(eventId), null);
 
     const main = await fulfillWithTimeLimit(1000, getMainnetTokens(eventId), null);
-
     
-    console.log(xdai.data.data.event)
-
-    console.log(main.data.data.event)
-
     let tokenCount = 0;
     let description = data.description;
 
