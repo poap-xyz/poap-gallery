@@ -57,14 +57,15 @@ export function Event() {
   }, [])
   
   const MobileRow = ({token}) => {
-    const [expanded, setExpanded] = useState(false)
-    const toggleRowExpand = () => {
-      setExpanded(!expanded)
-    }
+    const [expanded, setExpanded] = useState(true)
+    // const toggleRowExpand = () => {
+    //   setExpanded(!expanded)
+    // }
 
     return (
       <div className={`mobile-row ${expanded ? 'open' : ''}`}>
-        <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span><span className='expand-button'><FontAwesomeIcon onClick={toggleRowExpand} icon={expanded? faAngleUp:faAngleDown} /></span>
+        <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span>
+        {/* <span className='expand-button'><FontAwesomeIcon onClick={toggleRowExpand} icon={expanded? faAngleUp:faAngleDown} /></span> */}
         <span className='address-title'>Address</span><span className='address-content ellipsis'>{shrinkAddress(token.owner.id, 15)}</span>
         <span className='claim-title'>Claim Date</span><span className='claim-content'>{new Date(token.created * 1000).toLocaleDateString()}</span>
         <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
