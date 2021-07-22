@@ -18,11 +18,13 @@ export const MultiLineEllipsis = ({text='', lines=2, maxLength=0}) => {
   const reCalculateLengthDebounced = useCallback(debounce(() => reCalculateLength(maxLength, text), 500), [maxLength, text])
   const reCalculateLength = (maxLength, text) => {
     let tests = [title1, title2, title3, title4, title5];
+    let newTitleLength = 0;
     tests.forEach(test => {
       if (test?.current?.offsetWidth <= maxLength) {
-        setTitleLength(test.current.textContent.length)
+        newTitleLength = test.current.textContent.length
       }
     })
+    setTitleLength(newTitleLength)
   }
   useEffect(() => {
     reCalculateLengthDebounced(maxLength, text)

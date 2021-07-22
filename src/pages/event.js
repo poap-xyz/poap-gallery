@@ -4,7 +4,7 @@ import {InView} from 'react-intersection-observer';
 import ReactTooltip from 'react-tooltip';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faAngleDown, faAngleLeft, faAngleRight, faAngleUp, faArrowDown, faArrowUp, faDotCircle, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
+import {faAngleLeft, faAngleRight, faArrowDown, faArrowUp, faDotCircle, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
 import {Helmet} from 'react-helmet'
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchEventPageData} from '../store';
@@ -56,22 +56,15 @@ export function Event() {
     window.scrollTo(0, 0)
   }, [])
   
-  const MobileRow = ({token}) => {
-    const [expanded, setExpanded] = useState(false)
-    const toggleRowExpand = () => {
-      setExpanded(!expanded)
-    }
-
-    return (
-      <div className={`mobile-row ${expanded ? 'open' : ''}`}>
-        <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span><span className='expand-button'><FontAwesomeIcon onClick={toggleRowExpand} icon={expanded? faAngleUp:faAngleDown} /></span>
-        <span className='address-title'>Address</span><span className='address-content ellipsis'>{shrinkAddress(token.owner.id, 15)}</span>
-        <span className='claim-title'>Claim Date</span><span className='claim-content'>{new Date(token.created * 1000).toLocaleDateString()}</span>
-        <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
-        <span className='power-title'>Power</span><span className='power-content'>{token.owner.tokensOwned}</span>
-      </div>
-    )
-  }
+  const MobileRow = ({token}) => (
+    <div className={`mobile-row open`}>
+      <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span>
+      <span className='address-title'>Address</span><span className='address-content ellipsis'>{shrinkAddress(token.owner.id, 15)}</span>
+      <span className='claim-title'>Claim Date</span><span className='claim-content'>{new Date(token.created * 1000).toLocaleDateString()}</span>
+      <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
+      <span className='power-title'>Power</span><span className='power-content'>{token.owner.tokensOwned}</span>
+    </div>
+  )
   useEffect(() => {
     if (eventId) {
       dispatch(fetchEventPageData({ eventId, first: GRAPH_LIMIT, skip: GRAPH_LIMIT*pageIndex  }))

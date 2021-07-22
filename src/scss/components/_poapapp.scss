@@ -653,11 +653,15 @@
     padding: 12px 15px;
     text-align: left;
     grid-template-areas: 
-    'id-title id-content expand-button'
+    'id-title id-content id-content'
     'address-title address-content address-content'
     'claim-title claim-content claim-content'
     'tr-count-title tr-count-content tr-count-content'
     'power-title power-content power-content';
+
+    .power-content, .tr-count-content, .claim-content, .id-content, .address-content {
+      text-align: right;
+    }
 
     color: $grayscale4;
     [class*='title'] {
