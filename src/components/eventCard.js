@@ -10,6 +10,7 @@ import ReactModal from 'react-modal';
 
 export function EventCard({ event, size = 's', type = '', power = 0}) {
   const [tokenCount, setTokenCount] = useState(0);
+  const [transferCount, setTransferCount] = useState(0);
 
   const width = useWindowWidth();
   const validateType = (type) => {
@@ -29,6 +30,11 @@ export function EventCard({ event, size = 's', type = '', power = 0}) {
       setTokenCount(event.tokenCount)
     }
   }, [event, tokenCount])
+  useEffect(() => {
+    if (event.transferCount && event.transferCount > transferCount) {
+      setTransferCount(event.transferCount)
+    }
+  }, [event, transferCount])
 
   const nl2br = (text) => (text.split('\n').map((item, key) => {
     return <>{item}<br/></>
@@ -146,7 +152,7 @@ export function EventCard({ event, size = 's', type = '', power = 0}) {
           <div className="title">
             <FontAwesomeIcon style={{ width: '1rem', marginRight: '.4rem' }} icon={faPaperPlane} />{'TRANSFERS'}
           </div>
-          {event.transferCount ? event.transferCount : 0}
+          {transferCount}
         </div>
       </div>
     </div>
