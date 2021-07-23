@@ -6,17 +6,20 @@ import { debounce } from '../utilities/utilities';
  * It basically generates a series of hidden test span elements,
  * gets their width, and uses the length of the text in the span
  * that gets closer to the maxLength.
- * All of that is needed because we are performing a manual word wrap.  
+ * All of that is needed because we are performing a manual word wrap.
+ *
+ * Lines' value is currently ignored. Could serve as a future way of
+ *  indicating the amount of lines the text spans. Currently it spans
+ *  two lines.
  */
-export const MultiLineEllipsis = ({text='', lines=2, maxLength=0}) => {
+export const MultiLineEllipsis = ({text='', lines, maxLength}) => {
   const title1 = useRef(null);
   const title2 = useRef(null);
   const title3 = useRef(null);
   const title4 = useRef(null);
   const title5 = useRef(null);
   const [titleLength, setTitleLength] = useState(0)
-  const reCalculateLengthDebounced = useCallback(debounce(() => reCalculateLength(maxLength, text), 500), [maxLength, text])
-  const reCalculateLength = (maxLength, text) => {
+  const recalculateLength = (maxLength) => {
     let tests = [title1, title2, title3, title4, title5];
     let newTitleLength = 0;
     tests.forEach(test => {
@@ -27,8 +30,8 @@ export const MultiLineEllipsis = ({text='', lines=2, maxLength=0}) => {
     setTitleLength(newTitleLength)
   }
   useEffect(() => {
-    reCalculateLengthDebounced(maxLength, text)
-  }, [maxLength, text, reCalculateLengthDebounced]);
+    recalculateLength(maxLength)
+  }, [maxLength]);
   
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
