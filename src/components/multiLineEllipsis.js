@@ -18,6 +18,7 @@ export const MultiLineEllipsis = ({text='', lines, maxLength}) => {
   const title4 = useRef(null);
   const title5 = useRef(null);
   const [titleLength, setTitleLength] = useState(0)
+  const [testLengths, setTestLengths] = useState([20, 30, 35, 40])
   const recalculateLength = (maxLength) => {
     let tests = [title1, title2, title3, title4, title5];
     let newTitleLength = 0;
@@ -29,16 +30,23 @@ export const MultiLineEllipsis = ({text='', lines, maxLength}) => {
     setTitleLength(newTitleLength)
   }
   useEffect(() => {
+    if (maxLength >= 400) {
+      setTestLengths([20, 30, 35, 40])
+    } else if (maxLength >= 300) {
+      setTestLengths([10, 20, 25, 30])
+    } else if (maxLength >= 200) {
+      setTestLengths([5, 10, 15, 20])
+    }
     recalculateLength(maxLength)
   }, [maxLength]);
   
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
-    <span style={{width: 'fit-content', zIndex: -1000, position: 'absolute', left: -1000}} ref={title5}>{text}</span>
-    <span style={{width: 'fit-content', zIndex: -1000, position: 'absolute', left: -1000}} ref={title4}>{text.substr(0, text.substr(0,40).lastIndexOf(' '))}</span>
-    <span style={{width: 'fit-content', zIndex: -1000, position: 'absolute', left: -1000}} ref={title3}>{text.substr(0, text.substr(0,35).lastIndexOf(' '))}</span>
-    <span style={{width: 'fit-content', zIndex: -1000, position: 'absolute', left: -1000}} ref={title2}>{text.substr(0, text.substr(0,30).lastIndexOf(' '))}</span>
-    <span style={{width: 'fit-content', zIndex: -1000, position: 'absolute', left: -1000}} ref={title1}>{text.substr(0, text.substr(0,20).lastIndexOf(' '))}</span>
+    <span style={{width: 'fit-content', position: 'absolute', left: 32, top: 200}} ref={title5}>{text}</span>
+    <span style={{width: 'fit-content', position: 'absolute', left: 32, top: 150}} ref={title4}>{text.substr(0, text.substr(0,testLengths[3]).lastIndexOf(' '))}</span>
+    <span style={{width: 'fit-content', position: 'absolute', left: 32, top: 100}} ref={title3}>{text.substr(0, text.substr(0,testLengths[2]).lastIndexOf(' '))}</span>
+    <span style={{width: 'fit-content', position: 'absolute', left: 32, top: 50}} ref={title2}>{text.substr(0, text.substr(0,testLengths[1]).lastIndexOf(' '))}</span>
+    <span style={{width: 'fit-content', position: 'absolute', left: 32, top: 0}} ref={title1}>{text.substr(0, text.substr(0,testLengths[0]).lastIndexOf(' '))}</span>
     <span>{text.substr(0, titleLength)}</span>
     <span className='ellipsis'>{text.substr(titleLength)}</span>
     </div>
