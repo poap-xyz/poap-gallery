@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faGlobe, faHashtag, faLaptop, faClock, faFire } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faGlobe, faLaptop, faClock, faFire } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { MultiLineEllipsis } from './multiLineEllipsis';
 import { Pill } from './pill';
@@ -86,9 +86,9 @@ function Content({type, width, size, event, power}) {
                 {/* event type */}
                 <div className={`${type === '' ? 'hidden' : 'pill event-type'} ${type}`}>
                     {
-                        type === 'most-recent' ? <div><FontAwesomeIcon style={{ width: '1rem', marginRight: '.2rem' }} icon={faClock} />Most recent</div> :
-                            type === 'upcoming' ? <div><FontAwesomeIcon style={{ width: '1rem', marginRight: '.2rem' }} icon={faCalendar} />Upcoming</div> :
-                                type === 'most-claimed' ? <div><FontAwesomeIcon style={{ width: '1rem', marginRight: '.2rem' }} icon={faFire} />Most claimed</div> :
+                        type === 'most-recent' ? <div><FontAwesomeIcon style={{ width: '1rem', marginRight: '.2rem' }} icon={size === 's' ? null : faClock} />Most recent</div> :
+                            type === 'upcoming' ? <div><FontAwesomeIcon style={{ width: '1rem', marginRight: '.2rem' }} icon={size === 's' ? null : faCalendar} />Upcoming</div> :
+                                type === 'most-claimed' ? <div><FontAwesomeIcon style={{ width: '1rem', marginRight: '.2rem' }} icon={size === 's' ? null : faFire} />Most claimed</div> :
                                     ''
                     }
                 </div>
@@ -115,17 +115,16 @@ function Content({type, width, size, event, power}) {
                       :
                       /* id */
                       <div className='content-id'>
-                        <FontAwesomeIcon style={{ width: '0.5rem' }} icon={faHashtag} />
-                        {event.id}
+                        {'#'}{event.id}
                       </div>
                 }
 
                 {/* time and place */}
                 <div className="content-time-place">
-                    <Pill style={{ minWidth: '100px'}} text={event.start_date} icon={faCalendar} />
+                    <Pill style={{ minWidth: (size === 's' ? 'none' : '100px')}} text={event.start_date} icon={size === 's' ? null : faCalendar} />
                     <Pill className="ellipsis" tooltip={true}
-                          icon={event.city ? faGlobe : faLaptop}
-                          text={event.city ? event.city : 'Virtual event '}/>
+                      icon={size === 's' ? null : (event.city ? faGlobe : faLaptop)}
+                      text={event.city ? event.city : 'Virtual event '}/>
                 </div>
             </div>
 
@@ -141,7 +140,7 @@ function Content({type, width, size, event, power}) {
                 {/* supply y transfers */}
                 <div>
                     <div className="title">
-                        <img style={{ width: '0.7rem', marginRight: '.4rem' }} src={Supply} alt='Supply' />{'SUPPLY'}
+                      {size === 's' ? null : <img style={{ width: '0.7rem', marginRight: '.4rem' }} src={Supply} alt='Supply' />}{'SUPPLY'}
                     </div>
                   <span className='supply-content' style={{width: 'fit-content'}}>
                     {tokenCount === undefined ? ' -' : tokenCount === 0 ? ' None Claimed' : tokenCount}
@@ -151,14 +150,14 @@ function Content({type, width, size, event, power}) {
                     size === 'l' &&
                     <div>
                         <div className="title">
-                            <img style={{ width: '0.7rem', marginRight: '.4rem' }} src={Power} alt='Power' />{'POWER'}
+                          <img style={{ width: '0.7rem', marginRight: '.4rem' }} src={Power} alt='Power' />{'POWER'}
                         </div>
                         {power}
                     </div>
                 }
                 <div>
                     <div className="title">
-                        <img style={{ width: '0.7rem', marginRight: '.4rem' }} src={Transfers} alt='Transfers' />{'TRANSFERS'}
+                      {size === 's' ? null : <img style={{ width: '0.7rem', marginRight: '.4rem' }} src={Transfers} alt='Transfers' />}{'TRANSFERS'}
                     </div>
                     {transferCount}
                 </div>
