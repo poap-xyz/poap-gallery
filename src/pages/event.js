@@ -87,7 +87,7 @@ export function Event() {
     for (let i = 0; i < tokens.length; i++) {
       _data.push(width > 480 ? {
         col1:  (<ExternalLinkCell url={"https://app.poap.xyz/token/" + tokens[i].id} content={`#${tokens[i].id}`}/>) ,
-        col2: (<ExternalLinkCell url={"https://app.poap.xyz/scan/" + tokens[i].owner.id} tooltip-text='View Collection in POAP.scan' content={width > 768
+        col2: (<ExternalLinkCell url={"https://app.poap.xyz/scan/" + tokens[i].owner.id} tooltipText='View Collection in POAP.scan' content={width > 768
             ? <span>{shrinkAddress(tokens[i].owner.id, 20)}</span>
             : <span>{shrinkAddress(tokens[i].owner.id, 10)}</span>
         }/>),
