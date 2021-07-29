@@ -2,7 +2,7 @@ $width-card-small: 262px;
 $height-card-small: 319px;
 $height-header-small: 130px;
 $height-content-small: calc(#{$height-card-small} - #{$height-header-small});  // 189px
-$height-content-second-small: 59px;
+$height-content-second-small: 54px;
 $height-content-first-small: calc(#{$height-content-small} - #{$height-content-second-small});
 
 $width-card-medium: 295px;
