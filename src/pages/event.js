@@ -277,19 +277,21 @@ function ExternalLinkCell({url, tooltipText = null, content}) {
     }
   })
   return (
-    <><a href={url} target="_blank" rel="noopener noreferrer"
+    <a href={url} target="_blank" rel="noopener noreferrer"
        data-tip={tooltipText}
+       data-for='mainTooltip'
        onMouseEnter={() => {setIsHovering(true)}}
        onMouseLeave={() => {hoverDeactivateTimeout = setTimeout(() => {
          if (!isHoveringLink) setIsHovering(false)
        }, 500)}}
        style={{position: 'relative', width: 27}}
     >
-      {content}
+      <span>{content}</span><ReactTooltip id='mainTooltip' effect='solid'/>
        {
          isHovering &&
          <><div className='external-link'
               data-tip='Open external link'
+              data-for='linkTooltip'
               onMouseEnter={() => {clearTimeout(hoverDeactivateTimeout); clearTimeout(hoverLinkDeactivateTimeout); setIsHoveringLink(true)}}
               onMouseLeave={() => {hoverLinkDeactivateTimeout = setTimeout(() => {
                 setIsHoveringLink(false)
@@ -297,8 +299,8 @@ function ExternalLinkCell({url, tooltipText = null, content}) {
               }, 500)}}
          >
            <img src={OpenLink} alt={'Open external link'} />
-         </div><ReactTooltip effect='solid'/></> }
-   </a><ReactTooltip effect='solid' /></>
+         </div><ReactTooltip id='linkTooltip' effect='solid' place='bottom'/></> }
+   </a>
  );
 }
 
