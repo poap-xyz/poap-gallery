@@ -99,7 +99,6 @@ function Content({type, width, size, event, power}) {
                     style={{
                         fontSize: '1rem',
                         textAlign: 'center',
-                        margin: '8px 0 0 0',
                         overflowWrap: 'anywhere',
                     }}>
                     <MultiLineEllipsis text={event.name} lines={2} maxLengthPerLine={(size === 'l' ? (width >= 768 ? 403 : width >= 480 ? 303 : 203) : size === 'm' ? 262 : 229)}/>
