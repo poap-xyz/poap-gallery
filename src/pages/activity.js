@@ -15,7 +15,7 @@ import Transfer from '../assets/images/transfer.svg'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Foliage } from '../components/foliage';
-import { shrinkAddress, transferType } from '../utilities/utilities';
+import {dateCell, shrinkAddress, transferType} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { Link } from 'react-router-dom'
 
@@ -114,12 +114,6 @@ function TokenRow({transfer, dateFormat}) {
   const toggleRowExpand = () => {
     setExpanded(!expanded)
   }
-  const dateCell = (cell) => {
-    if (dateFormat === 'date') {
-      return dayjs(cell.value).format('D-MMM-YYYY').toUpperCase();
-    }
-    return dayjs(cell.value).fromNow()
-  }
   return (
     width > 780
     ? <tr>
@@ -160,7 +154,7 @@ function TokenRow({transfer, dateFormat}) {
           <span>{shrinkAddress(transfer.to.id, 15)}</span>
         </a></td>
       <td> {transfer.token.transferCount && transfer.token.transferCount > 0 ? transfer.token.transferCount : 'Claimed'} </td>
-      <td style={{wordBreak: 'break-all'}} > { dateCell(transfer.timestamp * 1000) } </td>
+      <td style={{wordBreak: 'break-all'}} > { dateCell(transfer.timestamp * 1000, dateFormat) } </td>
     </tr>
     : <tr>
       <td className='mobile-row'>

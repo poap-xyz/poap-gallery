@@ -9,13 +9,12 @@ import {Helmet} from 'react-helmet'
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchEventPageData} from '../store';
 import {CSVLink} from "react-csv";
-import {getEnsData} from './../store/mutations';
+import {getEnsData} from '../store/mutations';
 import Loader from '../components/loader'
 import _ from 'lodash'
 import { EventCard } from '../components/eventCard';
 import { Foliage } from '../components/foliage';
-import dayjs from 'dayjs';
-import { shrinkAddress } from '../utilities/utilities';
+import {dateCell, shrinkAddress} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import OpenLink from '../assets/images/openLink.svg'
 
@@ -313,17 +312,17 @@ function CreateTable({loading, pageCount: pc, columns, data, event}) {
     prepareRow,
     page,
     setPageSize,
-  } = useTable({ columns, data, pageCount: pc, initialState: { pageSize: length } }, useSortBy, usePagination)
+  } = useTable({ columns, data, pageCount: pc,
+    initialState: { pageSize: length, sortBy: [
+        {
+          id: 'col3',
+          desc: true
+        }
+      ] } }, useSortBy, usePagination)
 
   const [dateFormat, setDateFormat] = useState('timeago')
   const toggleDateFormat = () => {
     dateFormat === 'timeago' ? setDateFormat('date') : setDateFormat('timeago')
-  }
-  const dateCell = (cell) => {
-    if (dateFormat === 'date') {
-      return dayjs(cell.value).format('D-MMM-YYYY').toUpperCase();
-    }
-    return dayjs(cell.value).fromNow()
   }
 
   return (
@@ -371,7 +370,7 @@ function CreateTable({loading, pageCount: pc, columns, data, event}) {
                 {row.cells.map((cell, idx) => {
                   return (
                     idx === 2
-                    ? <td key={idx} {...cell.getCellProps()}>{dateCell(cell)}</td>
+                    ? <td key={idx} {...cell.getCellProps()}>{dateCell(cell, dateFormat)}</td>
                     : <td key={idx} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 )})}
               </tr>

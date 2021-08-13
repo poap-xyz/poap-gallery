@@ -1,4 +1,5 @@
 import { ZERO_ADDRESS } from '../store/api';
+import dayjs from "dayjs";
 
 
 export const shrinkAddress = (address, length) => {
@@ -25,3 +26,10 @@ export const transferType = (transfer) => {
           : (transfer.to?.id === ZERO_ADDRESS)
             ? 'Burn':'Transfer'
 };
+
+export const dateCell = (cell, dateFormat) => {
+  if (dateFormat === 'date') {
+    return dayjs(cell.value).format('D-MMM-YYYY').toUpperCase();
+  }
+  return dayjs(cell.value).fromNow()
+}

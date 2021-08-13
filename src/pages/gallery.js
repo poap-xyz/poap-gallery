@@ -270,7 +270,7 @@ export default function Gallery() {
               </div> :
               <Cards events={(search?.length) ? search : items} length={search?.length || length} />
             ) : (
-              <Loader></Loader>
+              <Loader/>
             )}
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
