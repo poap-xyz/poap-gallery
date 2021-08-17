@@ -45,6 +45,7 @@ export default function Activity() {
         .then(
           (result) => {
             let transfers = result.data.transfers
+            transfers.map(t => t.network = "mainnet")
             setMainnetTransfers(transfers)
             setLoading(false)
           },
@@ -61,6 +62,7 @@ export default function Activity() {
         .then(
           (result) => {
             let transfers = result.data.transfers
+            transfers.map(t => t.network = "xDai")
             setDaiTransfers(transfers)
             setLoading(false)
           },
@@ -138,15 +140,7 @@ function TokenRow({transfer, dateFormat}) {
         <div className='recent-activity-content'>
           <div className='activity-type-pill'><Pill className={type} text={type} tooltip={false} /></div>
           <div className='time ellipsis'>{dayjs(transfer.timestamp * 1000).fromNow()}</div>
-          <div className='description'>{
-            (type === 'Migration') ? 'POAP migrated to mainnet' :
-            (type === 'Claim') ? <div>New claim on event{' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link></div> :
-            (type === 'Burn') ? <div>POAP burned on event{' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link></div> :
-            <div>POAP transferred from 
-              <a href={`https://app.poap.xyz/scan/${transfer.from.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.from.id, 10)} </a> to
-              <a href={`https://app.poap.xyz/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.to.id, 10)}</a>
-            </div>
-          }</div>
+          <TokenRowDescription transfer={transfer} />
         </div>
       </td>
       <td className='ellipsis'><a href={"https://app.poap.xyz/token/" + transfer.token.id} target="_blank"  rel="noopener noreferrer">{'#'}{transfer.token.id}</a></td>
@@ -182,15 +176,7 @@ function TokenRow({transfer, dateFormat}) {
           <div className='recent-activity-content'>
             <div className='activity-type-pill'><Pill className={type} text={type} tooltip={false} /></div>
             <div className='time ellipsis'>{dayjs(transfer.timestamp * 1000).fromNow()}</div>
-            <div className='description'>{
-              (type === 'Migration') ? 'POAP migrated to mainnet' :
-              (type === 'Burn') ? <span>POAP burned on event{' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link></span> :
-              (type === 'Claim') ? <span> New claim on event{' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link></span> :
-              <span>POAP transferred from 
-                <a href={`https://app.poap.xyz/scan/${transfer.from.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.from.id, 10)} </a> to
-                <a href={`https://app.poap.xyz/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.to.id, 10)}</a>
-              </span>
-            }</div>
+            <TokenRowDescription transfer={transfer} />
           </div>
           <span className='expand-button' style={{width: `calc(100% - 180px${width>430?' - 118px':''})`}}><FontAwesomeIcon onClick={toggleRowExpand} icon={expanded? faAngleUp:faAngleDown} /></span>
         </div>
@@ -209,6 +195,23 @@ function TokenRow({transfer, dateFormat}) {
       </td>
     </tr>
   )
+}
+
+function TokenRowDescription({transfer}) {
+  const type = transferType(transfer)
+  console.log(transfer)
+  return <div className='description'>{
+    (type === 'Migration') ? <span>POAP migrated to
+      <a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 16) + '…'} </a>
+      from {transfer.network} to Ethereum</span> :
+    (type === 'Claim') ? <span>New claim on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
+    (type === 'Burn') ? <span>POAP burned on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
+    <span>POAP transferred from
+      <a href={`https://app.poap.xyz/scan/${transfer.from.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.from.id, 10)} </a> to
+      <a href={`https://app.poap.xyz/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.to.id, 10)}</a> on
+      {' '}{transfer.network}
+    </span>
+  }</div>
 }
 
 function CreateTable({transfers, loading}) {

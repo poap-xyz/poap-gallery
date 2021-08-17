@@ -111,20 +111,21 @@ function Transfer({transfer}) {
               (type === 'Claim')?
               <span> New claim on event
                 {' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link>
+                {' '}on {transfer.network}
               </span> :
               (type === 'Transfer')?
               <span>POAP transferred from
                 <a href={"https://app.poap.xyz/scan/" + transfer.from.id} target="_blank"  rel="noopener noreferrer"> {transfer.from.id.substring(0, 8) + '…'} </a> to 
                 <a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 8) + '…'} </a>
-                {/* on {transfer.network} */}
+                 on {transfer.network}
               </span> :
               (type === 'Migration')?
               <span> POAP migrated to 
                 <a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 16) + '…'} </a>
-                on mainnet
+                from {transfer.network} to Ethereum
               </span> :
               (type === 'Burn')?
-              <span>POAP burned on event{' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link></span> :
+              <span>POAP burned on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
               null
             }
 
@@ -144,7 +145,7 @@ function Transfers({transfers, loading}) {
   for (let i = 0; i < transfers.length; i++) {
     const t = transfers[i];
     t.opacity = i===0? 1.0: i===1? 0.7: 0.3;
-    tfers.push(<Transfer key={t.id} transfer={t}></Transfer>)
+    tfers.push(<Transfer key={t.id} transfer={t}/>)
   }
   return tfers
 }

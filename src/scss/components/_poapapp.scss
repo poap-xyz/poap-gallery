@@ -926,8 +926,11 @@ table {
       * {
         color: $grayscale6;
       }
-      a:hover, span:hover {
+      a:hover {
         color: $violet2;
+        text-decoration: none;
+      }
+      span:hover {
         text-decoration: none;
       }
       td {
