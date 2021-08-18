@@ -204,7 +204,7 @@ function TokenRowDescription({transfer}) {
     (type === 'Migration') ? <span>POAP migrated to
       <a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 16) + '…'} </a>
       from {transfer.network} to Ethereum</span> :
-    (type === 'Claim') ? <span>New claim on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
+    (type === 'Claim') ? <span>POAP claimed on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
     (type === 'Burn') ? <span>POAP burned on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
     <span>POAP transferred from
       <a href={`https://app.poap.xyz/scan/${transfer.from.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.from.id, 10)} </a> to

@@ -109,7 +109,7 @@ function Transfer({transfer}) {
             <Pill text={type} className={type} tooltip={false} />
             {
               (type === 'Claim')?
-              <span> New claim on event
+              <span> POAP claimed on event
                 {' '}<Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link>
                 {' '}on {transfer.network}
               </span> :
