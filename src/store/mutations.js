@@ -14,7 +14,7 @@ import {ethers} from 'ethers';
 import namehash from 'eth-ens-namehash';
 
 const {REACT_APP_RPC_PROVIDER_URL, REACT_APP_ENS_CONTRACT} = process.env;
-const provider = new ethers.providers.JsonRpcProvider(REACT_APP_RPC_PROVIDER_URL);
+const provider = new ethers.providers.StaticJsonRpcProvider(REACT_APP_RPC_PROVIDER_URL);
 const ReverseRecords = new ethers.Contract(REACT_APP_ENS_CONTRACT, ensABI, provider)
 
 // TODO: Refactor to render as it returns data rather than waiting all in batch
