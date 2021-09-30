@@ -52,58 +52,55 @@ export async function getIndexPageData() {
     graphEvents = graphEvents.concat(xdaiEvents)
   }
 
-    let mr = {}
-    let up = {}
-    let mC = {}
-    let hPP = {}
+  let mr, up, mC, hPP;
 
-    if(poapEvents && poapEvents.length) {
-      mr = poapEvents[0]
-      up = poapEvents[0]
-      mC = poapEvents[0]
-      hPP = poapEvents[0]
-    }
-    let isMostRecent = false
+  let isMostRecent = false
 
-    for (let i = 0; i < poapEvents.length; i++) {
-      const ev = poapEvents[i];
-      ev.tokenCount = 0
-      ev.transferCount = 0
-      for (let j = 0; j < graphEvents.length; j++) {
-        const gev = graphEvents[j];
-        if(ev.id === parseInt(gev.id)) {
-          ev.tokenCount += parseInt(gev.tokenCount)
-          ev.transferCount += parseInt(gev.transferCount)
-        }
-      }
-      let now = new Date().getTime()
-      let evDate = new Date(ev.start_date.replace(/-/g, ' ')).getTime()
-
-      if(evDate > now) {
-        up = ev
-      }
-
-      if(evDate < now && isMostRecent === false) {
-        isMostRecent = true
-        mr = ev
-      }
-
-      if(ev.tokenCount > mC.tokenCount) {
-        mC = ev
+  for (let i = 0; i < poapEvents.length; i++) {
+    const ev = poapEvents[i];
+    ev.tokenCount = 0
+    ev.transferCount = 0
+    for (let j = 0; j < graphEvents.length; j++) {
+      const gev = graphEvents[j];
+      if(ev.id === parseInt(gev.id)) {
+        ev.tokenCount += parseInt(gev.tokenCount)
+        ev.transferCount += parseInt(gev.transferCount)
       }
     }
+    let now = new Date().getTime()
+    let evDate = new Date(ev.start_date.replace(/-/g, ' ')).getTime()
+    let evEndDate = new Date(ev.end_date.replace(/-/g, ' ')).getTime()
 
-    mr.heading = "Most Recent"
-    up.heading = "Upcoming Event"
-    mC.heading = "Most Claimed Token"
-
-    return {
-      poapEvents: poapEvents,
-      mostRecent: mr,
-      mostClaimed: mC,
-      upcoming: up,
-      highestPoapPower: hPP,
+    if(ev.private_event && evEndDate > now) {
+      // No ongoing private event should be shown in the activity's top 3
+      continue;
     }
+
+    if(evDate > now) {
+      up = ev
+    }
+
+    if(evDate < now && isMostRecent === false) {
+      isMostRecent = true
+      mr = ev
+    }
+
+    if(!mC || ev.tokenCount > mC.tokenCount) {
+      mC = ev
+    }
+  }
+
+  if (mr) mr.heading = "Most Recent"
+  if (up) up.heading = "Upcoming Event"
+  if (mC) mC.heading = "Most Claimed Token"
+
+  return {
+    poapEvents: poapEvents,
+    mostRecent: mr,
+    mostClaimed: mC,
+    upcoming: up,
+    highestPoapPower: hPP, // TODO: discard if no longer used
+  }
 }
 
 

@@ -4,7 +4,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faAngleDown, faAngleUp, faDotCircle, faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
 import {Helmet} from 'react-helmet'
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchIndexData, selectMostClaimed, selectMostRecent, selectUpcoming} from '../store';
+import {
+  fetchIndexData,
+  selectMostClaimed,
+  selectMostRecent,
+  selectRecentEvents,
+  selectUpcoming
+} from '../store';
 import {getMainnetTransfers, getxDaiTransfers, POAP_API_URL} from "../store/api";
 import {EventCard} from "../components/eventCard";
 import { Pill } from '../components/pill';
@@ -37,8 +43,15 @@ export default function Activity() {
   const mostClaimed = useSelector(selectMostClaimed)
   const mostRecent = useSelector(selectMostRecent)
   const upcoming = useSelector(selectUpcoming)
+  const recentEvents = useSelector(selectRecentEvents)
+  const [privateEvents, setPrivateEvents] = useState(undefined)
   const transferLimit = 15
 
+  useEffect(()=>{
+    if (recentEvents) {
+      setPrivateEvents(recentEvents.filter(e => e.private_event))
+    }
+  },[recentEvents])
   useEffect(() => {
       setLoading(true)
       getMainnetTransfers(transferLimit)
@@ -74,12 +87,28 @@ export default function Activity() {
   }, []);
 
   useEffect(() => {
-    let transfers = daitransfers.concat(mainnetTransfers)
-    transfers.sort((a, b) => {
-      return b.timestamp - a.timestamp
-    })
-    setTransfers(transfers.slice(0, transferLimit))
-  }, [daitransfers, mainnetTransfers])
+    let _transfers = daitransfers.concat(mainnetTransfers)
+      // Filter ongoing private events
+      .filter(t => {
+        // Check if transfer belongs to a private event
+        const privateEvent = privateEvents.find(e => e.id === t.token.event.id)
+        if (privateEvent === undefined) return false;
+
+        // If it does, check if it is an ongoing private event
+        let evEndDate = new Date(privateEvent.end_date.replace(/-/g, ' ')).getTime()
+        let now = new Date().getTime()
+
+        // Show any transfers from finished private events
+        return evEndDate <= now;
+      })
+      // Sort from newer to older
+      .sort((a, b) => {
+        return b.timestamp - a.timestamp
+      })
+      // Only show a few
+      .slice(0, transferLimit)
+    setTransfers(_transfers)
+  }, [daitransfers, mainnetTransfers, privateEvents])
 
   return (
     <main id="site-main" role="main" className="app-content activity-main">
@@ -95,9 +124,9 @@ export default function Activity() {
       }}>
 
         <div className="gallery-grid activity-grid" style={{ padding: '0 4rem', display: 'grid', justifyContent: 'center', gridAutoColumns: 295 }}>
-          <EventCard event={mostRecent} size='m' type='most-recent' />
-          <EventCard event={upcoming} size='m' type='upcoming' />
-          <EventCard event={mostClaimed} size='m' type='most-claimed' />
+          {mostRecent && <EventCard event={mostRecent} size='m' type='most-recent'/>}
+          {upcoming && <EventCard event={upcoming} size='m' type='upcoming'/>}
+          {mostClaimed && <EventCard event={mostClaimed} size='m' type='most-claimed'/>}
         </div>
 
         <div className='table-container' style={{ marginTop: 50}}>
@@ -199,7 +228,6 @@ function TokenRow({transfer, dateFormat}) {
 
 function TokenRowDescription({transfer}) {
   const type = transferType(transfer)
-  console.log(transfer)
   return <div className='description'>{
     (type === 'Migration') ? <span>POAP migrated to
       <a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 16) + '…'} </a>
