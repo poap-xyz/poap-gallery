@@ -312,7 +312,10 @@ function Cards({ events, length }) {
   if (events && events.length) {
     let len = (length <= events.length) ? length : events.length;
     for (let i = 0; i < len; i++) {
-      cards.push(<EventCard key={i} event={events[i]} />)
+      const event = events[i]
+      if ( !event.private_event ) {
+        cards.push(<EventCard key={i} event={event} />)
+      }
     }
   }
   return cards;
