@@ -52,54 +52,53 @@ export async function getIndexPageData() {
     graphEvents = graphEvents.concat(xdaiEvents)
   }
 
-  let mr, up, mC, hPP;
+  let mostRecent, upcoming, mostClaimed;
 
   let isMostRecent = false
 
   for (let i = 0; i < poapEvents.length; i++) {
-    const ev = poapEvents[i];
-    ev.tokenCount = 0
-    ev.transferCount = 0
+    const event = poapEvents[i];
+    event.tokenCount = 0
+    event.transferCount = 0
     for (let j = 0; j < graphEvents.length; j++) {
-      const gev = graphEvents[j];
-      if(ev.id === parseInt(gev.id)) {
-        ev.tokenCount += parseInt(gev.tokenCount)
-        ev.transferCount += parseInt(gev.transferCount)
+      const graphEvent = graphEvents[j];
+      if(event.id === parseInt(graphEvent.id)) {
+        event.tokenCount += parseInt(graphEvent.tokenCount)
+        event.transferCount += parseInt(graphEvent.transferCount)
       }
     }
     let now = new Date().getTime()
-    let evDate = new Date(ev.start_date.replace(/-/g, ' ')).getTime()
-    let evEndDate = new Date(ev.end_date.replace(/-/g, ' ')).getTime()
+    let eventDate = new Date(event.start_date.replace(/-/g, ' ')).getTime()
+    let eventEndDate = new Date(event.end_date.replace(/-/g, ' ')).getTime()
 
-    if(ev.private_event && evEndDate > now) {
+    if(event.private_event && eventEndDate > now) {
       // No ongoing private event should be shown in the activity's top 3
       continue;
     }
 
-    if(evDate > now) {
-      up = ev
+    if(eventDate > now ) {
+      upcoming = event
     }
 
-    if(evDate < now && isMostRecent === false) {
+    if(eventDate < now && isMostRecent === false) {
       isMostRecent = true
-      mr = ev
+      mostRecent = event
     }
 
-    if(!mC || ev.tokenCount > mC.tokenCount) {
-      mC = ev
+    if(!mostClaimed || event.tokenCount > mostClaimed.tokenCount) {
+      mostClaimed = event
     }
   }
 
-  if (mr) mr.heading = "Most Recent"
-  if (up) up.heading = "Upcoming Event"
-  if (mC) mC.heading = "Most Claimed Token"
+  if (mostRecent) mostRecent.heading = "Most Recent"
+  if (upcoming) upcoming.heading = "Upcoming Event"
+  if (mostClaimed) mostClaimed.heading = "Most Claimed Token"
 
   return {
     poapEvents: poapEvents,
-    mostRecent: mr,
-    mostClaimed: mC,
-    upcoming: up,
-    highestPoapPower: hPP, // TODO: discard if no longer used
+    mostRecent: mostRecent,
+    mostClaimed: mostClaimed,
+    upcoming: upcoming,
   }
 }
 
