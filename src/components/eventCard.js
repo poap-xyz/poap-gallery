@@ -31,7 +31,7 @@ export function EventCard({ event, size = 's', type = '', power = 0}) {
 }
 
 function Header({type, event}) {
-    const [isOpen, setOpen] = useState(!true)
+    const [isOpen, setOpen] = useState(false)
     const toggleModal = () => {
         setOpen(!isOpen)
     }

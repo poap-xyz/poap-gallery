@@ -111,14 +111,14 @@ export function Event() {
   useEffect(() => {
     if(ensNames.length > 0){
       // TODO: probably there is a better way to merge
-      var _data = _.cloneDeep(data);
-      var _csv_data = _.cloneDeep(csv_data);
+      let _data = _.cloneDeep(data);
+      let _csv_data = _.cloneDeep(csv_data);
       for (let i = 0; i < tokens.length; i++) {
         let validName = ensNames[i]
-        if(validName){
-          if(data[i]){
+        if (validName) {
+          if (data[i]) {
             _data[i].col2 = (<a href={"https://app.poap.xyz/scan/" + tokens[i].owner.id} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>)
-            _csv_data[i][2] = validName
+            _csv_data[i+1][2] = validName // i+1 is there to compensate for the first array which is just the csv titles
           }
         }
       }

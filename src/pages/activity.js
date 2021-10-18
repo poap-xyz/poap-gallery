@@ -123,7 +123,7 @@ export default function Activity() {
         maxWidth: 'none'
       }}>
 
-        <div className="gallery-grid activity-grid" style={{ padding: '0 4rem', display: 'grid', justifyContent: 'center', gridAutoColumns: 295 }}>
+        <div className="gallery-grid activity-grid" style={{ padding: '0 4rem', display: 'grid', justifyContent: 'center', gridAutoColumns: 295, minHeight: '380px' }}>
           {mostRecent && <EventCard event={mostRecent} size='m' type='most-recent'/>}
           {upcoming && <EventCard event={upcoming} size='m' type='upcoming'/>}
           {mostClaimed && <EventCard event={mostClaimed} size='m' type='most-claimed'/>}
