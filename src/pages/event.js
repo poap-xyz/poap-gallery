@@ -17,6 +17,9 @@ import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import OpenLink from '../assets/images/openLink.svg'
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc)
 
 const GRAPH_LIMIT = 1000;
 
@@ -33,6 +36,10 @@ export default function Events() {
       </Route>
     </Switch>
   );
+}
+
+const utcTime = (value) => {
+  return dayjs.utc(value).format('D-MMM-YYYY').toUpperCase()
 }
 
 export function Event() {
@@ -60,7 +67,7 @@ export function Event() {
     <div className={`mobile-row open`}>
       <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span>
       <span className='address-title'>Address</span><span className='address-content ellipsis'>{shrinkAddress(token.owner.id, 15)}</span>
-      <span className='claim-title'>Claim Date</span><span className='claim-content'>{new Date(token.created * 1000).toLocaleDateString()}</span>
+      <span className='claim-title'>Claim Date</span><span className='claim-content'>{utcTime(new Date(token.created * 1000))}</span>
       <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
       <span className='power-title'>Power</span><span className='power-content'>{token.owner.tokensOwned}</span>
     </div>
@@ -90,14 +97,15 @@ export function Event() {
             ? <span>{shrinkAddress(tokens[i].owner.id, 20)}</span>
             : <span>{shrinkAddress(tokens[i].owner.id, 10)}</span>
         }/>),
-        col3: new Date(tokens[i].created * 1000).toLocaleDateString(),
+        col3: new Date(tokens[i].created * 1000),
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
       } : {
         col1:
           <MobileRow token={tokens[i]} />
       })
-      _csv_data.push([tokens[i].id, tokens[i].owner.id, null, new Date(tokens[i].created * 1000).toLocaleDateString(), tokens[i].transferCount, tokens[i].owner.tokensOwned])
+      console.log(dayjs.utc(new Date(tokens[i].created * 1000)).toString())
+      _csv_data.push([tokens[i].id, tokens[i].owner.id, null, dayjs.utc(new Date(tokens[i].created * 1000)).toString(), tokens[i].transferCount, tokens[i].owner.tokensOwned])
     }
     setData(_data)
     setCsv_data(_csv_data)
@@ -492,46 +500,3 @@ function calculatePower(csv_data) {
   }, 0)
   return power;
 }
-
-// function tokenDetails(event, csv_data, power) {
-//   let array1 = [
-//     { value: event.city, key: 'City' },
-//     { value: event.country, key: 'Country' },
-//     { value: event.start_date, key: 'Start date' },
-//     { value: event.end_date, key: 'End date' },
-//     { value: event.event_url, key: 'Website', render: (value) => {
-//       let host = new URL(value).hostname
-//       return (
-//       <a href={value} className="href" target="_blank" rel="noopener noreferrer">{host}</a>
-//       )
-//     }},
-//   ];
-//   if (Array.isArray(csv_data) && csv_data.length > 1) {
-//     array1.push({ value: csv_data.length - 1, key: 'Supply' });
-//   }
-//   array1.push({ value: power, key: 'Power' });
-//   let array2 = [];
-
-//   for (let i = 0; i < array1.length; i++) {
-//     if(array1[0].value === ''){
-//       array1[0].value = <span> Virtual event  <FontAwesomeIcon icon={faLaptop}></FontAwesomeIcon> </span>
-//     }
-//     if(array1[1].value === array1[2].value){
-//       //array1.shift();
-//       array1[1].value = null;
-//       array1[2] = {value: event.end_date, key: 'Date'}
-//     } //todo: if 1 == 2 , it pushes the the table down
-//     if(array1[i].value){
-//       let e = (
-//         <div key={i} style={{ display: 'flex', padding: '0 1rem'}}>
-//           <h4 style={{ flex: '0 0 7rem'}}> {array1[i].key} </h4>
-//           <div style={{ flex: '1 1 8rem'}}> {array1[i].render ? array1[i].render(array1[i].value) : array1[i].value} </div>
-//         </div>
-//       );
-//       array2.push(e);
-//     }
-//   }
-//   return array2;
-// }
-
-

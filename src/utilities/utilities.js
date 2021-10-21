@@ -1,5 +1,7 @@
 import { ZERO_ADDRESS } from '../store/api';
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc)
 
 
 export const shrinkAddress = (address, length) => {
@@ -29,7 +31,7 @@ export const transferType = (transfer) => {
 
 export const dateCell = (cell, dateFormat) => {
   if (dateFormat === 'date') {
-    return dayjs(cell.value).format('D-MMM-YYYY').toUpperCase();
+    return dayjs.utc(cell.value).format('D-MMM-YYYY').toUpperCase();
   }
-  return dayjs(cell.value).fromNow()
+  return dayjs.utc(cell.value).fromNow()
 }
