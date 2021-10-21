@@ -18,14 +18,10 @@ import Migration from '../assets/images/migrate.svg'
 import Burn from '../assets/images/burn.svg'
 import Claim from '../assets/images/claim.svg'
 import Transfer from '../assets/images/transfer.svg'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import { Foliage } from '../components/foliage';
-import {dateCell, shrinkAddress, transferType} from '../utilities/utilities';
+import {dateCell, shrinkAddress, transferType, utcDateFormatted, utcDateFromNow} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { Link } from 'react-router-dom'
-
-dayjs.extend(relativeTime)
 
 export default function Activity() {
   const dispatch = useDispatch()
@@ -168,7 +164,7 @@ function TokenRow({transfer, dateFormat}) {
         </a>
         <div className='recent-activity-content'>
           <div className='activity-type-pill'><Pill className={type} text={type} tooltip={false} /></div>
-          <div className='time ellipsis'>{dayjs(transfer.timestamp * 1000).fromNow()}</div>
+          <div className='time ellipsis'>{utcDateFromNow(transfer.timestamp * 1000)}</div>
           <TokenRowDescription transfer={transfer} />
         </div>
       </td>
@@ -204,7 +200,7 @@ function TokenRow({transfer, dateFormat}) {
           }
           <div className='recent-activity-content'>
             <div className='activity-type-pill'><Pill className={type} text={type} tooltip={false} /></div>
-            <div className='time ellipsis'>{dayjs(transfer.timestamp * 1000).fromNow()}</div>
+            <div className='time ellipsis'>{utcDateFromNow(transfer.timestamp * 1000)}</div>
             <TokenRowDescription transfer={transfer} />
           </div>
           <span className='expand-button' style={{width: `calc(100% - 180px${width>430?' - 118px':''})`}}><FontAwesomeIcon onClick={toggleRowExpand} icon={expanded? faAngleUp:faAngleDown} /></span>
@@ -219,7 +215,7 @@ function TokenRow({transfer, dateFormat}) {
               </span>
             </a></span>
           <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{transfer.token.transferCount}</span>
-          <span className='claim-title'>Minting Date</span><span className='claim-content'>{ dayjs(transfer.timestamp * 1000).format('D-MMM-YYYY').toUpperCase() }</span>
+          <span className='claim-title'>Minting Date</span><span className='claim-content'>{ utcDateFormatted(transfer.timestamp * 1000) }</span>
         </div>
       </td>
     </tr>

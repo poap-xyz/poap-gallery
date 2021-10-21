@@ -14,12 +14,9 @@ import Loader from '../components/loader'
 import _ from 'lodash'
 import { EventCard } from '../components/eventCard';
 import { Foliage } from '../components/foliage';
-import {dateCell, shrinkAddress} from '../utilities/utilities';
+import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import OpenLink from '../assets/images/openLink.svg'
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-dayjs.extend(utc)
 
 const GRAPH_LIMIT = 1000;
 
@@ -36,10 +33,6 @@ export default function Events() {
       </Route>
     </Switch>
   );
-}
-
-const utcTime = (value) => {
-  return dayjs.utc(value).format('D-MMM-YYYY').toUpperCase()
 }
 
 export function Event() {
@@ -67,7 +60,7 @@ export function Event() {
     <div className={`mobile-row open`}>
       <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span>
       <span className='address-title'>Address</span><span className='address-content ellipsis'>{shrinkAddress(token.owner.id, 15)}</span>
-      <span className='claim-title'>Claim Date</span><span className='claim-content'>{utcTime(new Date(token.created * 1000))}</span>
+      <span className='claim-title'>Claim Date</span><span className='claim-content'>{utcDateFormatted(token.created * 1000)}</span>
       <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
       <span className='power-title'>Power</span><span className='power-content'>{token.owner.tokensOwned}</span>
     </div>
@@ -97,14 +90,14 @@ export function Event() {
             ? <span>{shrinkAddress(tokens[i].owner.id, 20)}</span>
             : <span>{shrinkAddress(tokens[i].owner.id, 10)}</span>
         }/>),
-        col3: new Date(tokens[i].created * 1000),
+        col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
       } : {
         col1:
           <MobileRow token={tokens[i]} />
       })
-      _csv_data.push([tokens[i].id, tokens[i].owner.id, null, dayjs.utc(new Date(tokens[i].created * 1000)).toString(), tokens[i].transferCount, tokens[i].owner.tokensOwned])
+      _csv_data.push([tokens[i].id, tokens[i].owner.id, null, utcDateFull(tokens[i].created * 1000), tokens[i].transferCount, tokens[i].owner.tokensOwned])
     }
     setData(_data)
     setCsv_data(_csv_data)
@@ -377,7 +370,7 @@ function CreateTable({loading, pageCount: pc, columns, data, event}) {
                 {row.cells.map((cell, idx) => {
                   return (
                     idx === 2
-                    ? <td key={idx} {...cell.getCellProps()}>{dateCell(cell, dateFormat)}</td>
+                    ? <td key={idx} {...cell.getCellProps()}>{dateCell(cell.value, dateFormat)}</td>
                     : <td key={idx} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 )})}
               </tr>

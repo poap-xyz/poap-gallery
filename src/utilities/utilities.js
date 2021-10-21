@@ -1,8 +1,9 @@
 import { ZERO_ADDRESS } from '../store/api';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(utc)
-
+dayjs.extend(relativeTime)
 
 export const shrinkAddress = (address, length) => {
   if (address.length < length) return address;
@@ -29,9 +30,27 @@ export const transferType = (transfer) => {
             ? 'Burn':'Transfer'
 };
 
+const utcTime = (value) => {
+  return dayjs.utc(value)
+}
+
+export const utcDateFromNow = (value) => {
+  return utcTime(value).fromNow()
+}
+
+export const utcDateFormatted = (value) => {
+  console.log('value, utcTime(value)')
+  console.log(value, utcTime(value))
+  return utcTime(value).format('D-MMM-YYYY').toUpperCase()
+}
+
+export const utcDateFull = (value) => {
+  return dayjs.utc(value).toString()
+}
+
 export const dateCell = (cell, dateFormat) => {
   if (dateFormat === 'date') {
-    return dayjs.utc(cell.value).format('D-MMM-YYYY').toUpperCase();
+    return utcDateFormatted(cell);
   }
-  return dayjs.utc(cell.value).fromNow()
+  return utcDateFromNow(cell)
 }
