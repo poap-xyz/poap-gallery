@@ -104,7 +104,6 @@ export function Event() {
         col1:
           <MobileRow token={tokens[i]} />
       })
-      console.log(dayjs.utc(new Date(tokens[i].created * 1000)).toString())
       _csv_data.push([tokens[i].id, tokens[i].owner.id, null, dayjs.utc(new Date(tokens[i].created * 1000)).toString(), tokens[i].transferCount, tokens[i].owner.tokensOwned])
     }
     setData(_data)
