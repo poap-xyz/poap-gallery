@@ -39,8 +39,6 @@ export const utcDateFromNow = (value) => {
 }
 
 export const utcDateFormatted = (value) => {
-  console.log('value, utcTime(value)')
-  console.log(value, utcTime(value))
   return utcTime(value).format('D-MMM-YYYY').toUpperCase()
 }
 

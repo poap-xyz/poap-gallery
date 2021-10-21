@@ -83,7 +83,7 @@ export function Event() {
     let _data = []
     let _csv_data = []
     _csv_data.push(['ID', 'Collection', 'ENS', 'Minting Date', 'Tx Count', 'Power']);
-    for (let i = 0; i < tokens.length; i++) {
+    for (let i = tokens.length-1; i >= 0; i--) {
       _data.push(width > 480 ? {
         col1:  (<ExternalLinkCell url={"https://app.poap.xyz/token/" + tokens[i].id} content={`#${tokens[i].id}`}/>) ,
         col2: (<ExternalLinkCell url={"https://app.poap.xyz/scan/" + tokens[i].owner.id} tooltipText='View Collection in POAP.scan' content={width > 768
