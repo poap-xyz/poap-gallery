@@ -10,6 +10,7 @@ import MigrateIcon from '../assets/images/migrate-icon.svg'
 import BurnIcon from '../assets/images/burn-icon.svg'
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import {transferType, utcDateFromNow} from '../utilities/utilities'
+import { LazyImage } from './LazyImage';
 
 export default function ActivityTable() {
 
@@ -94,10 +95,12 @@ function Transfer({transfer}) {
       <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
         <a href={"https://app.poap.xyz/token/" + transfer.token.id} target="_blank" style={{margin: '.8rem 0', opacity: transfer.opacity}} className={`round-box ${transfer.opacity===1? 'first':''}`} rel="noopener noreferrer">
           <div className='round-box-image'>
-            <img style={{
-              objectFit: 'cover',
-              borderRadius: '50%'
-            }} src={`${POAP_API_URL}/token/${transfer.token.id}/image`} alt=""/>
+            <LazyImage
+              src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
+              width={50}
+              height={50}
+              containerStyles={{ margin: "0 24px 0 14px" }}
+            />
           </div>
           <div className='round-box-content'>
             <Pill text={type} className={type} tooltip={false} />

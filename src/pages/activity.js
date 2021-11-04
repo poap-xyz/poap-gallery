@@ -22,6 +22,8 @@ import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, transferType, utcDateFormatted, utcDateFromNow} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { Link } from 'react-router-dom'
+import { LazyImage } from '../components/LazyImage';
+
 
 export default function Activity() {
   const dispatch = useDispatch()
@@ -154,13 +156,12 @@ function TokenRow({transfer, dateFormat}) {
         <a
           className='recent-activity-image'
           href={"https://app.poap.xyz/token/"+transfer.token.id} target="_blank"  rel="noopener noreferrer">
-          <img style={{
-            width: 80,
-            height: 80,
-            objectFit: 'cover',
-            borderRadius: '50%',
-            margin: '0 24px 0 14px'
-          }} src={`${POAP_API_URL}/token/${transfer.token.id}/image`} alt=""/>
+            <LazyImage
+              src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
+              width={80}
+              height={80}
+              containerStyles={{ margin: "0 24px 0 14px" }}
+            />
         </a>
         <div className='recent-activity-content'>
           <div className='activity-type-pill'><Pill className={type} text={type} tooltip={false} /></div>
@@ -189,13 +190,12 @@ function TokenRow({transfer, dateFormat}) {
             <a
               className='recent-activity-image'
               href={"https://app.poap.xyz/token/"+transfer.token.id} target="_blank"  rel="noopener noreferrer">
-              <img style={{
-                width: 80,
-                height: 80,
-                objectFit: 'cover',
-                borderRadius: '50%',
-                margin: '0 24px 0 14px'
-              }} src={`${POAP_API_URL}/token/${transfer.token.id}/image`} alt=""/>
+                <LazyImage
+                  src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
+                  width={80}
+                  height={80}
+                  containerStyles={{ margin: "0 24px 0 14px" }}
+                />
             </a>
           }
           <div className='recent-activity-content'>

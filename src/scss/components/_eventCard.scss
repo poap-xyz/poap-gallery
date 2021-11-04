@@ -52,7 +52,7 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
     justify-content: center;
     span {
       cursor: zoom-in;
-      & > img {
+      & img {
         border-radius: 50%;
         object-fit: cover;
         border: 4px solid white;
@@ -110,7 +110,7 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
   &.small {
     width: $width-card-small;
     .header {
-      img {
+      .lazyImageContainer {
         width: 140px;
         height: 140px;
         margin-top: 7px;
@@ -217,17 +217,13 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
         height: $height-header-large;
         background-size: auto;
         background-position-x: 0;
-        img {
+        .lazyImageContainer {
           width: 250px!important;
           height: 250px!important;
         }
       }
       @media (min-width: $bp-mw) {
         width: $width-header-large;
-      }
-      img {
-        width: 120px;
-        height: 120px;
       }
     }
     .content {

@@ -9,6 +9,7 @@ import ReactModal from 'react-modal';
 import Power from '../assets/images/power.svg';
 import Transfers from '../assets/images/transfers.svg';
 import Supply from '../assets/images/supply.svg';
+import { LazyImage } from './LazyImage';
 
 export function EventCard({ event, size = 's', type = '', power = 0}) {
   const width = useWindowWidth();
@@ -38,9 +39,7 @@ function Header({type, event}) {
 
     return <div className={`header ${type}`} onClick={toggleModal}>
       <span onClick={toggleModal}>
-        <img
-            src={event.image_url}
-            alt="POAP" />
+        <LazyImage src={event.image_url} width={140} height={140} alt="POAP" />
       </span>
         <ReactModal
             isOpen={isOpen}
