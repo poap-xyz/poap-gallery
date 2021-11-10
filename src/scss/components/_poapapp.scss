@@ -986,6 +986,11 @@ table {
   display: none;
 }
 
+.circleContainer {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .round-box {
   box-shadow: 0 4px 16px 0 #BBC4EF59;
   transition: box-shadow .2s ease;

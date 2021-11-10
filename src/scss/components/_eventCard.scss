@@ -111,8 +111,8 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
     width: $width-card-small;
     .header {
       .lazyImageContainer {
-        width: 140px;
-        height: 140px;
+        width: 140px !important;
+        height: 140px !important;
         margin-top: 7px;
       }
     }
@@ -147,9 +147,9 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
         background-image: url('../../assets/images/card-bg-top-most-claimed.svg');
       }
       height: $height-header-medium;
-      img {
-        width: 130px;
-        height: 130px;
+      .lazyImageContainer {
+        width: 130px !important;
+        height: 130px !important;
         margin-top: 16px;
       }
     }
