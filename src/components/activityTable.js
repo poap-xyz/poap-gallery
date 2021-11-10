@@ -99,7 +99,7 @@ function Transfer({transfer}) {
               src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
               width={50}
               height={50}
-              containerStyles={{ margin: "0 24px 0 14px" }}
+              containerClasses="circleContainer"
             />
           </div>
           <div className='round-box-content'>

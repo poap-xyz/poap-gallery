@@ -1,40 +1,40 @@
 import React, { useState } from "react";
 import './index.css'
 import { PlaceHolderImage } from "../placeholderImage";
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 export const LazyImage = ({
   src,
   alt = "",
-  width,
-  height,
-  containerStyles,
+  width = "100%",
+  height = "100%",
+  containerStyles = {},
+  containerClasses = ""
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div
-      style={{
-        width: width,
-        height: height,
-        objectFit: "cover",
-        borderRadius: "50%",
-        overflow: "hidden",
-        position: "relative",
-        ...containerStyles,
-      }}
-      className="lazyImageContainer"
-    >
-      <img
-        src={src}
-        alt={alt}
-        className="lazyImage"
+    <LazyLoadComponent>
+      <div
         style={{
-          position: isLoaded ? "relative" : "absolute",
-          left: isLoaded ? "0" : "-100%",
+          width: width,
+          height: height,
+          ...containerStyles,
         }}
-        onLoad={() => setIsLoaded(true)}
-      />
-      {!isLoaded && <PlaceHolderImage width={width} height={height} />}
-    </div>
+        className={`lazyImageContainer ${containerClasses}`}
+      >
+        <img
+          src={src}
+          alt={alt}
+          className="lazyImage"
+          style={{
+            position: isLoaded ? "relative" : "absolute",
+            left: isLoaded ? "0" : "-100%",
+          }}
+          onLoad={() => setIsLoaded(true)}
+        />
+        {!isLoaded && <PlaceHolderImage width="100%" height="100%" />}
+      </div>
+    </LazyLoadComponent>
   );
 };
