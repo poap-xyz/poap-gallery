@@ -39,7 +39,7 @@ function Header({type, event}) {
 
     return <div className={`header ${type}`} onClick={toggleModal}>
       <span onClick={toggleModal}>
-        <LazyImage src={event.image_url} width={120} height={120} alt="POAP" containerClasses="circleContainer" />
+        <LazyImage src={event.image_url} width={120} height={120} alt="POAP" containerClasses="circle-container" />
       </span>
         <ReactModal
             isOpen={isOpen}

@@ -160,7 +160,7 @@ function TokenRow({transfer, dateFormat}) {
               src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
               width={80}
               height={80}
-              containerClasses="circleContainer"
+              containerClasses="circle-container"
               containerStyles={{ margin: "0 24px 0 14px" }}
             />
         </a>
