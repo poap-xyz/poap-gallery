@@ -56,10 +56,11 @@ export function Event() {
     window.scrollTo(0, 0)
   }, [])
   
-  const MobileRow = ({token}) => (
+  const MobileRow = ({token, address}) => (
     <div className={`mobile-row open`}>
       <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span>
-      <span className='address-title'>Address</span><span className='address-content ellipsis'>{shrinkAddress(token.owner.id, 15)}</span>
+      <span className='address-title'>Address</span><span className='address-content ellipsis'>
+        <a href={"https://app.poap.xyz/scan/" + token.owner.id} target="_blank" rel="noopener noreferrer">{shrinkAddress(address, 15)}</a></span>
       <span className='claim-title'>Claim Date</span><span className='claim-content'>{utcDateFormatted(token.created * 1000)}</span>
       <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
       <span className='power-title'>Power</span><span className='power-content'>{token.owner.tokensOwned}</span>
@@ -95,7 +96,7 @@ export function Event() {
         col5: tokens[i].owner.tokensOwned,
       } : {
         col1:
-          <MobileRow token={tokens[i]} />
+          <MobileRow token={tokens[i]} address={tokens[i].owner.id} />
       })
       _csv_data.push([tokens[i].id, tokens[i].owner.id, null, utcDateFull(tokens[i].created * 1000), tokens[i].transferCount, tokens[i].owner.tokensOwned])
     }
@@ -117,7 +118,11 @@ export function Event() {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<a href={"https://app.poap.xyz/scan/" + tokens[i].owner.id} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>)
+            if (width > 480) {
+              _data[i].col2 = (<a href={"https://app.poap.xyz/scan/" + tokens[i].owner.id} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>)
+            } else {
+              _data[i].col1 = <MobileRow token={tokens[i]} address={validName} />
+            }
             _csv_data[i+1][2] = validName // i+1 is there to compensate for the first array which is just the csv titles
           }
         }
