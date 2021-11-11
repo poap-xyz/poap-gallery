@@ -110,7 +110,7 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
   &.small {
     width: $width-card-small;
     .header {
-      .lazyImageContainer {
+      .lazy-image-container {
         width: 140px !important;
         height: 140px !important;
         margin-top: 7px;
@@ -147,7 +147,7 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
         background-image: url('../../assets/images/card-bg-top-most-claimed.svg');
       }
       height: $height-header-medium;
-      .lazyImageContainer {
+      .lazy-image-container {
         width: 130px !important;
         height: 130px !important;
         margin-top: 16px;
@@ -217,7 +217,7 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
         height: $height-header-large;
         background-size: auto;
         background-position-x: 0;
-        .lazyImageContainer {
+        .lazy-image-container {
           width: 250px!important;
           height: 250px!important;
         }

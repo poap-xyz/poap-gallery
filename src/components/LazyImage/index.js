@@ -21,12 +21,12 @@ export const LazyImage = ({
           height: height,
           ...containerStyles,
         }}
-        className={`lazyImageContainer ${containerClasses}`}
+        className={`lazy-image-container ${containerClasses}`}
       >
         <img
           src={src}
           alt={alt}
-          className="lazyImage"
+          className="lazy-image"
           style={{
             position: isLoaded ? "relative" : "absolute",
             left: isLoaded ? "0" : "-100%",
