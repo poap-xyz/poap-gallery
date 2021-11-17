@@ -51,7 +51,6 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
     display: flex;
     justify-content: center;
     span {
-      cursor: zoom-in;
       & img {
         border-radius: 50%;
         object-fit: cover;
