@@ -208,6 +208,9 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
       background-image: url('../../assets/images/card-bg-top-large.svg');
       background-size: 200%;
       background-position-x: -100px;
+      span {
+        cursor: zoom-in;
+      }
       @media (min-width: $bp-sw) {
         width: calc(#{$width-content-large} - 100px);
       }
