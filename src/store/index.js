@@ -31,6 +31,7 @@ const initialEventsState = {
   mainnetSkip: 0,
   xdaiSkip: 0,
   totalResults: 0,
+  currentInvalidResults: 0,
   page: 0,
 }
 
@@ -54,11 +55,13 @@ const eventsSlice = createSlice({
       }
     },
     [fetchIndexData.fulfilled]: (state, action) => {
-      const { poapEvents, apiSkip, mainnetSkip, xdaiSkip, page, total } = action.payload
+      const { poapEvents, apiSkip, mainnetSkip, xdaiSkip, page, total, invalid } = action.payload
 
       if (page === 0) {
+        state.currentInvalidResults = invalid
         state.events = poapEvents
       } else {
+        state.currentInvalidResults += invalid
         poapEvents.forEach(poapE => {
           const match = state.events.find(e => e.id === poapE.id)
           if (match) {

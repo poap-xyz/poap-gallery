@@ -32,6 +32,7 @@ export default function Gallery() {
   const events  = useSelector(selectEvents)
   const indexFetchStatus = useSelector(selectIndexFetchStatus)
   const totalResultsAmount = useSelector(selectTotalResults)
+  const invalidEventsAmount = useSelector(state => state.events.currentInvalidResults)
 
   const [items, setItems] = useState(events)
   const [searchStatus, setSearchStatus] = useState(SEARCH_STATUS.NoSearch);
@@ -139,7 +140,7 @@ export default function Gallery() {
                 }
               </div>
               {
-                (searchStatus === SEARCH_STATUS.Success || searchStatus === SEARCH_STATUS.Failed) &&
+                (searchStatus === SEARCH_STATUS.Success) &&
                 <span
                   style={{
                     position: 'absolute',
@@ -149,7 +150,7 @@ export default function Gallery() {
                     fontSize: '1rem',
                   }}
                 >
-                  {totalResultsAmount} result(s)
+                  {totalResultsAmount - invalidEventsAmount} result(s)
                 </span>
               }
             </div>

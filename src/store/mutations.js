@@ -47,6 +47,10 @@ export async function getEnsData(ownerIds){
   return allnames
 }
 
+function isValidSubgraphEvent(subgraphEvent) {
+  return subgraphEvent.tokenCount && subgraphEvent.transferCount
+}
+
 function normalizeSubgraphEvents(subgraphEvents) {
   subgraphEvents.forEach(m => {
     m.id = parseInt(m.id)
@@ -55,18 +59,28 @@ function normalizeSubgraphEvents(subgraphEvents) {
   })
 }
 
+/**
+ * Utility function that simplifies the process of making a list of valid events from the subgraphs
+ * @param events list for event to be pushed into
+ * @param event event to test for validity and push into events
+ * @param chainId identifier that marks which chain it comes from
+ * @returns true if pushing was successful, false if not
+ */
 function pushEvent(events, event, chainId) {
+  if (!isValidSubgraphEvent(event)) {
+    return false
+  }
   const sameEvent = events.find(e => e.id === event.id)
   if (sameEvent) {
-    sameEvent.tokenCount += parseInt(event.tokenCount)
-    sameEvent.transferCount += parseInt(event.transferCount)
+    sameEvent.tokenCount += event.tokenCount
+    sameEvent.transferCount += event.transferCount
     sameEvent.chainId += `-${chainId}`
   } else {
-    event.tokenCount = parseInt(event.tokenCount)
-    event.transferCount = parseInt(event.transferCount)
     event.chainId = chainId
     events.push(event)
   }
+
+  return true
 }
 
 function reduceSubgraphEvents(mainnetEvents, xdaiEvents, orderBy) {
@@ -75,7 +89,7 @@ function reduceSubgraphEvents(mainnetEvents, xdaiEvents, orderBy) {
   normalizeSubgraphEvents(mainnetEvents)
   normalizeSubgraphEvents(xdaiEvents)
 
-  let subgraphEvents = [], mainnetIndex = 0, xdaiIndex = 0
+  let subgraphEvents = [], mainnetIndex = 0, xdaiIndex = 0, _invalidEventsAmount = 0
   while (mainnetIndex < mainnetEvents.length || xdaiIndex < xdaiEvents.length) {
     const mainnetEvent = mainnetEvents[mainnetIndex]
     const xdaiEvent = xdaiEvents[xdaiIndex]
@@ -136,7 +150,7 @@ function limitApiEvents(events, limit) {
   }
 
   const limitedEvents = []
-  let _apiIndex
+  let _apiIndex, _invalidEventsAmount = 0
   for (let i = 0; i < events.length; i++) {
     const e = events[i]
     if (e.tokenCount && e.transferCount) {
@@ -146,6 +160,8 @@ function limitApiEvents(events, limit) {
         _apiIndex = i
         break
       }
+    } else {
+      _invalidEventsAmount++
     }
   }
   if (_apiIndex === undefined) {
@@ -153,7 +169,8 @@ function limitApiEvents(events, limit) {
   }
   return {
     limitedEvents,
-    _apiIndex
+    _apiIndex,
+    _invalidEventsAmount
   }
 }
 
@@ -170,10 +187,9 @@ function limitSubgraphEvents(events, limit) {
   let _mainnetIndex, _xdaiIndex, lastUsedIdx
   for (let i = 0; i < events.length; i++) {
     const e = events[i]
-    const isAValidApiEvent = e.start_date !== undefined
-    const hasTokens = e.tokenCount > 0
     // Use start_date as a way to figure out if it was a valid event in the api fetch
-    if (isAValidApiEvent && hasTokens) {
+    const isAValidApiEvent = e.start_date !== undefined
+    if (isAValidApiEvent && isValidSubgraphEvent(e)) {
       if (limitedEvents.length < limit) {
         limitedEvents.push(e)
       } else if (limitedEvents.length === limit) {
@@ -254,12 +270,13 @@ async function getEventsByApiFirst(apiSkip, orderBy, privateEvents, nameFilter, 
   const subgraphEvents = _.concat(mainnetEvents.data.events, xdaiEvents.data.events)
   normalizeSubgraphEvents(subgraphEvents)
   aggregateEventsData(apiEvents, subgraphEvents)
-  const {limitedEvents, _apiIndex} = limitApiEvents(apiEvents, Math.min(missingAmount, paginatedResults.total))
+  const {limitedEvents, _apiIndex, _invalidEventsAmount} = limitApiEvents(apiEvents, Math.min(missingAmount, paginatedResults.total))
   return {
     _events: limitedEvents,
     apiIndex: _apiIndex,
     lessThanPageLimit: paginatedResults.total < PAGE_LIMIT,
-    _total: paginatedResults.total
+    _total: paginatedResults.total,
+    _invalidEventsAmount: _invalidEventsAmount
   }
 }
 
@@ -277,14 +294,15 @@ export async function getIndexPageData(orderBy, reset, nameFilter, privateEvents
     mainnetSkip = state.events.mainnetSkip
   }
 
-  let events = [], loopLimit = 10, total = 0
+  let events = [], loopLimit = 10, total = 0, invalidEventsAmount = 0
   while (events.length < PAGE_LIMIT && loopLimit > 0) {
     const missingAmount = PAGE_LIMIT - events.length
     if (orderBy.type === OrderType.id.val || orderBy.type === OrderType.date.val || orderBy.type === OrderType.city.val) {
-      const {_events, apiIndex, lessThanPageLimit, _total} = await getEventsByApiFirst(apiSkip, orderBy, privateEvents, nameFilter, missingAmount)
+      const {_events, apiIndex, lessThanPageLimit, _total, _invalidEventsAmount} = await getEventsByApiFirst(apiSkip, orderBy, privateEvents, nameFilter, missingAmount)
       apiSkip += apiIndex
       events = events.concat(_events)
       total = _total
+      invalidEventsAmount = _invalidEventsAmount
       if (lessThanPageLimit) {
         loopLimit = 0 // break out
       }
@@ -303,6 +321,7 @@ export async function getIndexPageData(orderBy, reset, nameFilter, privateEvents
     mainnetSkip: mainnetSkip,
     xdaiSkip: xdaiSkip,
     total: total,
+    invalid: invalidEventsAmount,
     page: page
   }
 }
