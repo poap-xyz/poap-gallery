@@ -89,7 +89,7 @@ function reduceSubgraphEvents(mainnetEvents, xdaiEvents, orderBy) {
   normalizeSubgraphEvents(mainnetEvents)
   normalizeSubgraphEvents(xdaiEvents)
 
-  let subgraphEvents = [], mainnetIndex = 0, xdaiIndex = 0, _invalidEventsAmount = 0
+  let subgraphEvents = [], mainnetIndex = 0, xdaiIndex = 0
   while (mainnetIndex < mainnetEvents.length || xdaiIndex < xdaiEvents.length) {
     const mainnetEvent = mainnetEvents[mainnetIndex]
     const xdaiEvent = xdaiEvents[xdaiIndex]
