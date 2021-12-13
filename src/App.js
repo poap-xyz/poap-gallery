@@ -14,7 +14,7 @@ import {Toaster} from "react-hot-toast";
 
 
 function App() {
-  const GA_MEASUREMENT_ID = process.env.REACT_APP_GA_MEASUREMENT_ID || 'G-5P2C9QGJGQ'
+  const GA_MEASUREMENT_ID = process.env.REACT_APP_GA_MEASUREMENT_ID || 'G-W21W3VZBBN'
 
   // eslint-disable-next-line
   const intercom = useIntercom({
