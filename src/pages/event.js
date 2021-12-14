@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {usePagination, useSortBy, useTable} from 'react-table'
 import {InView} from 'react-intersection-observer';
 import ReactTooltip from 'react-tooltip';
-import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useParams, useRouteMatch, Link} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faAngleLeft, faAngleRight, faArrowDown, faArrowUp, faDotCircle, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
 import {Helmet} from 'react-helmet'
@@ -147,6 +147,9 @@ export function Event() {
 
   const defaultEventErrorMessage = 'Token not found'
 
+  const previousEventURI = `/event/${parseInt(eventId)-1}`;
+  const nextEventURI = `/event/${parseInt(eventId)-1}`;
+
   return (
       <main id="site-main" role="main" className="app-content event-main">
         <Helmet>
@@ -181,9 +184,16 @@ export function Event() {
             }}>
               <div style={{flex: '0 0 18rem', display: 'flex', flexDirection: "column", justifyContent: "center"}}>
                 <div className='prev-next-buttons' style={{display: 'flex', justifyContent: 'space-between', marginBottom: 38,}}>
-                  <a href={parseInt(eventId)-1} ><FontAwesomeIcon icon={faAngleLeft}/>{'  Prev'}</a>
-                  <h4 style={{marginBottom: '0'}}><div className='event-title'>EVENT ID</div><div className='event-id'>#{eventId}</div> </h4>
-                  <a href={parseInt(eventId)+1} >{'Next  '}<FontAwesomeIcon icon={faAngleRight}/></a>
+                  <Link to={previousEventURI}>
+                    <FontAwesomeIcon icon={faAngleLeft}/>{'  Prev'}
+                  </Link>
+                  <h4 style={{marginBottom: '0'}}>
+                    <div className='event-title'>EVENT ID</div>
+                    <div className='event-id'>#{eventId}</div> 
+                  </h4>
+                  <Link to={nextEventURI}>
+                  {'Next  '}<FontAwesomeIcon icon={faAngleRight}/>
+                  </Link>
                 </div>
                 <div style={{minHeight: '200px', margin: '0 auto'}}>
                   <EventCard key={0} event={event} size='l' power={power} />
