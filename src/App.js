@@ -26,6 +26,10 @@ function App() {
     ReactGA.send("pageview");
   }
 
+  // eslint-disable-next-line
+  const intercom = useIntercom({
+    app_id: process.env.REACT_APP_INTERCOM_APP_ID || 'syysagea'
+  })
   document.body.className = 'poap-app'
 
   return (
