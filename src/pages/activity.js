@@ -10,7 +10,7 @@ import {
   selectMostRecent,
   selectUpcoming
 } from '../store';
-import {getMainnetTransfers, getPaginatedEvents, getxDaiTransfers, POAP_API_URL} from "../store/api";
+import {getMainnetTransfers, getPaginatedEvents, getxDaiTransfers, POAP_API_URL, POAP_APP_URL} from "../store/api";
 import {EventCard} from "../components/eventCard";
 import { Pill } from '../components/pill';
 import Migration from '../assets/images/migrate.svg'
@@ -152,7 +152,7 @@ function TokenRow({transfer, dateFormat}) {
         }
         <a
           className='recent-activity-image'
-          href={"https://app.poap.xyz/token/"+transfer.token.id} target="_blank"  rel="noopener noreferrer">
+          href={`${POAP_APP_URL}/token/${transfer.token.id}`} target="_blank"  rel="noopener noreferrer">
             <LazyImage
               src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
               width={80}
@@ -167,8 +167,8 @@ function TokenRow({transfer, dateFormat}) {
           <TokenRowDescription transfer={transfer} />
         </div>
       </td>
-      <td className='ellipsis'><a href={"https://app.poap.xyz/token/" + transfer.token.id} target="_blank"  rel="noopener noreferrer">{'#'}{transfer.token.id}</a></td>
-      <td style={{minWidth: '50px'}}><a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer">
+      <td className='ellipsis'><a href={`${POAP_APP_URL}/token/${transfer.token.id}`} target="_blank"  rel="noopener noreferrer">{'#'}{transfer.token.id}</a></td>
+      <td style={{minWidth: '50px'}}><a href={`${POAP_APP_URL}/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer">
           <span>{shrinkAddress(transfer.to.id, 15)}</span>
         </a></td>
       <td> {transfer.token.transferCount && transfer.token.transferCount > 0 ? transfer.token.transferCount : 'Claimed'} </td>
@@ -187,7 +187,7 @@ function TokenRow({transfer, dateFormat}) {
             width > 430 &&
             <a
               className='recent-activity-image'
-              href={"https://app.poap.xyz/token/"+transfer.token.id} target="_blank"  rel="noopener noreferrer">
+              href={`${POAP_APP_URL}/token/${transfer.token.id}`} target="_blank"  rel="noopener noreferrer">
                 <LazyImage
                   src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
                   width={80}
@@ -204,8 +204,8 @@ function TokenRow({transfer, dateFormat}) {
           <span className='expand-button' style={{width: `calc(100% - 180px${width>430?' - 118px':''})`}}><FontAwesomeIcon onClick={toggleRowExpand} icon={expanded? faAngleUp:faAngleDown} /></span>
         </div>
         <div className={`mobile-row-content ${expanded ? 'open' : ''}`}>
-          <span className='id-title'>POAP ID</span><span className='id-content'><a href={"https://app.poap.xyz/token/" + transfer.token.id} target="_blank"  rel="noopener noreferrer">{'#'}{transfer.token.id}</a></span>
-          <span className='address-title'>Owner</span><span className='address-content ellipsis'><a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer">
+          <span className='id-title'>POAP ID</span><span className='id-content'><a href={`${POAP_APP_URL}/token/${transfer.token.id}`} target="_blank"  rel="noopener noreferrer">{'#'}{transfer.token.id}</a></span>
+          <span className='address-title'>Owner</span><span className='address-content ellipsis'><a href={`${POAP_APP_URL}/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer">
               <span>{
                 width>480
                 ? shrinkAddress(transfer.to.id, 25)
@@ -224,13 +224,13 @@ function TokenRowDescription({transfer}) {
   const type = transferType(transfer)
   return <div className='description'>{
     (type === 'Migration') ? <span>POAP migrated to
-      <a href={"https://app.poap.xyz/scan/" + transfer.to.id} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 16) + '…'} </a>
+      <a href={`${POAP_APP_URL}/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer"> {transfer.to.id.substring(0, 16) + '…'} </a>
       from {transfer.network} to Ethereum</span> :
     (type === 'Claim') ? <span>POAP claimed on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
     (type === 'Burn') ? <span>POAP burned on event <Link to={`/event/${transfer.token.event.id}`}>#{transfer.token.event.id}</Link> on {transfer.network}</span> :
     <span>POAP transferred from
-      <a href={`https://app.poap.xyz/scan/${transfer.from.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.from.id, 10)} </a> to
-      <a href={`https://app.poap.xyz/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.to.id, 10)}</a> on
+      <a href={`${POAP_APP_URL}/scan/${transfer.from.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.from.id, 10)} </a> to
+      <a href={`${POAP_APP_URL}/scan/${transfer.to.id}`} target="_blank"  rel="noopener noreferrer"> {shrinkAddress(transfer.to.id, 10)}</a> on
       {' '}{transfer.network}
     </span>
   }</div>

@@ -11,6 +11,7 @@ import DiscordLogo from '../assets/images/logo-discord-grey.svg'
 import DiscordLogoBlue from '../assets/images/logo-discord-blue.svg'
 import RedditLogo from '../assets/images/logo-reddit-grey.svg'
 import RedditLogoBlue from '../assets/images/logo-reddit-blue.svg'
+import {POAP_APP_URL} from "../store/api";
 
 export default function () {
   const [twitterHover, setTwitterHover] = useState(false)
@@ -31,7 +32,7 @@ export default function () {
         <a href="https://poap.chat/" className="c" target="_blank"  rel="noopener noreferrer">poap.chat</a>
         <a href="https://www.poap.gallery/" className="d" target="_blank"  rel="noopener noreferrer">poap.gallery</a>
         <a href="https://www.poap.delivery/" className="e" target="_blank"  rel="noopener noreferrer">poap.delivery</a>
-        <a href="https://app.poap.xyz/" className="f" target="_blank"  rel="noopener noreferrer">poap.app</a>
+        <a href={POAP_APP_URL} className="f" target="_blank"  rel="noopener noreferrer">poap.app</a>
         <a href="https://poap.vote/" className="g" target="_blank"  rel="noopener noreferrer">poap.vote</a>
         <a href="https://app.poap.art/" className="h" target="_blank"  rel="noopener noreferrer">poap.art</a>
       </div>
