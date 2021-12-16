@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import ReactTooltip from 'react-tooltip';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faAngleDown, faAngleUp, faDotCircle, faQuestionCircle} from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +19,7 @@ import Claim from '../assets/images/claim.svg'
 import Transfer from '../assets/images/transfer.svg'
 import { Foliage } from '../components/foliage';
 import {
-  dateCell,
+  dateCell, debounce,
   onlyUnique,
   shrinkAddress,
   transferType,
@@ -29,6 +29,7 @@ import {
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { Link } from 'react-router-dom'
 import { LazyImage } from '../components/LazyImage';
+import {toast} from "react-hot-toast";
 
 
 export default function Activity() {
@@ -83,6 +84,8 @@ export default function Activity() {
         );
   }, []);
 
+  const toastNewTransfersError = () => toast.error('There was a problem loading recent activity', {})
+  const debouncedToastNewTransfersError = useCallback(debounce(() => toastNewTransfersError(), 500), [])
   useEffect(() => {
     const setNewTransfers = async () => {
       let transfersEventIds = daitransfers.map(t => t.token.event.id).concat(mainnetTransfers.map(t => t.token.event.id))
@@ -102,7 +105,10 @@ export default function Activity() {
           .slice(0, transferLimit)
       setTransfers(_transfers)
     }
-    setNewTransfers().then()
+    setNewTransfers().then().catch(e =>
+        debouncedToastNewTransfersError()
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [daitransfers, mainnetTransfers])
 
   return (
