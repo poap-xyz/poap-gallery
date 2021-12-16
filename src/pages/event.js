@@ -9,7 +9,9 @@ import {Helmet} from 'react-helmet'
 import {useDispatch, useSelector} from 'react-redux';
 import {FETCH_EVENT_PAGE_INFO_STATUS, fetchEventPageData} from '../store';
 import {CSVLink} from "react-csv";
-import {getEnsData} from '../store/mutations';
+import {
+  getEnsData
+} from '../store/mutations';
 import Loader from '../components/loader'
 import _ from 'lodash'
 import { EventCard } from '../components/eventCard';
@@ -19,6 +21,7 @@ import { useWindowWidth } from '@react-hook/window-size/throttled';
 import OpenLink from '../assets/images/openLink.svg'
 import {toast} from "react-hot-toast";
 import {POAP_APP_URL} from "../store/api";
+import {Spinner} from "../components/spinner";
 
 const GRAPH_LIMIT = 1000;
 const CSV_STATUS = {
@@ -26,6 +29,8 @@ const CSV_STATUS = {
   DownloadingLastDataChunk: 'DownloadingLastDataChunk',
   ReadyWithoutEns: 'ReadyWithoutEns',
   Ready: 'Ready',
+  Failed: 'Failed',
+  NoTokens: 'NoTokens',
 }
 
 export default function Events() {
@@ -55,18 +60,21 @@ export function Event() {
   const [pageIndex, setPageIndex] = useState(0);
   const [csv_data, setCsv_data] = useState([]);
   const [ensNames, setEnsNames] = useState([]);
-  const [canDownloadCsv, setCanDownloadCsv] = useState(CSV_STATUS.DownloadingData);
+  const [canDownloadCsv, setCanDownloadCsv] = useState(CSV_STATUS.NoTokens);
   const [tableIsLoading, setTableIsLoading] = useState(true)
   const pageCount = useMemo( () => event.tokenCount % 50 !== 0 ? Math.floor(event.tokenCount / 50) + 1 : event.tokenCount, [event])
   const power = calculatePower(csv_data);
 
   const csvDownloadIsOnLastStep = () => canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk
-  const csvReadyOrAlmostReady = () => canDownloadCsv === CSV_STATUS.Ready || canDownloadCsv === CSV_STATUS.ReadyWithoutEns
+  const csvDownloading = () => (canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk || canDownloadCsv === CSV_STATUS.DownloadingData)
+  const csvReady = () => canDownloadCsv === CSV_STATUS.Ready
   const csvOnlyMissingEns = () => canDownloadCsv === CSV_STATUS.ReadyWithoutEns
+  const csvFailed = () => canDownloadCsv === CSV_STATUS.Failed
+
   const succeededLoadingEvent = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.SUCCEEDED
   const isLoadingEvent = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.LOADING
   const failedLoadingEvent = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.FAILED
-  const isIdle = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.IDLE
+  const isIdle = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.IDLE || loadingEvent === undefined
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -87,8 +95,10 @@ export function Event() {
     if (event && hasTokens && hasMorePages) {
       if (pageIndex + 1 === totalPages) {
         setCanDownloadCsv(CSV_STATUS.DownloadingLastDataChunk)
+      } else {
+        setCanDownloadCsv(CSV_STATUS.DownloadingData)
       }
-      setPageIndex(pageIndex + 1);
+      setPageIndex(pageIndex + 1)
     }
 
     let _csv_data = []
@@ -107,7 +117,7 @@ export function Event() {
       for (let i = 0; i < tokens.length; i++) {
         let validName = ensNames[i]
         if (validName) {
-          if (_csv_data[i+1]) { //TODO: test
+          if (_csv_data[i+1]) {
             _csv_data[i+1][2] = validName // i+1 is there to compensate for the first array which is just the csv titles
           }
         }
@@ -116,19 +126,18 @@ export function Event() {
     }
   }, [ensNames]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
-  const validationCSVDownload = () => {
+  const validationCSVDownload = async () => {
     setCanDownloadCsv(CSV_STATUS.ReadyWithoutEns)
     let ownerIds = tokens.map(t => t.owner.id)
-    getEnsData(ownerIds).then(allnames => {
-      if(allnames.length > 0){
-        setEnsNames(allnames)
+    try {
+      const ensData = await getEnsData(ownerIds)
+      if(ensData.length > 0){
+        setEnsNames(ensData)
       }
       setCanDownloadCsv(CSV_STATUS.Ready)
-    }).catch(() => {
-      toast.error(`Could not get ENS data (You can download CSV without ENS resolution or try again later)`, {
-        duration: 10000
-      })
-    })
+    } catch(e) {
+      setCanDownloadCsv(CSV_STATUS.Failed)
+    }
   }
 
   useEffect(() => {
@@ -149,12 +158,12 @@ export function Event() {
           <meta property="og:title" content="POAP Gallery - Event"/>
         </Helmet>
         <Foliage />
-        {!errorEvent && (isLoadingEvent() || isIdle()) &&
+        {(isLoadingEvent() || isIdle()) &&
           <div className={'center'}>
             <Loader/>
           </div>
         }
-        {(errorEvent || Object.keys(event).length === 0) && !isLoadingEvent() && !isIdle() &&
+        {failedLoadingEvent() &&
           <div className={'token-not-found'}>
             <h2>{errorEvent || defaultEventErrorMessage}</h2>
             <div>
@@ -162,7 +171,7 @@ export function Event() {
             </div>
           </div>
         }
-        {(succeededLoadingEvent() || failedLoadingEvent()) && !errorEvent && Object.keys(event).length > 0 &&
+        {succeededLoadingEvent() &&
           <div className="container">
             <div style={{
               display: 'flex',
@@ -185,22 +194,24 @@ export function Event() {
             </div>
             <div className='table-header'>
               <div className='table-title'>Collections <span>({tokens.length})</span></div>
-              {csvReadyOrAlmostReady() ?
+              {(csvReady() || csvOnlyMissingEns() || csvFailed()) &&
                 <CSVLink
                     filename={`${event.name}.csv`}
                     target="_blank"
-                    data-tip={`${csvOnlyMissingEns() ? 'Please wait if you want the ens names too' : ''}`}
+                    data-tip={`${csvOnlyMissingEns() ? 'Please wait if you want the ens names too' : csvFailed() ? `Ens names couldn't be fetched` : ''}`}
                     className={'btn csv-button'}
                     data={csv_data}
                 >
-                  <span className={'no-margin'}>{`Download CSV${csvOnlyMissingEns() ? ' (without ens)' : ''}`}</span>
+                  <span className={'no-margin'}>{`Download CSV${csvOnlyMissingEns() || csvFailed() ? ' (without ENS)' : ''}`}</span>
                   <ReactTooltip effect={'solid'} />
-                </CSVLink> :
+                </CSVLink>
+              }
+              {(csvDownloading()) &&
                 <button
                     className={'btn button-disabled csv-button'}
                     data-tip={'Please wait for the POAPs data to be loaded'}
                     onClick={null}
-                ><span style={{margin: 0}}>Download CSV</span><ReactTooltip effect={'solid'} /></button>
+                ><Spinner padding={0} imgWidth={25}/><ReactTooltip effect={'solid'} /></button>
               }
             </div>
             <div className='table-container'>

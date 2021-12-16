@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './index.css'
-import { PlaceHolderImage } from "../placeholderImage";
+import { ReactComponent as PlaceHolderImage } from "../../assets/images/placeholder.svg";
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 export const LazyImage = ({
