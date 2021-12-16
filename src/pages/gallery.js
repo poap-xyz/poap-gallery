@@ -49,12 +49,17 @@ export default function Gallery() {
     if (reset) {
       setPage(0)
     }
-    if (nameFilter?.length) {
-      // On search, force ordering by initial ordering
-      dispatch(fetchIndexData({orderBy: {type: initialOrderType.val, order: initialOrderDirection.val}, nameFilter: nameFilter, privateEvents: false, reset: reset}))
-    } else {
-      dispatch(fetchIndexData({orderBy: {type: orderType.val, order: orderDirection.val}, nameFilter: nameFilter, privateEvents: false, reset: reset}))
+    const isSearch = nameFilter?.length
+    // On search, force ordering by initial ordering
+    const fetchDataArgs = {
+      orderBy: isSearch ?
+          {type: initialOrderType.val, order: initialOrderDirection.val} :
+          {type: orderType.val, order: orderDirection.val},
+      nameFilter: nameFilter,
+      privateEvents: false,
+      reset: reset
     }
+    dispatch(fetchIndexData(fetchDataArgs))
   }
 
   // Meanwhile reset state and get all the events
