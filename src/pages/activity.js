@@ -108,8 +108,7 @@ export default function Activity() {
     setNewTransfers().then().catch(e =>
         debouncedToastNewTransfersError()
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [daitransfers, mainnetTransfers])
+  }, [daitransfers, mainnetTransfers, debouncedToastNewTransfersError])
 
   return (
     <main id="site-main" role="main" className="app-content activity-main">

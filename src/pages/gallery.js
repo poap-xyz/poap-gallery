@@ -95,18 +95,19 @@ export default function Gallery() {
   }
 
   const debounceHandleSearch = useCallback(debounce((nextValue) => handleNewSearchValue(nextValue), 800), [])
+  const minimumCharsForSearch = 3
   const handleSearchInput = (event) => {
     const value = event.target.value
     debounceHandleSearch(value)
     setSearchValue(value);
-    if (value?.length <= 2) {
+    if (value?.length < minimumCharsForSearch) {
       setSearchStatus(SEARCH_STATUS.NoSearch)
     } else {
       setSearchStatus(SEARCH_STATUS.Searching)
     }
   }
   const handleNewSearchValue = (value) => {
-    if (value && value.length > 2) {
+    if (value && value.length >= minimumCharsForSearch) {
       fetchData({reset: true, nameFilter: value})
     } else if (value === '') {
       fetchData({reset: true})
