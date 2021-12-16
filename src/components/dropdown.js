@@ -26,16 +26,12 @@ export default function Dropdown({options, disable, defaultOption, onClickOption
     }
   }, [disable]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
-  let optionsElements = []
-  for(let i = 0; i < options.length; i++) {
-    const option = options[i]
-    optionsElements.push(
-      <div key={option.name} className={`option`} onClick={() => {
-        setValue(option)
+  let optionsElements = options.map(dropdownOption =>
+      <div key={dropdownOption.val} className={`option`} onClick={() => {
+        setValue(dropdownOption)
         toggleDisplayMenu()
-      }}>{option.name}</div>
-    )
-  }
+      }}>{dropdownOption.name}</div>
+  )
 
   return (
     <div className="select" style={{position: 'relative'}}
