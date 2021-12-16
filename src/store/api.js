@@ -41,26 +41,27 @@ export const PAGE_LIMIT = 20
 export async function getPaginatedEvents({name = undefined, event_ids = undefined,
                                            offset = undefined, limit = undefined,
                                            orderBy = undefined, privateEvents = undefined}) {
-  let url = `${POAP_API_URL}/paginated-events?`
+  const url = new URL(`${POAP_API_URL}/paginated-events`)
   if (name) {
-    url += `&name=${name}`
+    url.searchParams.append('name', name)
   }
   if (event_ids && event_ids.length) {
-    url += `&event_ids=${event_ids}`
+    url.searchParams.append('event_ids', event_ids)
   }
   if (limit && limit > 0) {
-    url += `&limit=${limit}`
+    url.searchParams.append('limit', limit)
   }
   if (offset !== undefined && offset >= 0) {
-    url += `&offset=${offset}`
+    url.searchParams.append('offset', offset)
   }
   if (orderBy?.type && orderBy?.order) {
-    url += `&sort_field=${orderBy.type}&sort_dir=${orderBy.order}`
+    url.searchParams.append('sort_field', orderBy.type)
+    url.searchParams.append('sort_dir', orderBy.order)
   }
   if (privateEvents !== undefined) {
-    url += `&private_event=${privateEvents}`
+    url.searchParams.append('private_event', privateEvents)
   }
-  const res = await fetch(url)
+  const res = await fetch(url.href)
   return res.json()
 }
 

@@ -321,7 +321,7 @@ export async function getIndexPageData(orderBy, reset, nameFilter, privateEvents
 
 export async function getActivityPageData() {
 
-  const {upcoming, mostRecent, mostClaimed} = getTop3Events()
+  const {upcoming, mostRecent, mostClaimed} = await getTop3Events()
 
   if (mostRecent) mostRecent.heading = "Most Recent"
   if (upcoming) upcoming.heading = "Upcoming Event"

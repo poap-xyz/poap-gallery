@@ -19,7 +19,6 @@ import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import OpenLink from '../assets/images/openLink.svg'
-import {toast} from "react-hot-toast";
 import {POAP_APP_URL} from "../store/api";
 import {Spinner} from "../components/spinner";
 
