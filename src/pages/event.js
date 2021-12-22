@@ -132,19 +132,21 @@ export function Event() {
       const ensData = await getEnsData(ownerIds)
       if(ensData.length > 0){
         setEnsNames(ensData)
+        setCanDownloadCsv(CSV_STATUS.Ready)
+      } else {
+        setCanDownloadCsv(CSV_STATUS.Failed)
       }
-      setCanDownloadCsv(CSV_STATUS.Ready)
     } catch(e) {
       setCanDownloadCsv(CSV_STATUS.Failed)
     }
   }
 
   useEffect(() => {
-    if (succeededLoadingEvent() && csvDownloadIsOnLastStep()) {
+    if (succeededLoadingEvent() && (csvDownloadIsOnLastStep() || csvOnlyMissingEns())) {
       validationCSVDownload()
     }
     setTableIsLoading(!succeededLoadingEvent())
-  }, [loadingEvent]) /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [tokens]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const defaultEventErrorMessage = 'Token not found'
 
