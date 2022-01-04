@@ -64,11 +64,16 @@ export function Event() {
   const pageCount = useMemo( () => event.tokenCount % 50 !== 0 ? Math.floor(event.tokenCount / 50) + 1 : event.tokenCount, [event])
   const power = calculatePower(csv_data);
 
-  const csvDownloadIsOnLastStep = () => canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk
   const csvDownloading = () => (canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk || canDownloadCsv === CSV_STATUS.DownloadingData)
   const csvReady = () => canDownloadCsv === CSV_STATUS.Ready
   const csvOnlyMissingEns = () => canDownloadCsv === CSV_STATUS.ReadyWithoutEns
   const csvFailed = () => canDownloadCsv === CSV_STATUS.Failed
+
+  const readyToResolveENS = () => (
+      canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk ||
+      canDownloadCsv === CSV_STATUS.ReadyWithoutEns ||
+      canDownloadCsv === CSV_STATUS.Ready ||
+      canDownloadCsv === CSV_STATUS.Failed)
 
   const succeededLoadingEvent = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.SUCCEEDED
   const isLoadingEvent = () => loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.LOADING
@@ -142,7 +147,7 @@ export function Event() {
   }
 
   useEffect(() => {
-    if (succeededLoadingEvent() && (csvDownloadIsOnLastStep() || csvOnlyMissingEns())) {
+    if (succeededLoadingEvent() && readyToResolveENS()) {
       validationCSVDownload()
     }
     setTableIsLoading(!succeededLoadingEvent())
