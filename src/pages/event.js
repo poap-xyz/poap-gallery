@@ -148,7 +148,7 @@ export function Event() {
   const defaultEventErrorMessage = 'Token not found'
 
   const previousEventURI = `/event/${parseInt(eventId)-1}`;
-  const nextEventURI = `/event/${parseInt(eventId)-1}`;
+  const nextEventURI = `/event/${parseInt(eventId)+1}`;
 
   return (
       <main id="site-main" role="main" className="app-content event-main">
