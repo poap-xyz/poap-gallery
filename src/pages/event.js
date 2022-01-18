@@ -163,6 +163,9 @@ export function Event() {
     setPageIndex(0)
     setEnsNames([])
   }
+  const onPageChange = () => {
+    resetState()
+  }
 
   return (
       <main id="site-main" role="main" className="app-content event-main">
@@ -198,14 +201,14 @@ export function Event() {
             }}>
               <div style={{flex: '0 0 18rem', display: 'flex', flexDirection: "column", justifyContent: "center"}}>
                 <div className='prev-next-buttons' style={{display: 'flex', justifyContent: 'space-between', marginBottom: 38,}}>
-                  <Link onClick={resetState} to={previousEventURI}>
+                  <Link onClick={onPageChange} to={previousEventURI}>
                     <FontAwesomeIcon icon={faAngleLeft}/>{'  Prev'}
                   </Link>
                   <h4 style={{marginBottom: '0'}}>
                     <div className='event-title'>EVENT ID</div>
                     <div className='event-id'>#{eventId}</div> 
                   </h4>
-                  <Link onClick={resetState} to={nextEventURI}>
+                  <Link onClick={onPageChange} to={nextEventURI}>
                   {'Next  '}<FontAwesomeIcon icon={faAngleRight}/>
                   </Link>
                 </div>
