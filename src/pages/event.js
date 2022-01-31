@@ -19,7 +19,7 @@ import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import OpenLink from '../assets/images/openLink.svg'
-import {POAP_APP_URL} from "../store/api";
+import {POAP_APP_URL, PRYSM_APP_URL} from "../store/api";
 import {Spinner} from "../components/spinner";
 
 const GRAPH_LIMIT = 1000;
@@ -207,7 +207,7 @@ export function Event() {
                   </Link>
                   <h4 style={{marginBottom: '0'}}>
                     <div className='event-title'>EVENT ID</div>
-                    <div className='event-id'>#{eventId}</div> 
+                    <div className='event-id'>#{eventId}</div>
                   </h4>
                   <Link onClick={onPageChangeHandler} to={nextEventURI}>
                   {'Next  '}<FontAwesomeIcon icon={faAngleRight}/>
@@ -298,7 +298,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
       <div className={`mobile-row open`}>
         <span className='id-title'>POAP ID</span><span className='id-content'>#{token.id}</span>
         <span className='address-title'>Address</span><span className='address-content ellipsis'>
-        <a href={`${POAP_APP_URL}/scan/${token.owner.id}`} target="_blank" rel="noopener noreferrer">{shrinkAddress(address, 15)}</a></span>
+        <a href={`${PRYSM_APP_URL}/profile/${token.owner.id}/achievements`} target="_blank" rel="noopener noreferrer">{shrinkAddress(address, 15)}</a></span>
         <span className='claim-title'>Claim Date</span><span className='claim-content'>{utcDateFormatted(token.created * 1000)}</span>
         <span className='tr-count-title'>Transaction Count</span><span className='tr-count-content'>{token.transferCount}</span>
         <span className='power-title'>Power</span><span className='power-content'>{token.owner.tokensOwned}</span>
@@ -346,7 +346,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     for (let i = 0; i < tokens.length; i++) {
       _data.push({
         col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} content={`#${tokens[i].id}`}/>) ,
-        col2: (<ExternalLinkCell url={`${POAP_APP_URL}/scan/${tokens[i].owner.id}`} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>),
+        col2: (<ExternalLinkCell url={`${PRYSM_APP_URL}/profile/${tokens[i].owner.id}/achievements`} tooltipText='View this collection in Prysm.xyz' content={tokens[i].owner.id}/>),
         col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
@@ -369,7 +369,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<a href={`${POAP_APP_URL}/scan/${tokens[i].owner.id}`} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>)
+            _data[i].col2 = (<a href={`${PRYSM_APP_URL}/profile/${tokens[i].owner.id}/achievements`} target="_blank"  rel="noopener noreferrer" data-tip='View this collection in Prysm.xyz'> <ReactTooltip effect='solid' /> {validName}</a>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }
