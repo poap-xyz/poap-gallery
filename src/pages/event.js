@@ -421,7 +421,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a><ExternalIconCell url={PrysmScanLink(tokens[i])} tooltipText='View this collection in Prysm.xyz' content={tokens[i].owner.id}/></div>)
+            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a><ExternalIconCell url={PrysmScanLink(tokens[i])} tooltipText='View Collection in Prysm.xyz' content={tokens[i].owner.id}/></div>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }
