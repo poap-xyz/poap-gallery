@@ -18,9 +18,9 @@ import { EventCard } from '../components/eventCard';
 import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
-import Prysm from '../assets/images/prysm.svg';
-import {POAP_APP_URL, PRYSM_APP_URL} from "../store/api";
 import {Spinner} from "../components/spinner";
+import { collectionlLinks } from '../utilities/utilities';
+import {POAP_APP_URL} from "../store/api";
 
 const GRAPH_LIMIT = 1000;
 const CSV_STATUS = {
@@ -249,7 +249,7 @@ export function Event() {
   )
 }
 
-function ExternalIconCell({url, tooltipText = null, content}) {
+function ExternalIconCell({url, icon, tooltipText = null, content}) {
   const [isHovering, setIsHovering] = useState(false)
   const [isHoveringLink, setIsHoveringLink] = useState(false)
 
@@ -273,8 +273,8 @@ function ExternalIconCell({url, tooltipText = null, content}) {
          style={{position: 'relative', width: 27}}
       >
         <span>
-          <img src={Prysm}
-               style={{'margin': '0 5px', 'vertical-align': 'middle', width: '20px', height: '20px'}}
+          <img src={icon}
+               style={{'margin': '0 5px', 'verticalAlign': 'middle', width: '20px', height: '20px'}}
                alt={'Open external link'} />
         </span>
         <ReactTooltip id='mainTooltip' effect='solid'/>
@@ -338,8 +338,8 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
   const [data, setData] = useState([]);
   const [mobileData, setMobileData] = useState([]);
 
-  const PrysmScanLink = (token) => {
-    return (`${PRYSM_APP_URL}/profile/${token.owner.id}/achievements`);
+  const PoapScanLink = (token) => {
+    return (`${POAP_APP_URL}/scan/${token.owner.id}`);
   };
 
   const PoapScanLink = (token) => {
@@ -398,7 +398,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     for (let i = 0; i < tokens.length; i++) {
       _data.push({
         col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} content={`#${tokens[i].id}`}/>) ,
-        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/><ExternalIconCell url={PrysmScanLink(tokens[i])} tooltipText='View Collection in Prysm.xyz' content={tokens[i].owner.id}/></div>),
+        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
         col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
@@ -421,7 +421,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a><ExternalIconCell url={PrysmScanLink(tokens[i])} tooltipText='View Collection in Prysm.xyz' content={tokens[i].owner.id}/></div>)
+            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }
