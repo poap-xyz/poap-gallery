@@ -9,8 +9,12 @@ import { ReactComponent as Tally } from "../assets/images/tally.svg";
 import { ReactComponent as CyberConnect } from "../assets/images/cyberConnect.svg";
 import { ReactComponent as Poap } from "../assets/images/POAP.svg";
 import { ReactComponent as Prysm } from "../assets/images/prysm.svg";
+import { ReactComponent as Gm } from "../assets/images/gm.svg";
+import { ReactComponent as Moca } from "../assets/images/moca.svg";
+import { ReactComponent as Welook } from "../assets/images/welook.svg";
+import { ReactComponent as Backdrop } from "../assets/images/backdrop.svg";
 import {CYBERCONNECT_APP_URL, MAZURY_APP_URL, POAP_EXPLORE_APP_URL,
-   PRYSM_APP_URL, RAINBOW_APP_URL, WITHTALLY_APP_URL} from "../store/api";
+   PRYSM_APP_URL, RAINBOW_APP_URL, WITHTALLY_APP_URL, GM_APP_URL, MOCA_APP_URL, WELOOK_APP_URL, BACKDROP_APP_URL} from "../store/api";
 
 dayjs.extend(utc)
 dayjs.extend(relativeTime)
@@ -99,6 +103,22 @@ const WithTallyLink = (token) => {
 const CyberconnectLink = (token) => {
   return (`${CYBERCONNECT_APP_URL}/address/${token.owner.id}`);
 };
+
+const GmLink = (token) => {
+  return (`${GM_APP_URL}/u/${token.owner.id}`);
+}
+
+const MocaLink = (token) => {
+  return (`${MOCA_APP_URL}/member/${token.owner.id}`);
+}
+
+const WelookLink = (token) => {
+  return (`${WELOOK_APP_URL}/${token.owner.id}`);
+}
+
+const BackdropLink = (token) => {
+  return (`${BACKDROP_APP_URL}/${token.owner.id}`);
+}
 
 export const collectionlLinks = [
   {
@@ -196,5 +216,69 @@ export const collectionlLinks = [
       />
     ),
     tooltipText: 'View Collection in Cyberconnect.me'
+  },
+  {
+    id: 'GM',
+    getUrl: GmLink,
+    icon: (
+      <Gm
+        style={{
+          margin: "0 5px",
+          verticalAlign: "middle",
+          width: "20px",
+          height: "20px",
+        }}
+        alt={"Open external link"}
+      />
+    ),
+    tooltipText: 'View Collection in Gm.xyz'
+  },
+  {
+    id: 'Moca',
+    getUrl: MocaLink,
+    icon: (
+      <Moca
+        style={{
+          margin: "0 5px",
+          verticalAlign: "middle",
+          width: "20px",
+          height: "20px",
+        }}
+        alt={"Open external link"}
+      />
+    ),
+    tooltipText: 'View Collection in Museumofcryptoart.com'
+  },
+  {
+    id: 'Welook',
+    getUrl: WelookLink,
+    icon: (
+      <Welook
+        style={{
+          margin: "0 5px",
+          verticalAlign: "middle",
+          width: "20px",
+          height: "20px",
+        }}
+        alt={"Open external link"}
+      />
+    ),
+    tooltipText: 'View Collection in Welook.io'
+  },
+  {
+    id: 'Backdrop',
+    getUrl: BackdropLink,
+    icon: (
+      <Backdrop
+        style={{
+          margin: "0 5px",
+          verticalAlign: "middle",
+          width: "20px",
+          height: "20px",
+        }}
+        alt={"Open external link"}
+      />
+    ),
+    tooltipText: 'View Collection in Backdrop.so'
   },
 ]

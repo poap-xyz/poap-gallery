@@ -8,6 +8,10 @@ export const RAINBOW_APP_URL = process.env.REACT_APP_RAINBOW_APP_URL;
 export const MAZURY_APP_URL = process.env.REACT_APP_MAZURY_APP_URL;
 export const CYBERCONNECT_APP_URL = process.env.REACT_APP_CYBERCONNECT_APP_URL;
 export const WITHTALLY_APP_URL = process.env.REACT_APP_WITHTALLY_APP_URL;
+export const GM_APP_URL = process.env.REACT_APP_GM_APP_URL;
+export const MOCA_APP_URL = process.env.REACT_APP_MOCA_APP_URL;
+export const WELOOK_APP_URL = process.env.REACT_APP_WELOOK_APP_URL;
+export const BACKDROP_APP_URL = process.env.REACT_APP_BACKDROP_APP_URL;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const OrderType = {
   id: {
