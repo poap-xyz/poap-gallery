@@ -19,7 +19,7 @@ import { Foliage } from '../components/foliage';
 import {dateCell, shrinkAddress, utcDateFormatted, utcDateFull} from '../utilities/utilities';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import {Spinner} from "../components/spinner";
-import { collectionlLinks } from '../utilities/utilities';
+import { collectionlLinks, externalLinkSetter } from '../utilities/utilities';
 import {POAP_APP_URL} from "../store/api";
 
 const GRAPH_LIMIT = 1000;
@@ -341,7 +341,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
     for (let i = 0; i < tokens.length; i++) {
       _data.push({
         col1:  (<ExternalLinkCell url={`${POAP_APP_URL}/token/${tokens[i].id}`} content={`#${tokens[i].id}`}/>) ,
-        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
+        col2: (<div><ExternalLinkCell url={PoapScanLink(tokens[i])} tooltipText='View Collection in POAP.scan' content={tokens[i].owner.id}/>{collectionlLinks.map(link => <ExternalIconCell url={externalLinkSetter(tokens[i].owner.id, link.id)} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>),
         col3: tokens[i].created * 1000,
         col4: tokens[i].transferCount,
         col5: tokens[i].owner.tokensOwned,
@@ -364,7 +364,7 @@ function TableContainer({tokens, ensNames, pageCount: pc, loading}) {
         let validName = ensNames[i]
         if (validName) {
           if (data[i]) {
-            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={link.getUrl(tokens[i])} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
+            _data[i].col2 = (<div><a href={PoapScanLink(tokens[i])} target="_blank"  rel="noopener noreferrer" data-tip='View Collection in POAP.scan'> <ReactTooltip effect='solid' /> {validName}</a>{collectionlLinks.map(link => <ExternalIconCell url={externalLinkSetter(tokens[i].owner.id, link.id)} key={link.id} icon={link.icon} tooltipText={link.tooltipText}/>)}</div>)
             _mobileData[i].col1 = <MobileRow token={tokens[i]} address={validName} />
           }
         }

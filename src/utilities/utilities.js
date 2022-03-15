@@ -13,11 +13,23 @@ import { ReactComponent as Gm } from "../assets/images/gm.svg";
 import { ReactComponent as Moca } from "../assets/images/moca.svg";
 import { ReactComponent as Welook } from "../assets/images/welook.svg";
 import { ReactComponent as Backdrop } from "../assets/images/backdrop.svg";
-import {CYBERCONNECT_APP_URL, MAZURY_APP_URL, POAP_EXPLORE_APP_URL,
-   PRYSM_APP_URL, RAINBOW_APP_URL, WITHTALLY_APP_URL, GM_APP_URL, MOCA_APP_URL, WELOOK_APP_URL, BACKDROP_APP_URL} from "../store/api";
+import { ReactComponent as Light } from "../assets/images/light.svg";
+
+const PRYSM_APP_URL = 'https://beta.prysm.xyz'
+const POAP_EXPLORE_APP_URL = 'https://explore.poap.xyz'
+const RAINBOW_APP_URL = 'https://rainbow.me'
+const MAZURY_APP_URL = 'https://app.mazury.xyz'
+const CYBERCONNECT_APP_URL = 'https://app.cyberconnect.me'
+const WITHTALLY_APP_URL = 'https://www.withtally.com'
+const GM_APP_URL = 'https://gm.xyz'
+const MOCA_APP_URL = 'https://app.museumofcryptoart.com'
+const WELOOK_APP_URL = 'https://welook.io'
+const BACKDROP_APP_URL = 'https://backdrop.so'
+const LIGHT_APP_URL = 'https://light.so'
 
 dayjs.extend(utc)
 dayjs.extend(relativeTime)
+
 
 export const shrinkAddress = (address, length) => {
   if (address.length < length) return address;
@@ -80,50 +92,27 @@ export const toastInfoOptions = {
   }
 }
 
-const PrysmScanLink = (token) => {
-  return (`${PRYSM_APP_URL}/profile/${token.owner.id}/achievements`);
-};
-
-const PoapExploreLink = (token) => {
-  return (`${POAP_EXPLORE_APP_URL}/${token.owner.id}`);
-};
-
-const RainbowLink = (token) => {
-  return (`${RAINBOW_APP_URL}/${token.owner.id}`);
-};
-
-const MazuryLink = (token) => {
-  return (`${MAZURY_APP_URL}/people/${token.owner.id}`);
-};
-
-const WithTallyLink = (token) => {
-  return (`${WITHTALLY_APP_URL}/voter/${token.owner.id}`)
-}
-
-const CyberconnectLink = (token) => {
-  return (`${CYBERCONNECT_APP_URL}/address/${token.owner.id}`);
-};
-
-const GmLink = (token) => {
-  return (`${GM_APP_URL}/u/${token.owner.id}`);
-}
-
-const MocaLink = (token) => {
-  return (`${MOCA_APP_URL}/member/${token.owner.id}`);
-}
-
-const WelookLink = (token) => {
-  return (`${WELOOK_APP_URL}/${token.owner.id}`);
-}
-
-const BackdropLink = (token) => {
-  return (`${BACKDROP_APP_URL}/${token.owner.id}`);
+export const externalLinkSetter = (owner_id, name) => {
+  const collectionLinks = {
+    'PRYSM': `${PRYSM_APP_URL}/profile/${owner_id}/achievements`,
+    'POAP_EXPLORE': `${POAP_EXPLORE_APP_URL}/${owner_id}`,
+    'RAINBOW': `${RAINBOW_APP_URL}/${owner_id}`,
+    'MAZURY': `${MAZURY_APP_URL}/people/${owner_id}`,
+    'CYBERCONNECT': `${CYBERCONNECT_APP_URL}/address/${owner_id}`,
+    'WITHTALLY': `${WITHTALLY_APP_URL}/voter/${owner_id}`,
+    'GM': `${GM_APP_URL}/u/${owner_id}`,
+    'MOCA': `${MOCA_APP_URL}/member/${owner_id}`,
+    'WELOOK': `${WELOOK_APP_URL}/${owner_id}`,
+    'BACKDROP': `${BACKDROP_APP_URL}/${owner_id}`,
+    'LIGHT': `${LIGHT_APP_URL}/${owner_id}`,
+    'default': ''
+  };
+  return collectionLinks[name] ||  collectionLinks['default']
 }
 
 export const collectionlLinks = [
   {
     id: 'POAP_EXPLORE',
-    getUrl: PoapExploreLink,
     icon: (
       <Poap
         style={{
@@ -139,7 +128,6 @@ export const collectionlLinks = [
   },
   {
     id: 'PRYSM',
-    getUrl: PrysmScanLink,
     icon: (
       <Prysm
         style={{
@@ -155,7 +143,6 @@ export const collectionlLinks = [
   },
   {
     id: 'RAINBOW',
-    getUrl: RainbowLink,
     icon: (
       <Rainbow
         style={{
@@ -171,7 +158,6 @@ export const collectionlLinks = [
   },
   {
     id: 'MAZURY',
-    getUrl: MazuryLink,
     icon: (
       <Mazury
         style={{
@@ -187,7 +173,6 @@ export const collectionlLinks = [
   },
   {
     id: 'WITHTALLY',
-    getUrl: WithTallyLink,
     icon: (
       <Tally
         style={{
@@ -203,7 +188,6 @@ export const collectionlLinks = [
   },
   {
     id: 'CYBERCONNECT',
-    getUrl: CyberconnectLink,
     icon: (
       <CyberConnect
         style={{
@@ -219,7 +203,6 @@ export const collectionlLinks = [
   },
   {
     id: 'GM',
-    getUrl: GmLink,
     icon: (
       <Gm
         style={{
@@ -234,15 +217,14 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Gm.xyz'
   },
   {
-    id: 'Moca',
-    getUrl: MocaLink,
+    id: 'MOCA',
     icon: (
       <Moca
         style={{
           margin: "0 5px",
           verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          width: "30px",
+          height: "30px",
         }}
         alt={"Open external link"}
       />
@@ -250,15 +232,14 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Museumofcryptoart.com'
   },
   {
-    id: 'Welook',
-    getUrl: WelookLink,
+    id: 'WELOOK',
     icon: (
       <Welook
         style={{
           margin: "0 5px",
           verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          width: "40px",
+          height: "40px",
         }}
         alt={"Open external link"}
       />
@@ -266,8 +247,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Welook.io'
   },
   {
-    id: 'Backdrop',
-    getUrl: BackdropLink,
+    id: 'BACKDROP',
     icon: (
       <Backdrop
         style={{
@@ -280,5 +260,20 @@ export const collectionlLinks = [
       />
     ),
     tooltipText: 'View Collection in Backdrop.so'
+  },
+  {
+    id: 'LIGHT',
+    icon: (
+      <Light
+        style={{
+          margin: "0 5px",
+          verticalAlign: "middle",
+          width: "20px",
+          height: "20px",
+        }}
+        alt={"Open external link"}
+      />
+    ),
+    tooltipText: 'View Collection in Light.so'
   },
 ]
