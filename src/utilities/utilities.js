@@ -15,17 +15,18 @@ import { ReactComponent as Welook } from "../assets/images/welook.svg";
 import { ReactComponent as Backdrop } from "../assets/images/backdrop.svg";
 import { ReactComponent as Light } from "../assets/images/light.svg";
 
-const PRYSM_APP_URL = 'https://beta.prysm.xyz'
-const POAP_EXPLORE_APP_URL = 'https://explore.poap.xyz'
-const RAINBOW_APP_URL = 'https://rainbow.me'
-const MAZURY_APP_URL = 'https://app.mazury.xyz'
-const CYBERCONNECT_APP_URL = 'https://app.cyberconnect.me'
-const WITHTALLY_APP_URL = 'https://www.withtally.com'
-const GM_APP_URL = 'https://gm.xyz'
-const MOCA_APP_URL = 'https://app.museumofcryptoart.com'
-const WELOOK_APP_URL = 'https://welook.io'
-const BACKDROP_APP_URL = 'https://backdrop.so'
-const LIGHT_APP_URL = 'https://light.so'
+//Partners
+const PRYSM_PARTNER = { "name": 'PRYSM', "url": 'https://beta.prysm.xyz' }
+const POAP_EXPLORE_PARTNER = { "name": 'POAP_EXPLORE', "url": 'https://explore.poap.xyz' }
+const RAINBOW_PARTNER = { "name": 'RAINBOW', "url": 'https://rainbow.me' }
+const MAZURY_PARTNER = { "name": 'MAZURY', "url": 'https://app.mazury.xyz' }
+const CYBERCONNECT_PARTNER = { "name": 'CYBERCONNECT', "url": 'https://app.cyberconnect.me' }
+const WITHTALLY_PARTNER = { "name": 'WITHTALLY', "url": 'https://www.withtally.com' }
+const GM_PARTNER = { "name": 'GM', "url": 'https://gm.xyz' }
+const MOCA_PARTNER = { "name": 'MOCA', "url": 'https://app.museumofcryptoart.com' }
+const WELOOK_PARTNER = { "name": 'WELOOK', "url": 'https://welook.io' }
+const BACKDROP_PARTNER = { "name": 'BACKDROP', "url": 'https://backdrop.so' }
+const LIGHT_PARTNER = { "name": 'LIGHT', "url": 'https://light.so' }
 
 dayjs.extend(utc)
 dayjs.extend(relativeTime)
@@ -94,17 +95,17 @@ export const toastInfoOptions = {
 
 export const externalLinkSetter = (owner_id, name) => {
   const collectionLinks = {
-    'PRYSM': `${PRYSM_APP_URL}/profile/${owner_id}/achievements`,
-    'POAP_EXPLORE': `${POAP_EXPLORE_APP_URL}/${owner_id}`,
-    'RAINBOW': `${RAINBOW_APP_URL}/${owner_id}`,
-    'MAZURY': `${MAZURY_APP_URL}/people/${owner_id}`,
-    'CYBERCONNECT': `${CYBERCONNECT_APP_URL}/address/${owner_id}`,
-    'WITHTALLY': `${WITHTALLY_APP_URL}/voter/${owner_id}`,
-    'GM': `${GM_APP_URL}/u/${owner_id}`,
-    'MOCA': `${MOCA_APP_URL}/member/${owner_id}`,
-    'WELOOK': `${WELOOK_APP_URL}/${owner_id}`,
-    'BACKDROP': `${BACKDROP_APP_URL}/${owner_id}`,
-    'LIGHT': `${LIGHT_APP_URL}/${owner_id}`,
+    [PRYSM_PARTNER.name]: `${PRYSM_PARTNER.url}/profile/${owner_id}/achievements`,
+    [POAP_EXPLORE_PARTNER.name]: `${POAP_EXPLORE_PARTNER.url}/${owner_id}`,
+    [RAINBOW_PARTNER.name]: `${RAINBOW_PARTNER.url}/${owner_id}`,
+    [MAZURY_PARTNER.name]: `${MAZURY_PARTNER.url}/people/${owner_id}`,
+    [CYBERCONNECT_PARTNER.name]: `${CYBERCONNECT_PARTNER.url}/address/${owner_id}`,
+    [WITHTALLY_PARTNER.name]: `${WITHTALLY_PARTNER.url}/voter/${owner_id}`,
+    [GM_PARTNER.name]: `${GM_PARTNER.url}/u/${owner_id}`,
+    [MOCA_PARTNER.name]: `${MOCA_PARTNER.url}/member/${owner_id}`,
+    [WELOOK_PARTNER.name]: `${WELOOK_PARTNER.url}/${owner_id}`,
+    [BACKDROP_PARTNER.name]: `${BACKDROP_PARTNER.url}/${owner_id}`,
+    [LIGHT_PARTNER.name]: `${LIGHT_PARTNER.url}/${owner_id}`,
     'default': ''
   };
   return collectionLinks[name] ||  collectionLinks['default']
@@ -112,7 +113,7 @@ export const externalLinkSetter = (owner_id, name) => {
 
 export const collectionlLinks = [
   {
-    id: 'POAP_EXPLORE',
+    id: POAP_EXPLORE_PARTNER.name,
     icon: (
       <Poap
         style={{
@@ -127,7 +128,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Explore.poap.xyz'
   },
   {
-    id: 'PRYSM',
+    id: PRYSM_PARTNER.name,
     icon: (
       <Prysm
         style={{
@@ -142,7 +143,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Prysm.xyz'
   },
   {
-    id: 'RAINBOW',
+    id: RAINBOW_PARTNER.name,
     icon: (
       <Rainbow
         style={{
@@ -157,7 +158,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Rainbow.me'
   },
   {
-    id: 'MAZURY',
+    id: MAZURY_PARTNER.name,
     icon: (
       <Mazury
         style={{
@@ -172,7 +173,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Mazury.xyz'
   },
   {
-    id: 'WITHTALLY',
+    id: WITHTALLY_PARTNER.name,
     icon: (
       <Tally
         style={{
@@ -187,7 +188,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Tally'
   },
   {
-    id: 'CYBERCONNECT',
+    id: CYBERCONNECT_PARTNER.name,
     icon: (
       <CyberConnect
         style={{
@@ -202,7 +203,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Cyberconnect.me'
   },
   {
-    id: 'GM',
+    id: GM_PARTNER.name,
     icon: (
       <Gm
         style={{
@@ -217,7 +218,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Gm.xyz'
   },
   {
-    id: 'MOCA',
+    id: MOCA_PARTNER.name,
     icon: (
       <Moca
         style={{
@@ -232,7 +233,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Museumofcryptoart.com'
   },
   {
-    id: 'WELOOK',
+    id: WELOOK_PARTNER.name,
     icon: (
       <Welook
         style={{
@@ -247,7 +248,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Welook.io'
   },
   {
-    id: 'BACKDROP',
+    id: BACKDROP_PARTNER.name,
     icon: (
       <Backdrop
         style={{
@@ -262,7 +263,7 @@ export const collectionlLinks = [
     tooltipText: 'View Collection in Backdrop.so'
   },
   {
-    id: 'LIGHT',
+    id: LIGHT_PARTNER.name,
     icon: (
       <Light
         style={{
