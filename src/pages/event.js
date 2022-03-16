@@ -257,6 +257,7 @@ const ExternalIconCell = ({url, icon, tooltipText = null}) => {
       rel="noopener noreferrer"
       aria-label={tooltipText}
       data-cooltipz-dir="top"
+      data-cooltipz-disable-focus
       style={{ position: "relative", width: 27 }}
     >
       <span>{icon}</span>
