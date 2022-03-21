@@ -97,7 +97,7 @@ export const externalLinkSetter = (owner_id, name) => {
   const collectionLinks = {
     [PRYSM_PARTNER.name]: `${PRYSM_PARTNER.url}/profile/${owner_id}/achievements`,
     [POAP_EXPLORE_PARTNER.name]: `${POAP_EXPLORE_PARTNER.url}/${owner_id}`,
-    [RAINBOW_PARTNER.name]: `${RAINBOW_PARTNER.url}/${owner_id}`,
+    [RAINBOW_PARTNER.name]: `${RAINBOW_PARTNER.url}/${owner_id}?family=POAP`,
     [MAZURY_PARTNER.name]: `${MAZURY_PARTNER.url}/people/${owner_id}`,
     [CYBERCONNECT_PARTNER.name]: `${CYBERCONNECT_PARTNER.url}/address/${owner_id}`,
     [WITHTALLY_PARTNER.name]: `${WITHTALLY_PARTNER.url}/voter/${owner_id}`,
