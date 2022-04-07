@@ -88,7 +88,7 @@ const getEvent = async (id) => {
 const router = express.Router();
 router.get('/', async (req, res) => {
   const isBot = dectectBot(req.headers['user-agent']);
-  const eventId = req.baseUrl.split("/")[4];
+  const eventId = req.baseUrl.split("/")[2];
 
   if (isBot) {
     const event = await getEvent(eventId);
