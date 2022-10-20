@@ -59,6 +59,10 @@ export const transferType = (transfer) => {
             ? 'Burn':'Transfer'
 };
 
+export function isEmptyString(value) {
+    return !value || !value.trim();
+}
+
 const utcTime = (value) => {
   return dayjs.utc(value)
 }

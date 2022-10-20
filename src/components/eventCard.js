@@ -10,6 +10,7 @@ import Power from '../assets/images/power.svg';
 import Transfers from '../assets/images/transfers.svg';
 import Supply from '../assets/images/supply.svg';
 import { LazyImage } from './LazyImage';
+import { isEmptyString } from '../utilities/utilities'
 
 export function EventCard({ event, size = 's', type = '', power = 0}) {
   const width = useWindowWidth();
@@ -56,9 +57,9 @@ function renderLocation(event, size) {
         return <Pill className="ellipsis" icon={size === 's' ? null : faLaptop} text={'Virtual event '}/>;
     }
     let inPersonLocation = 'In-person event ';
-    if (event.city) {
+    if (!isEmptyString(event.city)) {
         inPersonLocation = event.city;
-    } else if (event.country) {
+    } else if (!isEmptyString(event.country)) {
         inPersonLocation = event.country;
     }
     return <Pill className="ellipsis" icon={size === 's' ? null : faGlobe} text={inPersonLocation}/>;
