@@ -55,7 +55,7 @@ function renderLocation(event, size) {
     if (event.virtual_event) {
         return <Pill className="ellipsis" icon={size === 's' ? null : faLaptop} text={'Virtual event '}/>;
     }
-    let inPersonLocation = 'In person event ';
+    let inPersonLocation = 'In-person event ';
     if (event.city) {
         inPersonLocation = event.city;
     } else if (event.country) {
