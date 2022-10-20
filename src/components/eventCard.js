@@ -51,6 +51,19 @@ function Header({type, event}) {
     </div>
 }
 
+function renderLocation(event, size) {
+    if (event.virtual_event) {
+        return <Pill className="ellipsis" icon={size === 's' ? null : faLaptop} text={'Virtual event '}/>;
+    }
+    let inPersonLocation = 'In person event ';
+    if (event.city) {
+        inPersonLocation = event.city;
+    } else if (event.country) {
+        inPersonLocation = event.country;
+    }
+    return <Pill className="ellipsis" icon={size === 's' ? null : faGlobe} text={inPersonLocation}/>;
+}
+
 function Content({type, width, size, event, power}) {
     const [tokenCount, setTokenCount] = useState(0);
     const [transferCount, setTransferCount] = useState(0);
@@ -122,9 +135,7 @@ function Content({type, width, size, event, power}) {
                 {/* time and place */}
                 <div className="content-time-place">
                     <Pill style={{ minWidth: (size === 's' ? 'none' : '100px')}} text={event.start_date} icon={size === 's' ? null : faCalendar} />
-                    <Pill className="ellipsis"
-                      icon={size === 's' ? null : (event.city ? faGlobe : faLaptop)}
-                      text={event.city ? event.city : 'Virtual event '}/>
+                    {renderLocation(event, size)}
                 </div>
             </div>
 
