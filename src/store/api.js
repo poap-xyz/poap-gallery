@@ -1,6 +1,7 @@
 export const XDAI_SUBGRAPH_URL = process.env.REACT_APP_XDAI_SUBGRAPH_URL;
 export const MAINNET_SUBGRAPH_URL = process.env.REACT_APP_MAINNET_SUBGRAPH_URL;
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
+export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const POAP_APP_URL = process.env.REACT_APP_POAP_APP_URL;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const OrderType = {
@@ -61,12 +62,12 @@ export async function getPaginatedEvents({name = undefined, event_ids = undefine
   if (privateEvents !== undefined) {
     url.searchParams.append('private_event', privateEvents)
   }
-  const res = await fetch(url.href)
+  const res = await fetch(url.href, {headers: {'X-API-Key': POAP_API_API_KEY}})
   return res.json()
 }
 
 export async function getEvent(id) {
-  const res = await fetch(`${POAP_API_URL}/events/id/${id}`)
+  const res = await fetch(`${POAP_API_URL}/events/id/${id}`, {headers: {'X-API-Key': POAP_API_API_KEY}})
   return res.json()
 }
 
@@ -308,6 +309,6 @@ export async function validateMigrations(migrations) {
 }
 
 export async function getTop3Events() {
-  const res = await fetch(`${POAP_API_URL}/top-3-events`)
+  const res = await fetch(`${POAP_API_URL}/top-3-events`, {headers: {'X-API-Key': POAP_API_API_KEY}})
   return res.json()
 }
