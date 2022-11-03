@@ -20,7 +20,7 @@ async function getLayerTokens(eventId, url) {
 		}));
 	return res;
 }
-
+// TODO: Refactor to ask these information to our API
 async function getxDaiTokens(eventId) {
   return getLayerTokens(eventId, XDAI_SUBGRAPH_URL);
 }

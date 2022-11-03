@@ -69,7 +69,7 @@ export async function getEvent(id) {
   const res = await fetch(`${POAP_API_URL}/events/id/${id}`)
   return res.json()
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getLayerEvents(url, first, skip, orderBy) {
   const res = await fetch(url, {
     method: 'POST',
@@ -91,7 +91,7 @@ export async function getLayerEvents(url, first, skip, orderBy) {
 
 	return res.json()
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getLayerEventsByIds(url, ids, first = null) {
   const ids_str = ids.map(id => "\"" + id + "\"").join(',')
   const res = await fetch(url, {
@@ -114,25 +114,25 @@ export async function getLayerEventsByIds(url, ids, first = null) {
 
   return res.json()
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getMainnetEventsByIds(ids, first = null) {
   return getLayerEventsByIds(MAINNET_SUBGRAPH_URL, ids, first);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getxDaiEventsByIds(ids, first = null) {
   return getLayerEventsByIds(XDAI_SUBGRAPH_URL, ids, first);
 
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getMainnetEvents(first, skip, orderBy) {
   return getLayerEvents(MAINNET_SUBGRAPH_URL, first, skip, orderBy);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getxDaiEvents(first, skip, orderBy) {
   return getLayerEvents(XDAI_SUBGRAPH_URL, first, skip, orderBy);
 
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getLayerTokens(eventId, first, skip, url) {
   const res = await fetch(url, {
     method: 'POST',
@@ -163,15 +163,15 @@ export async function getLayerTokens(eventId, first, skip, url) {
 	return res.json()
 }
 
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getxDaiTokens(eventId, first, skip) {
   return getLayerTokens(eventId, first, skip, XDAI_SUBGRAPH_URL);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getMainnetTokens(eventId, first, skip) {
 	return getLayerTokens(eventId, first, skip, MAINNET_SUBGRAPH_URL);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getLayerOwners(owners, url) {
   const owners_id = owners.map(owner => "\"" + owner + "\"").join(',')
   const res = await fetch(url, {
@@ -192,15 +192,15 @@ export async function getLayerOwners(owners, url) {
   })
   return res.json()
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getXDaiOwners(owner) {
   return getLayerOwners(owner, XDAI_SUBGRAPH_URL);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getMainnetOwners(owner) {
   return getLayerOwners(owner, MAINNET_SUBGRAPH_URL);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getLayerTransfers(amount, url) {
   const res = await fetch(url, {
     method: 'POST',
@@ -234,15 +234,15 @@ export async function getLayerTransfers(amount, url) {
   })
   return res.json()
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getxDaiTransfers(amount) {
   return getLayerTransfers(amount, XDAI_SUBGRAPH_URL);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getMainnetTransfers(amount) {
   return getLayerTransfers(amount, MAINNET_SUBGRAPH_URL);
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function getMigrations(amount) {
   // Step 1: get most recently minted tokens in mainnet (since POAP only mints on layer 2, it's safe to assume they were migrated)
   const res = await fetch(MAINNET_SUBGRAPH_URL, {
@@ -273,7 +273,7 @@ export async function getMigrations(amount) {
   })
   return res.json()
 }
-
+// TODO: Replacce these query to The Graph to a query to our API
 export async function validateMigrations(migrations) {
   // Step 2: Verify the minted tokens have a burned counterpart in layer 2
   // TODO(sebas): add polygon check when we implement POAPs in the polygon chain
