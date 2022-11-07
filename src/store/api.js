@@ -5,8 +5,7 @@ export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export async function getEvents() {
-  const res = await fetchPOAPApi(`/events`)
-  return res.json()
+  return await fetchPOAPApi(`/events`)
 }
 
 export async function getEvent(id) {
