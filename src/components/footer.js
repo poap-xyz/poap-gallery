@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import BuiltOnEth from "../assets/images/built-on-eth.png";
-import POAPLogo from "../assets/images/POAP.svg";
-import TwitterLogo from "../assets/images/logo-twitter-grey.svg";
-import TwitterLogoBlue from "../assets/images/logo-twitter-blue.svg";
-import GithubLogo from "../assets/images/logo-github-grey.svg";
-import GithubLogoBlue from "../assets/images/logo-github-blue.svg";
-import TelegramLogo from "../assets/images/logo-telegram-grey.svg";
-import TelegramLogoBlue from "../assets/images/logo-telegram-blue.svg";
-import DiscordLogo from "../assets/images/logo-discord-grey.svg";
-import DiscordLogoBlue from "../assets/images/logo-discord-blue.svg";
-import RedditLogo from "../assets/images/logo-reddit-grey.svg";
-import RedditLogoBlue from "../assets/images/logo-reddit-blue.svg";
-import { POAP_APP_URL } from "../store/api";
+import React, { useState } from 'react';
+import BuiltOnEth from '../assets/images/built-on-eth.png';
+import POAPLogo from '../assets/images/POAP.svg';
+import TwitterLogo from '../assets/images/logo-twitter-grey.svg';
+import TwitterLogoBlue from '../assets/images/logo-twitter-blue.svg';
+import GithubLogo from '../assets/images/logo-github-grey.svg';
+import GithubLogoBlue from '../assets/images/logo-github-blue.svg';
+import TelegramLogo from '../assets/images/logo-telegram-grey.svg';
+import TelegramLogoBlue from '../assets/images/logo-telegram-blue.svg';
+import DiscordLogo from '../assets/images/logo-discord-grey.svg';
+import DiscordLogoBlue from '../assets/images/logo-discord-blue.svg';
+import RedditLogo from '../assets/images/logo-reddit-grey.svg';
+import RedditLogoBlue from '../assets/images/logo-reddit-blue.svg';
+import { POAP_APP_URL } from '../store/api';
 
 export const Footer = () => {
   const [twitterHover, setTwitterHover] = useState(false);
@@ -22,7 +22,7 @@ export const Footer = () => {
   return (
     <div style={{ marginTop: 100 }}>
       <hr className="footer-divider" />
-      <footer className={`footer footer-grid`}>
+      <footer className={'footer footer-grid'}>
         {/* FIX: 'a' elements generate a js error when hovered */}
         <a href="/" className="home-link">
           <img src={POAPLogo} alt="" />

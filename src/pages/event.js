@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { usePagination, useSortBy, useTable } from "react-table";
-import { InView } from "react-intersection-observer";
-import ReactTooltip from "react-tooltip";
+import React, { useEffect, useMemo, useState } from 'react';
+import { usePagination, useSortBy, useTable } from 'react-table';
+import { InView } from 'react-intersection-observer';
+import ReactTooltip from 'react-tooltip';
 import {
   Route,
   Switch,
   useParams,
   useRouteMatch,
   Link,
-} from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleLeft,
   faAngleRight,
@@ -17,35 +17,35 @@ import {
   faArrowUp,
   faDotCircle,
   faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { Helmet } from "react-helmet";
-import { useDispatch, useSelector } from "react-redux";
-import { FETCH_EVENT_PAGE_INFO_STATUS, fetchEventPageData } from "../store";
-import { CSVLink } from "react-csv";
-import { getEnsData } from "../store/mutations";
-import { Loader } from "../components/loader";
-import _ from "lodash";
-import { EventCard } from "../components/eventCard";
-import { Foliage } from "../components/foliage";
+} from '@fortawesome/free-solid-svg-icons';
+import { Helmet } from 'react-helmet';
+import { useDispatch, useSelector } from 'react-redux';
+import { FETCH_EVENT_PAGE_INFO_STATUS, fetchEventPageData } from '../store';
+import { CSVLink } from 'react-csv';
+import { getEnsData } from '../store/mutations';
+import { Loader } from '../components/loader';
+import _ from 'lodash';
+import { EventCard } from '../components/eventCard';
+import { Foliage } from '../components/foliage';
 import {
   dateCell,
   shrinkAddress,
   utcDateFormatted,
   utcDateFull,
-} from "../utilities/utilities";
-import { useWindowWidth } from "@react-hook/window-size/throttled";
-import { Spinner } from "../components/spinner";
-import { collectionlLinks, externalLinkSetter } from "../utilities/utilities";
-import { POAP_APP_URL } from "../store/api";
+} from '../utilities/utilities';
+import { useWindowWidth } from '@react-hook/window-size/throttled';
+import { Spinner } from '../components/spinner';
+import { collectionlLinks, externalLinkSetter } from '../utilities/utilities';
+import { POAP_APP_URL } from '../store/api';
 
 const GRAPH_LIMIT = 1000;
 const CSV_STATUS = {
-  DownloadingData: "DownloadingData",
-  DownloadingLastDataChunk: "DownloadingLastDataChunk",
-  ReadyWithoutEns: "ReadyWithoutEns",
-  Ready: "Ready",
-  Failed: "Failed",
-  NoTokens: "NoTokens",
+  DownloadingData: 'DownloadingData',
+  DownloadingLastDataChunk: 'DownloadingLastDataChunk',
+  ReadyWithoutEns: 'ReadyWithoutEns',
+  Ready: 'Ready',
+  Failed: 'Failed',
+  NoTokens: 'NoTokens',
 };
 
 export default function Events() {
@@ -57,7 +57,7 @@ export default function Events() {
         <Event />
       </Route>
       <Route path={match.path}>
-        <h3 className={"center"}>No event Selected</h3>
+        <h3 className={'center'}>No event Selected</h3>
       </Route>
     </Switch>
   );
@@ -142,12 +142,12 @@ export function Event() {
 
     let _csv_data = [];
     _csv_data.push([
-      "ID",
-      "Collection",
-      "ENS",
-      "Minting Date",
-      "Tx Count",
-      "Power",
+      'ID',
+      'Collection',
+      'ENS',
+      'Minting Date',
+      'Tx Count',
+      'Power',
     ]);
     for (let i = 0; i < tokens.length; i++) {
       _csv_data.push([
@@ -202,7 +202,7 @@ export function Event() {
     setTableIsLoading(!succeededLoadingEvent());
   }, [tokens]);
 
-  const defaultEventErrorMessage = "Token not found";
+  const defaultEventErrorMessage = 'Token not found';
 
   const previousEventURI = `/event/${parseInt(eventId) - 1}`;
   const nextEventURI = `/event/${parseInt(eventId) + 1}`;
@@ -221,26 +221,26 @@ export function Event() {
     <main id="site-main" role="main" className="app-content event-main">
       <Helmet>
         <title>POAP Gallery - Event</title>
-        <link rel="canonical" href={"https://poap.gallery/event/" + eventId} />
+        <link rel="canonical" href={'https://poap.gallery/event/' + eventId} />
         <meta
           property="og:url"
-          content={"https://poap.gallery/event/" + eventId}
+          content={'https://poap.gallery/event/' + eventId}
         />
         <meta property="og:title" content="POAP Gallery - Event" />
       </Helmet>
       <Foliage />
       {(isLoadingEvent() || isIdle()) && (
-        <div className={"center"}>
+        <div className={'center'}>
           <Loader />
         </div>
       )}
       {failedLoadingEvent() && (
-        <div className={"token-not-found"}>
+        <div className={'token-not-found'}>
           <h2>{errorEvent || defaultEventErrorMessage}</h2>
           <div>
             <img
               alt="warning sign"
-              style={{ maxWidth: "30rem" }}
+              style={{ maxWidth: '30rem' }}
               src="/icons/warning.svg"
             />
           </div>
@@ -250,44 +250,44 @@ export function Event() {
         <div className="container">
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              alignContent: "space-around",
-              justifyContent: "space-around",
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              alignContent: 'space-around',
+              justifyContent: 'space-around',
               marginBottom: 82,
             }}
           >
             <div
               style={{
-                flex: "0 0 18rem",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
+                flex: '0 0 18rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
               }}
             >
               <div
                 className="prev-next-buttons"
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
+                  display: 'flex',
+                  justifyContent: 'space-between',
                   marginBottom: 38,
                 }}
               >
                 <Link onClick={onPageChangeHandler} to={previousEventURI}>
                   <FontAwesomeIcon icon={faAngleLeft} />
-                  {"  Prev"}
+                  {'  Prev'}
                 </Link>
-                <h4 style={{ marginBottom: "0" }}>
+                <h4 style={{ marginBottom: '0' }}>
                   <div className="event-title">EVENT ID</div>
                   <div className="event-id">#{eventId}</div>
                 </h4>
                 <Link onClick={onPageChangeHandler} to={nextEventURI}>
-                  {"Next  "}
+                  {'Next  '}
                   <FontAwesomeIcon icon={faAngleRight} />
                 </Link>
               </div>
-              <div style={{ minHeight: "200px", margin: "0 auto" }}>
+              <div style={{ minHeight: '200px', margin: '0 auto' }}>
                 <EventCard key={0} event={event} size="l" power={power} />
               </div>
             </div>
@@ -302,28 +302,28 @@ export function Event() {
                 target="_blank"
                 data-tip={`${
                   csvOnlyMissingEns()
-                    ? "Please wait if you want the ens names too"
+                    ? 'Please wait if you want the ens names too'
                     : csvFailed()
-                    ? `Ens names couldn't be fetched`
-                    : ""
+                    ? "Ens names couldn't be fetched"
+                    : ''
                 }`}
-                className={"btn csv-button"}
+                className={'btn csv-button'}
                 data={csv_data}
               >
-                <span className={"no-margin"}>{`Download CSV${
-                  csvOnlyMissingEns() || csvFailed() ? " (without ENS)" : ""
+                <span className={'no-margin'}>{`Download CSV${
+                  csvOnlyMissingEns() || csvFailed() ? ' (without ENS)' : ''
                 }`}</span>
-                <ReactTooltip effect={"solid"} />
+                <ReactTooltip effect={'solid'} />
               </CSVLink>
             )}
             {csvDownloading() && (
               <button
-                className={"btn button-disabled csv-button"}
-                data-tip={"Please wait for the POAPs data to be loaded"}
+                className={'btn button-disabled csv-button'}
+                data-tip={'Please wait for the POAPs data to be loaded'}
                 onClick={null}
               >
                 <Spinner padding={0} imgWidth={25} />
-                <ReactTooltip effect={"solid"} />
+                <ReactTooltip effect={'solid'} />
               </button>
             )}
           </div>
@@ -355,7 +355,7 @@ const ExternalIconCell = ({ url, icon, tooltipText = null }) => {
       rel="noopener noreferrer"
       aria-label={tooltipText}
       data-cooltipz-dir="top"
-      style={{ position: "relative", width: 27 }}
+      style={{ position: 'relative', width: 27 }}
       onClick={handleIconClick}
       onContextMenu={handleIconClick}
     >
@@ -374,7 +374,7 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
       rel="noopener noreferrer"
       aria-label={tooltipText}
       data-cooltipz-dir="top"
-      style={{ position: "relative", width: 27 }}
+      style={{ position: 'relative', width: 27 }}
       onClick={handleIconClick}
       onContextMenu={handleIconClick}
     >
@@ -392,7 +392,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
   };
 
   const MobileRow = ({ token, address }) => (
-    <div className={`mobile-row open`}>
+    <div className={'mobile-row open'}>
       <span className="id-title">POAP ID</span>
       <span className="id-content">#{token.id}</span>
       <span className="address-title">Address</span>
@@ -421,15 +421,15 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
             <ReactTooltip effect="solid" />
           </>
         ),
-        accessor: "col1", // accessor is the "key" in the data
+        accessor: 'col1', // accessor is the "key" in the data
       },
       {
-        Header: "Collection",
-        accessor: "col2",
+        Header: 'Collection',
+        accessor: 'col2',
       },
       {
-        Header: "Minting Date",
-        accessor: "col3",
+        Header: 'Minting Date',
+        accessor: 'col3',
       },
       {
         Header: (
@@ -438,7 +438,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
             <ReactTooltip effect="solid" />
           </>
         ),
-        accessor: "col4",
+        accessor: 'col4',
       },
       {
         Header: () => (
@@ -446,18 +446,18 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
             <span>
               <span data-tip="Click to sort by Power" data-for="power-order">
                 Power
-              </span>{" "}
+              </span>{' '}
               <FontAwesomeIcon
                 icon={faQuestionCircle}
                 data-tip="Total amount of POAPs held by this address"
                 data-for="power-info"
               />
-              <ReactTooltip id="power-info" effect="solid" />{" "}
+              <ReactTooltip id="power-info" effect="solid" />{' '}
             </span>
             <ReactTooltip id="power-order" effect="solid" />
           </>
         ),
-        accessor: "col5",
+        accessor: 'col5',
       },
     ],
     []
@@ -466,8 +466,8 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
   const mobileColumns = useMemo(
     () => [
       {
-        Header: "",
-        accessor: "col1", // accessor is the "key" in the data
+        Header: '',
+        accessor: 'col1', // accessor is the "key" in the data
       },
     ],
     []
@@ -531,7 +531,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   rel="noopener noreferrer"
                   data-tip="View Collection in POAP.scan"
                 >
-                  {" "}
+                  {' '}
                   <ReactTooltip effect="solid" /> {validName}
                 </a>
                 {collectionlLinks.map((link) => (
@@ -555,9 +555,9 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
     }
   }, [ensNames]);
 
-  const [dateFormat, setDateFormat] = useState("timeago");
+  const [dateFormat, setDateFormat] = useState('timeago');
   const toggleDateFormat = () => {
-    dateFormat === "timeago" ? setDateFormat("date") : setDateFormat("timeago");
+    dateFormat === 'timeago' ? setDateFormat('date') : setDateFormat('timeago');
   };
 
   const width = useWindowWidth();
@@ -587,7 +587,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
         pageSize: length,
         sortBy: [
           {
-            id: "col3",
+            id: 'col3',
             desc: true,
           },
         ],
@@ -616,9 +616,9 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
   );
 
   return (
-    <div style={{ width: "100%" }} className="event-table">
+    <div style={{ width: '100%' }} className="event-table">
       <table
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         {...(isMobile ? getMobileTableProps : getDesktopTableProps)()}
       >
         <thead>
@@ -637,7 +637,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                           <th key={idx} {...column.getHeaderProps()}>
                             {
                               // Render the header
-                              column.render("Header")
+                              column.render('Header')
                             }
                           </th>
                         );
@@ -657,28 +657,28 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                               >
                                 {
                                   // Render the header
-                                  column.render("Header")
-                                }{" "}
+                                  column.render('Header')
+                                }{' '}
                                 {column.isSorted ? (
                                   column.isSortedDesc ? (
                                     <FontAwesomeIcon
                                       style={{
-                                        width: "1rem",
-                                        marginRight: ".2rem",
+                                        width: '1rem',
+                                        marginRight: '.2rem',
                                       }}
                                       icon={faArrowDown}
                                     />
                                   ) : (
                                     <FontAwesomeIcon
                                       style={{
-                                        width: "1rem",
-                                        marginRight: ".2rem",
+                                        width: '1rem',
+                                        marginRight: '.2rem',
                                       }}
                                       icon={faArrowUp}
                                     />
                                   )
                                 ) : (
-                                  ""
+                                  ''
                                 )}
                               </th>
                             );
@@ -687,18 +687,18 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                               <th key={idx} {...column.getHeaderProps()}>
                                 {
                                   // Render the header
-                                  column.render("Header")
-                                }{" "}
+                                  column.render('Header')
+                                }{' '}
                                 <FontAwesomeIcon
                                   onClick={toggleDateFormat}
                                   style={{
-                                    width: "1rem",
-                                    marginRight: ".2rem",
-                                    cursor: "pointer",
+                                    width: '1rem',
+                                    marginRight: '.2rem',
+                                    cursor: 'pointer',
                                   }}
                                   icon={faDotCircle}
                                   data-tip="Toggle date format"
-                                />{" "}
+                                />{' '}
                                 <ReactTooltip effect="solid" />
                               </th>
                             );
@@ -707,7 +707,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                               <th key={idx} {...column.getHeaderProps()}>
                                 {
                                   // Render the header
-                                  column.render("Header")
+                                  column.render('Header')
                                 }
                               </th>
                             );
@@ -732,7 +732,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   {row.cells.map((cell, idx) => {
                     return (
                       <td key={idx} {...cell.getCellProps()}>
-                        {cell.render("Cell")}
+                        {cell.render('Cell')}
                       </td>
                     );
                   })}
@@ -748,7 +748,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                       </td>
                     ) : (
                       <td key={idx} {...cell.getCellProps()}>
-                        {cell.render("Cell")}
+                        {cell.render('Cell')}
                       </td>
                     );
                   })}

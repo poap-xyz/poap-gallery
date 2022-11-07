@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import ReactTooltip from "react-tooltip";
+import React, { useEffect, useRef, useState } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 /*
  * Implementation is pretty shady but it works.
@@ -12,7 +12,7 @@ import ReactTooltip from "react-tooltip";
  *  indicating the amount of lines the text spans. Currently it spans
  *  two lines.
  */
-export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
+export const MultiLineEllipsis = ({ text = '', maxLengthPerLine }) => {
   const title1 = useRef(null);
   const title2 = useRef(null);
   const title3 = useRef(null);
@@ -49,14 +49,14 @@ export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
     <div
       data-for={text}
       data-tip={text}
-      style={{ display: "flex", flexDirection: "column" }}
+      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <span
         style={{
-          width: "fit-content",
-          position: "fixed",
-          color: "transparent",
-          border: "none",
+          width: 'fit-content',
+          position: 'fixed',
+          color: 'transparent',
+          border: 'none',
           left: -1000,
           top: 0,
         }}
@@ -66,10 +66,10 @@ export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
       </span>
       <span
         style={{
-          width: "fit-content",
-          position: "fixed",
-          color: "transparent",
-          border: "none",
+          width: 'fit-content',
+          position: 'fixed',
+          color: 'transparent',
+          border: 'none',
           left: 32 - 1000,
           top: 0,
         }}
@@ -82,15 +82,15 @@ export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
               0,
               maxLengthPerLine >= 400 ? 40 : maxLengthPerLine >= 300 ? 30 : 20
             )
-            .lastIndexOf(" ")
+            .lastIndexOf(' ')
         )}
       </span>
       <span
         style={{
-          width: "fit-content",
-          position: "fixed",
-          color: "transparent",
-          border: "none",
+          width: 'fit-content',
+          position: 'fixed',
+          color: 'transparent',
+          border: 'none',
           left: 32 - 1000,
           top: 0,
         }}
@@ -103,15 +103,15 @@ export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
               0,
               maxLengthPerLine >= 400 ? 35 : maxLengthPerLine >= 300 ? 25 : 15
             )
-            .lastIndexOf(" ")
+            .lastIndexOf(' ')
         )}
       </span>
       <span
         style={{
-          width: "fit-content",
-          position: "fixed",
-          color: "transparent",
-          border: "none",
+          width: 'fit-content',
+          position: 'fixed',
+          color: 'transparent',
+          border: 'none',
           left: 32 - 1000,
           top: 0,
         }}
@@ -124,15 +124,15 @@ export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
               0,
               maxLengthPerLine >= 400 ? 30 : maxLengthPerLine >= 300 ? 20 : 10
             )
-            .lastIndexOf(" ")
+            .lastIndexOf(' ')
         )}
       </span>
       <span
         style={{
-          width: "fit-content",
-          position: "fixed",
-          color: "transparent",
-          border: "none",
+          width: 'fit-content',
+          position: 'fixed',
+          color: 'transparent',
+          border: 'none',
           left: 32 - 1000,
           top: 0,
         }}
@@ -145,16 +145,16 @@ export const MultiLineEllipsis = ({ text = "", maxLengthPerLine }) => {
               0,
               maxLengthPerLine >= 400 ? 20 : maxLengthPerLine >= 300 ? 10 : 5
             )
-            .lastIndexOf(" ")
+            .lastIndexOf(' ')
         )}
       </span>
       <span>{text.substr(0, titleLength)}</span>
       <span
         className="ellipsis"
         style={{
-          width: "fit-content",
-          maxWidth: "100%",
-          placeSelf: `${maxLengthPerLine >= 400 ? "start" : "center"}`,
+          width: 'fit-content',
+          maxWidth: '100%',
+          placeSelf: `${maxLengthPerLine >= 400 ? 'start' : 'center'}`,
         }}
         ref={secondLine}
       >

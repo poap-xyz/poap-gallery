@@ -1,30 +1,30 @@
-import React, { useCallback, useEffect, useState } from "react";
-import ActivityTable from "../components/activityTable";
-import { Helmet } from "react-helmet";
+import React, { useCallback, useEffect, useState } from 'react';
+import ActivityTable from '../components/activityTable';
+import { Helmet } from 'react-helmet';
 import {
   FETCH_INDEX_PAGE_INFO_STATUS,
   fetchIndexData,
   selectIndexFetchStatus,
   selectEvents,
   selectTotalResults,
-} from "../store";
-import { useDispatch, useSelector } from "react-redux";
-import { EventCard } from "../components/eventCard";
-import { Loader } from "../components/loader";
-import { debounce } from "../utilities/utilities";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import FailedSearch from "../assets/images/failed-search.svg";
-import Dropdown from "../components/dropdown";
-import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
-import { useWindowWidth } from "@react-hook/window-size";
-import { OrderType, OrderDirection } from "../store/api";
+} from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { EventCard } from '../components/eventCard';
+import { Loader } from '../components/loader';
+import { debounce } from '../utilities/utilities';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import FailedSearch from '../assets/images/failed-search.svg';
+import Dropdown from '../components/dropdown';
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { useWindowWidth } from '@react-hook/window-size';
+import { OrderType, OrderDirection } from '../store/api';
 
 const SEARCH_STATUS = {
-  NoSearch: "NoSearch",
-  Searching: "Searching",
-  Success: "Success",
-  Failed: "Failed",
+  NoSearch: 'NoSearch',
+  Searching: 'Searching',
+  Success: 'Success',
+  Failed: 'Failed',
 };
 
 export default function Gallery() {
@@ -39,7 +39,7 @@ export default function Gallery() {
 
   const [items, setItems] = useState(events);
   const [searchStatus, setSearchStatus] = useState(SEARCH_STATUS.NoSearch);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(0);
   const [moreToLoad, setMoreToLoad] = useState(true);
 
@@ -97,9 +97,9 @@ export default function Gallery() {
   }, [events]);
 
   const eraseSearch = () => {
-    setSearchValue("");
+    setSearchValue('');
     setSearchStatus(SEARCH_STATUS.NoSearch);
-    handleNewSearchValue("");
+    handleNewSearchValue('');
   };
 
   const debounceHandleSearch = useCallback(
@@ -120,7 +120,7 @@ export default function Gallery() {
   const handleNewSearchValue = (value) => {
     if (value && value.length >= minimumCharsForSearch) {
       fetchData({ reset: true, nameFilter: value });
-    } else if (value === "") {
+    } else if (value === '') {
       fetchData({ reset: true });
     }
   };
@@ -148,35 +148,35 @@ export default function Gallery() {
           <hr />
           <div className="gallery-grid">
             <div className="gallery-search">
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <input
                   onChange={handleSearchInput}
                   type="text"
                   value={searchValue}
                   placeholder="Search..."
                   maxLength={20}
-                />{" "}
+                />{' '}
                 {searchStatus === SEARCH_STATUS.NoSearch ? (
                   <FontAwesomeIcon
                     icon={faSearch}
                     style={{
-                      position: "relative",
-                      fontSize: "1rem",
+                      position: 'relative',
+                      fontSize: '1rem',
                       right: 27,
                       top: 11,
-                      color: "#C4CAE8",
+                      color: '#C4CAE8',
                     }}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={faTimesCircle}
                     style={{
-                      position: "relative",
-                      fontSize: "1.5rem",
+                      position: 'relative',
+                      fontSize: '1.5rem',
                       right: 37,
                       top: 8,
-                      cursor: "pointer",
-                      color: "#C4CAE8",
+                      cursor: 'pointer',
+                      color: '#C4CAE8',
                     }}
                     onClick={eraseSearch}
                   />
@@ -185,11 +185,11 @@ export default function Gallery() {
               {searchStatus === SEARCH_STATUS.Success && (
                 <span
                   style={{
-                    position: "absolute",
-                    top: `${width > 590 && width < 768 ? "120%" : "200%"}`,
-                    left: "0",
-                    color: "#8492CE",
-                    fontSize: "1rem",
+                    position: 'absolute',
+                    top: `${width > 590 && width < 768 ? '120%' : '200%'}`,
+                    left: '0',
+                    color: '#8492CE',
+                    fontSize: '1rem',
                   }}
                 >
                   {totalResultsAmount - invalidEventsAmount} result(s)
@@ -199,44 +199,44 @@ export default function Gallery() {
             <div className="gallery-filter">
               <div
                 style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  marginRight: "-.3rem",
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  marginRight: '-.3rem',
                 }}
                 className="gallery-sort"
               >
                 <span
                   style={{
-                    padding: ".2rem",
-                    flex: "1 1 60px",
-                    textAlign: "right",
-                    marginRight: "1rem",
-                    color: "#8492CE",
+                    padding: '.2rem',
+                    flex: '1 1 60px',
+                    textAlign: 'right',
+                    marginRight: '1rem',
+                    color: '#8492CE',
                   }}
                 >
-                  Order by{" "}
+                  Order by{' '}
                 </span>
-                <div style={{ flex: "2 1 160px" }} className="sort-options">
+                <div style={{ flex: '2 1 160px' }} className="sort-options">
                   <div
                     style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "space-between",
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
                     }}
                     className="selection-group"
                   >
                     <div
                       style={{
-                        margin: ".5rem .3rem",
-                        flex: "5 5 calc(50% - 1rem)",
-                        minWidth: "9rem",
+                        margin: '.5rem .3rem',
+                        flex: '5 5 calc(50% - 1rem)',
+                        minWidth: '9rem',
                       }}
                       className="selection-item"
                     >
                       <div
                         style={{
-                          width: "inherit",
+                          width: 'inherit',
                         }}
                         className="gallery-select-container"
                         role="menu"
@@ -253,15 +253,15 @@ export default function Gallery() {
                     </div>
                     <div
                       style={{
-                        margin: ".5rem .3rem",
-                        flex: "5 5 calc(50% - 1rem)",
-                        minWidth: "9rem",
+                        margin: '.5rem .3rem',
+                        flex: '5 5 calc(50% - 1rem)',
+                        minWidth: '9rem',
                       }}
                       className="selection-item"
                     >
                       <div
                         style={{
-                          width: "inherit",
+                          width: 'inherit',
                         }}
                         className="gallery-select-container"
                         role="menu"
@@ -296,9 +296,9 @@ export default function Gallery() {
               <Loader />
             )}
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}></div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}></div>
           {indexFetchStatus === FETCH_INDEX_PAGE_INFO_STATUS.FAILED && (
-            <div className={"center"}>
+            <div className={'center'}>
               <span>
                 Could not load gallery, check your connection and try again
               </span>
@@ -316,17 +316,17 @@ export default function Gallery() {
                   }
                 }}
                 style={{
-                  marginTop: "40px",
-                  width: "fit-content",
-                  minWidth: "auto",
-                  marginBottom: "0px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  padding: "12px 32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 6px 18px 0 #6534FF4D",
+                  marginTop: '40px',
+                  width: 'fit-content',
+                  minWidth: 'auto',
+                  marginBottom: '0px',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  padding: '12px 32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 6px 18px 0 #6534FF4D',
                 }}
                 disabled={
                   indexFetchStatus === FETCH_INDEX_PAGE_INFO_STATUS.LOADING_MORE

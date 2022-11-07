@@ -1,6 +1,6 @@
-import React from "react";
-import PoapLogo from "../assets/images/POAP.svg";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PoapLogo from '../assets/images/POAP.svg';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
   return (
@@ -12,7 +12,7 @@ export const Header = () => {
           </Link>
           <span>Gallery</span>
         </div>
-        <div style={{ marginLeft: "auto" }}>
+        <div style={{ marginLeft: 'auto' }}>
           {/* Ready for future links if needed */}
           {/* <Link to="#" className="link">FAQ</Link> */}
         </div>

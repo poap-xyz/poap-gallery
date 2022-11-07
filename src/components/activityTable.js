@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   getMainnetTransfers,
   getxDaiTransfers,
   POAP_API_URL,
   POAP_APP_URL,
-} from "../store/api";
-import { Pill } from "./pill";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
-import TransferIcon from "../assets/images/transfer-icon.svg";
-import ClaimIcon from "../assets/images/claim-icon.svg";
-import MigrateIcon from "../assets/images/migrate-icon.svg";
-import BurnIcon from "../assets/images/burn-icon.svg";
-import { useWindowWidth } from "@react-hook/window-size/throttled";
-import { transferType, utcDateFromNow } from "../utilities/utilities";
-import { LazyImage } from "./LazyImage";
+} from '../store/api';
+import { Pill } from './pill';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import TransferIcon from '../assets/images/transfer-icon.svg';
+import ClaimIcon from '../assets/images/claim-icon.svg';
+import MigrateIcon from '../assets/images/migrate-icon.svg';
+import BurnIcon from '../assets/images/burn-icon.svg';
+import { useWindowWidth } from '@react-hook/window-size/throttled';
+import { transferType, utcDateFromNow } from '../utilities/utilities';
+import { LazyImage } from './LazyImage';
 
 export default function ActivityTable() {
   const [loading, setLoading] = useState(false);
@@ -29,13 +29,13 @@ export default function ActivityTable() {
     getMainnetTransfers(transferLimit).then(
       (result) => {
         let transfers = result.data.transfers;
-        transfers.map((t) => (t.network = "mainnet"));
+        transfers.map((t) => (t.network = 'mainnet'));
         setMainnetTransfers(transfers);
         setLoading(false);
       },
       (error) => {
         setLoading(false);
-        console.log("failed to query the graph", error);
+        console.log('failed to query the graph', error);
       }
     );
   }, []);
@@ -45,13 +45,13 @@ export default function ActivityTable() {
     getxDaiTransfers(transferLimit).then(
       (result) => {
         let transfers = result.data.transfers;
-        transfers.map((t) => (t.network = "Gnosis"));
+        transfers.map((t) => (t.network = 'Gnosis'));
         setDaiTransfers(transfers);
         setLoading(false);
       },
       (error) => {
         setLoading(false);
-        console.log("failed to query the graph", error);
+        console.log('failed to query the graph', error);
       }
     );
   }, []);
@@ -68,13 +68,13 @@ export default function ActivityTable() {
   return (
     <div
       className="activity-table center"
-      style={{ flexDirection: "column", fontSize: ".89rem" }}
+      style={{ flexDirection: 'column', fontSize: '.89rem' }}
     >
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <div className="activity-table-title-container">
@@ -86,7 +86,7 @@ export default function ActivityTable() {
         </div>
         <Transfers loading={loading} transfers={transfers} />
       </div>
-      <div className={"center"} style={{ margin: ".5rem 0" }}>
+      <div className={'center'} style={{ margin: '.5rem 0' }}>
         <Link to="/activity">
           <FontAwesomeIcon icon={faClock} /> View more activity
         </Link>
@@ -104,16 +104,16 @@ function Transfer({ transfer }) {
         <>
           <div
             className="dashed-line"
-            style={{ height: `${transfer.opacity === 0.3 ? "0" : "inherit"}` }}
+            style={{ height: `${transfer.opacity === 0.3 ? '0' : 'inherit'}` }}
           />
           <img
-            style={{ width: `37px`, zIndex: 2 }}
+            style={{ width: '37px', zIndex: 2 }}
             src={
-              type === "Migration"
+              type === 'Migration'
                 ? MigrateIcon
-                : type === "Claim"
+                : type === 'Claim'
                 ? ClaimIcon
-                : type === "Burn"
+                : type === 'Burn'
                 ? BurnIcon
                 : TransferIcon
             }
@@ -121,12 +121,12 @@ function Transfer({ transfer }) {
           />
         </>
       )}
-      <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <a
           href={`${POAP_APP_URL}/token/${transfer.token.id}`}
           target="_blank"
-          style={{ margin: ".8rem 0", opacity: transfer.opacity }}
-          className={`round-box ${transfer.opacity === 1 ? "first" : ""}`}
+          style={{ margin: '.8rem 0', opacity: transfer.opacity }}
+          className={`round-box ${transfer.opacity === 1 ? 'first' : ''}`}
           rel="noopener noreferrer"
         >
           <div className="round-box-image">
@@ -139,18 +139,18 @@ function Transfer({ transfer }) {
           </div>
           <div className="round-box-content">
             <Pill text={type} className={type} tooltip={false} />
-            {type === "Claim" ? (
+            {type === 'Claim' ? (
               <span>
-                {" "}
-                POAP claimed on event{" "}
+                {' '}
+                POAP claimed on event{' '}
                 <object>
                   <Link to={`/event/${transfer.token.event.id}`}>
                     #{transfer.token.event.id}
                   </Link>
-                </object>{" "}
+                </object>{' '}
                 on {transfer.network}
               </span>
-            ) : type === "Transfer" ? (
+            ) : type === 'Transfer' ? (
               <span>
                 POAP transferred from
                 <object>
@@ -159,10 +159,10 @@ function Transfer({ transfer }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {" "}
-                    {transfer.from.id.substring(0, 8) + "…"}{" "}
+                    {' '}
+                    {transfer.from.id.substring(0, 8) + '…'}{' '}
                   </a>
-                </object>{" "}
+                </object>{' '}
                 to
                 <object>
                   <a
@@ -170,15 +170,15 @@ function Transfer({ transfer }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {" "}
-                    {transfer.to.id.substring(0, 8) + "…"}{" "}
+                    {' '}
+                    {transfer.to.id.substring(0, 8) + '…'}{' '}
                   </a>
                 </object>
                 on {transfer.network}
               </span>
-            ) : type === "Migration" ? (
+            ) : type === 'Migration' ? (
               <span>
-                {" "}
+                {' '}
                 POAP migrated to
                 <object>
                   <a
@@ -186,18 +186,18 @@ function Transfer({ transfer }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {" "}
-                    {transfer.to.id.substring(0, 16) + "…"}{" "}
+                    {' '}
+                    {transfer.to.id.substring(0, 16) + '…'}{' '}
                   </a>
                 </object>
                 from {transfer.network} to Ethereum
               </span>
-            ) : type === "Burn" ? (
+            ) : type === 'Burn' ? (
               <span>
-                POAP burned on event{" "}
+                POAP burned on event{' '}
                 <Link to={`/event/${transfer.token.event.id}`}>
                   #{transfer.token.event.id}
-                </Link>{" "}
+                </Link>{' '}
                 on {transfer.network}
               </span>
             ) : null}

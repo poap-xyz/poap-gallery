@@ -1,43 +1,43 @@
-import React from "react";
-import { ZERO_ADDRESS } from "../store/api";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { ReactComponent as Mazury } from "../assets/images/mazury.svg";
-import { ReactComponent as Rainbow } from "../assets/images/rainbow.svg";
-import { ReactComponent as Tally } from "../assets/images/tally.svg";
-import { ReactComponent as CyberConnect } from "../assets/images/cyberConnect.svg";
-import { ReactComponent as Poap } from "../assets/images/POAP.svg";
-import { ReactComponent as GitPoap } from "../assets/images/gitpoap.svg";
-import { ReactComponent as PoapIn } from "../assets/images/poapin.svg";
-import { ReactComponent as Gm } from "../assets/images/gm.svg";
-import { ReactComponent as Moca } from "../assets/images/moca.svg";
-import { ReactComponent as Welook } from "../assets/images/welook.svg";
-import { ReactComponent as Backdrop } from "../assets/images/backdrop.svg";
-import { ReactComponent as Light } from "../assets/images/light.svg";
+import React from 'react';
+import { ZERO_ADDRESS } from '../store/api';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { ReactComponent as Mazury } from '../assets/images/mazury.svg';
+import { ReactComponent as Rainbow } from '../assets/images/rainbow.svg';
+import { ReactComponent as Tally } from '../assets/images/tally.svg';
+import { ReactComponent as CyberConnect } from '../assets/images/cyberConnect.svg';
+import { ReactComponent as Poap } from '../assets/images/POAP.svg';
+import { ReactComponent as GitPoap } from '../assets/images/gitpoap.svg';
+import { ReactComponent as PoapIn } from '../assets/images/poapin.svg';
+import { ReactComponent as Gm } from '../assets/images/gm.svg';
+import { ReactComponent as Moca } from '../assets/images/moca.svg';
+import { ReactComponent as Welook } from '../assets/images/welook.svg';
+import { ReactComponent as Backdrop } from '../assets/images/backdrop.svg';
+import { ReactComponent as Light } from '../assets/images/light.svg';
 
 //Partners
 const POAP_EXPLORE_PARTNER = {
-  name: "POAP_EXPLORE",
-  url: "https://explore.poap.xyz",
+  name: 'POAP_EXPLORE',
+  url: 'https://explore.poap.xyz',
 };
-const RAINBOW_PARTNER = { name: "RAINBOW", url: "https://rainbow.me" };
-const MAZURY_PARTNER = { name: "MAZURY", url: "https://app.mazury.xyz" };
+const RAINBOW_PARTNER = { name: 'RAINBOW', url: 'https://rainbow.me' };
+const MAZURY_PARTNER = { name: 'MAZURY', url: 'https://app.mazury.xyz' };
 const CYBERCONNECT_PARTNER = {
-  name: "CYBERCONNECT",
-  url: "https://app.cyberconnect.me",
+  name: 'CYBERCONNECT',
+  url: 'https://app.cyberconnect.me',
 };
 const WITHTALLY_PARTNER = {
-  name: "WITHTALLY",
-  url: "https://www.withtally.com",
+  name: 'WITHTALLY',
+  url: 'https://www.withtally.com',
 };
-const GM_PARTNER = { name: "GM", url: "https://gm.xyz" };
-const MOCA_PARTNER = { name: "MOCA", url: "https://app.museumofcryptoart.com" };
-const WELOOK_PARTNER = { name: "WELOOK", url: "https://welook.io" };
-const BACKDROP_PARTNER = { name: "BACKDROP", url: "https://backdrop.so" };
-const LIGHT_PARTNER = { name: "LIGHT", url: "https://light.so" };
-const GIT_POAP_PARTNER = { name: "GIT_POAP", url: "https://www.gitpoap.io" };
-const POAP_IN_PARTNER = { name: "POAP_IN", url: "https://poap.in/v" };
+const GM_PARTNER = { name: 'GM', url: 'https://gm.xyz' };
+const MOCA_PARTNER = { name: 'MOCA', url: 'https://app.museumofcryptoart.com' };
+const WELOOK_PARTNER = { name: 'WELOOK', url: 'https://welook.io' };
+const BACKDROP_PARTNER = { name: 'BACKDROP', url: 'https://backdrop.so' };
+const LIGHT_PARTNER = { name: 'LIGHT', url: 'https://light.so' };
+const GIT_POAP_PARTNER = { name: 'GIT_POAP', url: 'https://www.gitpoap.io' };
+const POAP_IN_PARTNER = { name: 'POAP_IN', url: 'https://poap.in/v' };
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -46,7 +46,7 @@ export const shrinkAddress = (address, length) => {
   if (address.length < length) return address;
   return (
     address.substr(0, length / 2) +
-    "…" +
+    '…' +
     address.substr(address.length - (length / 2 - 1))
   );
 };
@@ -65,12 +65,12 @@ export const debounce = (func, delay) => {
 
 export const transferType = (transfer) => {
   return transfer.from?.id === ZERO_ADDRESS
-    ? transfer.network === "mainnet"
-      ? "Migration"
-      : "Claim"
+    ? transfer.network === 'mainnet'
+      ? 'Migration'
+      : 'Claim'
     : transfer.to?.id === ZERO_ADDRESS
-    ? "Burn"
-    : "Transfer";
+    ? 'Burn'
+    : 'Transfer';
 };
 
 export function isEmptyString(value) {
@@ -86,7 +86,7 @@ export const utcDateFromNow = (value) => {
 };
 
 export const utcDateFormatted = (value) => {
-  return utcTime(value).format("D-MMM-YYYY").toUpperCase();
+  return utcTime(value).format('D-MMM-YYYY').toUpperCase();
 };
 
 export const utcDateFull = (value) => {
@@ -94,7 +94,7 @@ export const utcDateFull = (value) => {
 };
 
 export const dateCell = (cell, dateFormat) => {
-  if (dateFormat === "date") {
+  if (dateFormat === 'date') {
     return utcDateFormatted(cell);
   }
   return utcDateFromNow(cell);
@@ -108,9 +108,9 @@ export const onlyUnique = (value, index, self) => {
 };
 
 export const toastInfoOptions = {
-  icon: "",
+  icon: '',
   style: {
-    backgroundColor: "#fff8e0",
+    backgroundColor: '#fff8e0',
   },
 };
 
@@ -128,9 +128,9 @@ export const externalLinkSetter = (owner_id, name) => {
     [LIGHT_PARTNER.name]: `${LIGHT_PARTNER.url}/${owner_id}`,
     [GIT_POAP_PARTNER.name]: `${GIT_POAP_PARTNER.url}/p/${owner_id}`,
     [POAP_IN_PARTNER.name]: `${POAP_IN_PARTNER.url}/${owner_id}`,
-    default: "",
+    default: '',
   };
-  return collectionLinks[name] || collectionLinks["default"];
+  return collectionLinks[name] || collectionLinks['default'];
 };
 
 export const collectionlLinks = [
@@ -139,179 +139,179 @@ export const collectionlLinks = [
     icon: (
       <Poap
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Explore.poap.xyz",
+    tooltipText: 'View Collection in Explore.poap.xyz',
   },
   {
     id: RAINBOW_PARTNER.name,
     icon: (
       <Rainbow
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Rainbow.me",
+    tooltipText: 'View Collection in Rainbow.me',
   },
   {
     id: MAZURY_PARTNER.name,
     icon: (
       <Mazury
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Mazury.xyz",
+    tooltipText: 'View Collection in Mazury.xyz',
   },
   {
     id: WITHTALLY_PARTNER.name,
     icon: (
       <Tally
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Tally",
+    tooltipText: 'View Collection in Tally',
   },
   {
     id: CYBERCONNECT_PARTNER.name,
     icon: (
       <CyberConnect
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Cyberconnect.me",
+    tooltipText: 'View Collection in Cyberconnect.me',
   },
   {
     id: GM_PARTNER.name,
     icon: (
       <Gm
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Gm.xyz",
+    tooltipText: 'View Collection in Gm.xyz',
   },
   {
     id: MOCA_PARTNER.name,
     icon: (
       <Moca
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "30px",
-          height: "30px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '30px',
+          height: '30px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Museumofcryptoart.com",
+    tooltipText: 'View Collection in Museumofcryptoart.com',
   },
   {
     id: WELOOK_PARTNER.name,
     icon: (
       <Welook
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "40px",
-          height: "40px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '40px',
+          height: '40px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Welook.io",
+    tooltipText: 'View Collection in Welook.io',
   },
   {
     id: BACKDROP_PARTNER.name,
     icon: (
       <Backdrop
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Backdrop.so",
+    tooltipText: 'View Collection in Backdrop.so',
   },
   {
     id: LIGHT_PARTNER.name,
     icon: (
       <Light
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Light.so",
+    tooltipText: 'View Collection in Light.so',
   },
   {
     id: GIT_POAP_PARTNER.name,
     icon: (
       <GitPoap
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in GitPoap.io",
+    tooltipText: 'View Collection in GitPoap.io',
   },
   {
     id: POAP_IN_PARTNER.name,
     icon: (
       <PoapIn
         style={{
-          margin: "0 5px",
-          verticalAlign: "middle",
-          width: "20px",
-          height: "20px",
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '20px',
+          height: '20px',
         }}
-        alt={"Open external link"}
+        alt={'Open external link'}
       />
     ),
-    tooltipText: "View Collection in Poap.in",
+    tooltipText: 'View Collection in Poap.in',
   },
 ];

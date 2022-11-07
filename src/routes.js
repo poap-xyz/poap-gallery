@@ -1,9 +1,9 @@
 export const ROUTES = {
-  home: "/",
-  event: "/event",
-  activity: "/activity",
-  renderEvent: "/r/event/:eventId",
-  eventSlug: "/event/:eventId",
+  home: '/',
+  event: '/event',
+  activity: '/activity',
+  renderEvent: '/r/event/:eventId',
+  eventSlug: '/event/:eventId',
 
   // scan: '/scan/:account',
   // token: '/token/:tokenId',

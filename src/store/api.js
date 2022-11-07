@@ -3,37 +3,37 @@ export const MAINNET_SUBGRAPH_URL = process.env.REACT_APP_MAINNET_SUBGRAPH_URL;
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
 export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const POAP_APP_URL = process.env.REACT_APP_POAP_APP_URL;
-export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const OrderType = {
   id: {
-    name: "Id",
-    val: "id",
+    name: 'Id',
+    val: 'id',
   },
   tokenCount: {
-    name: "Supply",
-    val: "tokenCount",
+    name: 'Supply',
+    val: 'tokenCount',
   },
   transferCount: {
-    name: "Transfers",
-    val: "transferCount",
+    name: 'Transfers',
+    val: 'transferCount',
   },
   date: {
-    name: "Date",
-    val: "start_date",
+    name: 'Date',
+    val: 'start_date',
   },
   city: {
-    name: "City",
-    val: "city",
+    name: 'City',
+    val: 'city',
   },
 };
 export const OrderDirection = {
   ascending: {
-    name: "Ascending",
-    val: "asc",
+    name: 'Ascending',
+    val: 'asc',
   },
   descending: {
-    name: "Descending",
-    val: "desc",
+    name: 'Descending',
+    val: 'desc',
   },
 };
 
@@ -63,7 +63,7 @@ export async function getPaginatedEvents({
     };
   }
 
-  return await fetchPOAPApi("/paginated-events", queryParams);
+  return await fetchPOAPApi('/paginated-events', queryParams);
 }
 
 export async function getEvent(id) {
@@ -72,9 +72,9 @@ export async function getEvent(id) {
 
 export async function getLayerEvents(url, first, skip, orderBy) {
   const res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       query: `
@@ -93,17 +93,17 @@ export async function getLayerEvents(url, first, skip, orderBy) {
 }
 
 export async function getLayerEventsByIds(url, ids, first = null) {
-  const ids_str = ids.map((id) => '"' + id + '"').join(",");
+  const ids_str = ids.map((id) => '"' + id + '"').join(',');
   const res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       query: `
       {
         events(where:{id_in: [${ids_str}]}${
-        first && first > 0 ? `, first: ${first}` : ""
+        first && first > 0 ? `, first: ${first}` : ''
       }) {
           id
           tokenCount
@@ -135,9 +135,9 @@ export async function getxDaiEvents(first, skip, orderBy) {
 
 export async function getLayerTokens(eventId, first, skip, url) {
   const res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
 
     body: JSON.stringify({
@@ -172,11 +172,11 @@ export async function getMainnetTokens(eventId, first, skip) {
 }
 
 export async function getLayerOwners(owners, url) {
-  const owners_id = owners.map((owner) => '"' + owner + '"').join(",");
+  const owners_id = owners.map((owner) => '"' + owner + '"').join(',');
   const res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       query: `
@@ -202,9 +202,9 @@ export async function getMainnetOwners(owner) {
 
 export async function getLayerTransfers(amount, url) {
   const res = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
 
     body: JSON.stringify({
@@ -245,9 +245,9 @@ export async function getMainnetTransfers(amount) {
 export async function getMigrations(amount) {
   // Step 1: get most recently minted tokens in mainnet (since POAP only mints on layer 2, it's safe to assume they were migrated)
   const res = await fetch(MAINNET_SUBGRAPH_URL, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
 
     body: JSON.stringify({
@@ -276,11 +276,11 @@ export async function getMigrations(amount) {
 export async function validateMigrations(migrations) {
   // Step 2: Verify the minted tokens have a burned counterpart in layer 2
   // TODO(sebas): add polygon check when we implement POAPs in the polygon chain
-  const ids = migrations.map((t) => '"' + t.id + '"').join(",");
+  const ids = migrations.map((t) => '"' + t.id + '"').join(',');
   const res2 = await fetch(XDAI_SUBGRAPH_URL, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
 
     body: JSON.stringify({
@@ -307,7 +307,7 @@ export async function validateMigrations(migrations) {
 }
 
 export async function getTop3Events() {
-  return await fetchPOAPApi("/top-3-events");
+  return await fetchPOAPApi('/top-3-events');
 }
 
 function setQueryParamsToUrl(url, queryParams) {
@@ -327,7 +327,7 @@ function setQueryParamsToUrl(url, queryParams) {
 }
 
 function buildPOAPApiHeaders(init) {
-  const headers = { "X-API-Key": POAP_API_API_KEY };
+  const headers = { 'X-API-Key': POAP_API_API_KEY };
 
   if (!init || !init.headers) {
     return headers;

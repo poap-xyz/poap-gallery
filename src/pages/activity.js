@@ -1,34 +1,34 @@
-import React, { useCallback, useEffect, useState } from "react";
-import ReactTooltip from "react-tooltip";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useEffect, useState } from 'react';
+import ReactTooltip from 'react-tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleDown,
   faAngleUp,
   faDotCircle,
   faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { Helmet } from "react-helmet";
-import { useDispatch, useSelector } from "react-redux";
+} from '@fortawesome/free-solid-svg-icons';
+import { Helmet } from 'react-helmet';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchActivityPageData,
   selectMostClaimed,
   selectMostRecent,
   selectUpcoming,
-} from "../store";
+} from '../store';
 import {
   getMainnetTransfers,
   getPaginatedEvents,
   getxDaiTransfers,
   POAP_API_URL,
   POAP_APP_URL,
-} from "../store/api";
-import { EventCard } from "../components/eventCard";
-import { Pill } from "../components/pill";
-import Migration from "../assets/images/migrate.svg";
-import Burn from "../assets/images/burn.svg";
-import Claim from "../assets/images/claim.svg";
-import Transfer from "../assets/images/transfer.svg";
-import { Foliage } from "../components/foliage";
+} from '../store/api';
+import { EventCard } from '../components/eventCard';
+import { Pill } from '../components/pill';
+import Migration from '../assets/images/migrate.svg';
+import Burn from '../assets/images/burn.svg';
+import Claim from '../assets/images/claim.svg';
+import Transfer from '../assets/images/transfer.svg';
+import { Foliage } from '../components/foliage';
 import {
   dateCell,
   debounce,
@@ -37,11 +37,11 @@ import {
   transferType,
   utcDateFormatted,
   utcDateFromNow,
-} from "../utilities/utilities";
-import { useWindowWidth } from "@react-hook/window-size/throttled";
-import { Link } from "react-router-dom";
-import { LazyImage } from "../components/LazyImage";
-import { toast } from "react-hot-toast";
+} from '../utilities/utilities';
+import { useWindowWidth } from '@react-hook/window-size/throttled';
+import { Link } from 'react-router-dom';
+import { LazyImage } from '../components/LazyImage';
+import { toast } from 'react-hot-toast';
 
 export default function Activity() {
   const dispatch = useDispatch();
@@ -66,13 +66,13 @@ export default function Activity() {
     getMainnetTransfers(transferLimit).then(
       (result) => {
         let transfers = result.data.transfers;
-        transfers.map((t) => (t.network = "mainnet"));
+        transfers.map((t) => (t.network = 'mainnet'));
         setMainnetTransfers(transfers);
         setLoading(false);
       },
       (error) => {
         setLoading(false);
-        console.log("failed to query the graph", error);
+        console.log('failed to query the graph', error);
       }
     );
   }, []);
@@ -82,19 +82,19 @@ export default function Activity() {
     getxDaiTransfers(transferLimit).then(
       (result) => {
         let transfers = result.data.transfers;
-        transfers.map((t) => (t.network = "Gnosis"));
+        transfers.map((t) => (t.network = 'Gnosis'));
         setDaiTransfers(transfers);
         setLoading(false);
       },
       (error) => {
         setLoading(false);
-        console.log("failed to query the graph", error);
+        console.log('failed to query the graph', error);
       }
     );
   }, []);
 
   const toastNewTransfersError = () =>
-    toast.error("There was a problem loading recent activity", {});
+    toast.error('There was a problem loading recent activity', {});
   const debouncedToastNewTransfersError = useCallback(
     debounce(() => toastNewTransfersError(), 500),
     []
@@ -143,17 +143,17 @@ export default function Activity() {
       <div
         className="activityContainer container"
         style={{
-          maxWidth: "none",
+          maxWidth: 'none',
         }}
       >
         <div
           className="gallery-grid activity-grid"
           style={{
-            padding: "0 4rem",
-            display: "grid",
-            justifyContent: "center",
+            padding: '0 4rem',
+            display: 'grid',
+            justifyContent: 'center',
             gridAutoColumns: 295,
-            minHeight: "380px",
+            minHeight: '380px',
           }}
         >
           {mostRecent && (
@@ -182,12 +182,12 @@ function TokenRow({ transfer, dateFormat }) {
   };
   return width > 780 ? (
     <tr>
-      <td className="recent-activity" style={{ width: "100%" }}>
-        {type === "Migration" ? (
+      <td className="recent-activity" style={{ width: '100%' }}>
+        {type === 'Migration' ? (
           <img src={Migration} alt="Migration" />
-        ) : type === "Claim" ? (
+        ) : type === 'Claim' ? (
           <img src={Claim} alt="Claim" />
-        ) : type === "Burn" ? (
+        ) : type === 'Burn' ? (
           <img src={Burn} alt="Burn" />
         ) : (
           <img src={Transfer} alt="Transfer" />
@@ -203,7 +203,7 @@ function TokenRow({ transfer, dateFormat }) {
             width={80}
             height={80}
             containerClasses="circle-container"
-            containerStyles={{ margin: "0 24px 0 14px" }}
+            containerStyles={{ margin: '0 24px 0 14px' }}
           />
         </a>
         <div className="recent-activity-content">
@@ -222,11 +222,11 @@ function TokenRow({ transfer, dateFormat }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {"#"}
+          {'#'}
           {transfer.token.id}
         </a>
       </td>
-      <td style={{ minWidth: "50px" }}>
+      <td style={{ minWidth: '50px' }}>
         <a
           href={`${POAP_APP_URL}/scan/${transfer.to.id}`}
           target="_blank"
@@ -236,25 +236,25 @@ function TokenRow({ transfer, dateFormat }) {
         </a>
       </td>
       <td>
-        {" "}
+        {' '}
         {transfer.token.transferCount && transfer.token.transferCount > 0
           ? transfer.token.transferCount
-          : "Claimed"}{" "}
+          : 'Claimed'}{' '}
       </td>
-      <td style={{ wordBreak: "break-all" }}>
-        {" "}
-        {dateCell(transfer.timestamp * 1000, dateFormat)}{" "}
+      <td style={{ wordBreak: 'break-all' }}>
+        {' '}
+        {dateCell(transfer.timestamp * 1000, dateFormat)}{' '}
       </td>
     </tr>
   ) : (
     <tr>
       <td className="mobile-row">
-        <div className="recent-activity" style={{ width: "100%" }}>
-          {type === "Migration" ? (
+        <div className="recent-activity" style={{ width: '100%' }}>
+          {type === 'Migration' ? (
             <img src={Migration} alt="Migration" />
-          ) : type === "Claim" ? (
+          ) : type === 'Claim' ? (
             <img src={Claim} alt="Claim" />
-          ) : type === "Burn" ? (
+          ) : type === 'Burn' ? (
             <img src={Burn} alt="Burn" />
           ) : (
             <img src={Transfer} alt="Transfer" />
@@ -270,7 +270,7 @@ function TokenRow({ transfer, dateFormat }) {
                 src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
                 width={80}
                 height={80}
-                containerStyles={{ margin: "0 24px 0 14px" }}
+                containerStyles={{ margin: '0 24px 0 14px' }}
               />
             </a>
           )}
@@ -286,7 +286,7 @@ function TokenRow({ transfer, dateFormat }) {
           <span
             className="expand-button"
             style={{
-              width: `calc(100% - 180px${width > 430 ? " - 118px" : ""})`,
+              width: `calc(100% - 180px${width > 430 ? ' - 118px' : ''})`,
             }}
           >
             <FontAwesomeIcon
@@ -295,7 +295,7 @@ function TokenRow({ transfer, dateFormat }) {
             />
           </span>
         </div>
-        <div className={`mobile-row-content ${expanded ? "open" : ""}`}>
+        <div className={`mobile-row-content ${expanded ? 'open' : ''}`}>
           <span className="id-title">POAP ID</span>
           <span className="id-content">
             <a
@@ -303,7 +303,7 @@ function TokenRow({ transfer, dateFormat }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {"#"}
+              {'#'}
               {transfer.token.id}
             </a>
           </span>
@@ -339,7 +339,7 @@ function TokenRowDescription({ transfer }) {
   const type = transferType(transfer);
   return (
     <div className="description">
-      {type === "Migration" ? (
+      {type === 'Migration' ? (
         <span>
           POAP migrated to
           <a
@@ -347,25 +347,25 @@ function TokenRowDescription({ transfer }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {" "}
-            {transfer.to.id.substring(0, 16) + "…"}{" "}
+            {' '}
+            {transfer.to.id.substring(0, 16) + '…'}{' '}
           </a>
           from {transfer.network} to Ethereum
         </span>
-      ) : type === "Claim" ? (
+      ) : type === 'Claim' ? (
         <span>
-          POAP claimed on event{" "}
+          POAP claimed on event{' '}
           <Link to={`/event/${transfer.token.event.id}`}>
             #{transfer.token.event.id}
-          </Link>{" "}
+          </Link>{' '}
           on {transfer.network}
         </span>
-      ) : type === "Burn" ? (
+      ) : type === 'Burn' ? (
         <span>
-          POAP burned on event{" "}
+          POAP burned on event{' '}
           <Link to={`/event/${transfer.token.event.id}`}>
             #{transfer.token.event.id}
-          </Link>{" "}
+          </Link>{' '}
           on {transfer.network}
         </span>
       ) : (
@@ -376,18 +376,18 @@ function TokenRowDescription({ transfer }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {" "}
-            {shrinkAddress(transfer.from.id, 10)}{" "}
-          </a>{" "}
+            {' '}
+            {shrinkAddress(transfer.from.id, 10)}{' '}
+          </a>{' '}
           to
           <a
             href={`${POAP_APP_URL}/scan/${transfer.to.id}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {" "}
+            {' '}
             {shrinkAddress(transfer.to.id, 10)}
-          </a>{" "}
+          </a>{' '}
           on {transfer.network}
         </span>
       )}
@@ -396,10 +396,10 @@ function TokenRowDescription({ transfer }) {
 }
 
 function CreateTable({ transfers, loading }) {
-  const [dateFormat, setDateFormat] = useState("timeago");
+  const [dateFormat, setDateFormat] = useState('timeago');
   const width = useWindowWidth();
   const toggleDateFormat = () => {
-    dateFormat === "timeago" ? setDateFormat("date") : setDateFormat("timeago");
+    dateFormat === 'timeago' ? setDateFormat('date') : setDateFormat('timeago');
   };
   const tfers = [];
   for (let i = 0; i < transfers.length; i++) {
@@ -424,34 +424,34 @@ function CreateTable({ transfers, loading }) {
     );
   }
   return (
-    <div style={{ width: "100%" }} className="activity-table-container">
-      <table className="table" style={{ width: "100%", fontSize: ".93rem" }}>
+    <div style={{ width: '100%' }} className="activity-table-container">
+      <table className="table" style={{ width: '100%', fontSize: '.93rem' }}>
         <thead>
           {width > 780 ? (
             <tr>
-              <th style={{ paddingLeft: "20px", textAlign: "start" }}>
+              <th style={{ paddingLeft: '20px', textAlign: 'start' }}>
                 Recent Activity
               </th>
               <th>POAP ID</th>
               <th>Collection</th>
               <th>
-                TX count{" "}
+                TX count{' '}
                 <FontAwesomeIcon
                   icon={faQuestionCircle}
                   data-tip="The amount of transactions this POAP has done since it the day it been claimed."
                 />
-                <ReactTooltip effect="solid" />{" "}
+                <ReactTooltip effect="solid" />{' '}
               </th>
               <th>
-                Minting Date{" "}
+                Minting Date{' '}
                 <FontAwesomeIcon
                   icon={faDotCircle}
                   onClick={toggleDateFormat}
                   data-tip="Toggle date format"
                   style={{
-                    width: "1rem",
-                    marginRight: ".2rem",
-                    cursor: "pointer",
+                    width: '1rem',
+                    marginRight: '.2rem',
+                    cursor: 'pointer',
                   }}
                 />
                 <ReactTooltip effect="solid" />
@@ -459,20 +459,20 @@ function CreateTable({ transfers, loading }) {
             </tr>
           ) : (
             <tr>
-              <th style={{ width: "100%" }} />
+              <th style={{ width: '100%' }} />
             </tr>
           )}
         </thead>
         <tbody>
           {loading ? (
-            <tr style={{ height: "600px", width: "inherit" }}>
+            <tr style={{ height: '600px', width: 'inherit' }}>
               <td className="loading" colSpan="6" />
             </tr>
           ) : tfers && tfers.length ? (
             tfers
           ) : (
             <tr>
-              <td style={{ textAlign: "center" }} colSpan="7">
+              <td style={{ textAlign: 'center' }} colSpan="7">
                 No Tokens Transferred
               </td>
             </tr>

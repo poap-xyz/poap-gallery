@@ -4,19 +4,19 @@ import {
   configureStore,
   createAsyncThunk,
   current,
-} from "@reduxjs/toolkit";
+} from '@reduxjs/toolkit';
 import {
   getIndexPageData,
   getEventPageData,
   getActivityPageData,
-} from "./mutations";
+} from './mutations';
 
 export const FETCH_INFO_STATUS = {
-  IDLE: "IDLE",
-  LOADING: "LOADING",
-  LOADING_MORE: "LOADING_MORE",
-  SUCCEEDED: "SUCCEEDED",
-  FAILED: "FAILED",
+  IDLE: 'IDLE',
+  LOADING: 'LOADING',
+  LOADING_MORE: 'LOADING_MORE',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
 };
 export const FETCH_EVENT_PAGE_INFO_STATUS = {
   ...FETCH_INFO_STATUS,
@@ -46,7 +46,7 @@ const initialEventsState = {
 };
 
 export const fetchIndexData = createAsyncThunk(
-  "events/fetchIndexEvents",
+  'events/fetchIndexEvents',
   async ({ orderBy, reset, nameFilter, privateEvents = undefined }, thunkAPI) =>
     getIndexPageData(
       orderBy,
@@ -57,16 +57,16 @@ export const fetchIndexData = createAsyncThunk(
     )
 );
 export const fetchEventPageData = createAsyncThunk(
-  "events/fetchEventPageData",
+  'events/fetchEventPageData',
   async ({ eventId, first, skip }) => getEventPageData(eventId, first, skip)
 );
 export const fetchActivityPageData = createAsyncThunk(
-  "events/fetchActivityPageData",
+  'events/fetchActivityPageData',
   async () => getActivityPageData()
 );
 
 const eventsSlice = createSlice({
-  name: "events",
+  name: 'events',
   initialState: initialEventsState,
   reducers: {},
   extraReducers: {
@@ -171,7 +171,7 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
-if (process.env.NODE_ENV === "development" && module.hot) {
+if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept(rootReducer, () => {
     const newRootReducer = rootReducer;
     store.replaceReducer(newRootReducer);

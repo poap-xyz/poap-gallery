@@ -13,10 +13,10 @@ import {
   OrderDirection,
   OrderType,
   PAGE_LIMIT,
-} from "./api";
-import { ensABI } from "./abis";
-import _, { parseInt, uniqBy } from "lodash";
-import { ethers } from "ethers";
+} from './api';
+import { ensABI } from './abis';
+import _, { parseInt, uniqBy } from 'lodash';
+import { ethers } from 'ethers';
 
 const { REACT_APP_RPC_PROVIDER_URL, REACT_APP_ENS_CONTRACT } = process.env;
 const provider = new ethers.providers.StaticJsonRpcProvider(
@@ -35,7 +35,7 @@ export async function getEnsData(ownerIds) {
   for (let i = 0; i < chunked.length; i++) {
     const chunk = chunked[i];
     let names = await ReverseRecords.getNames(chunk);
-    const validNames = names.map((name) => name !== "" && name);
+    const validNames = names.map((name) => name !== '' && name);
     allnames = _.concat(allnames, validNames);
   }
   return allnames;
@@ -90,10 +90,10 @@ function reduceSubgraphEvents(mainnetEvents, xdaiEvents, orderBy) {
     const mainnetEvent = mainnetEvents[mainnetIndex];
     const xdaiEvent = xdaiEvents[xdaiIndex];
     if (mainnetEvent === undefined && xdaiEvent) {
-      pushEvent(subgraphEvents, xdaiEvent, "xdai");
+      pushEvent(subgraphEvents, xdaiEvent, 'xdai');
       xdaiIndex++;
     } else if (xdaiEvent === undefined && mainnetEvent) {
-      pushEvent(subgraphEvents, mainnetEvent, "mainnet");
+      pushEvent(subgraphEvents, mainnetEvent, 'mainnet');
       mainnetIndex++;
     } else {
       const mainnetNext =
@@ -102,10 +102,10 @@ function reduceSubgraphEvents(mainnetEvents, xdaiEvents, orderBy) {
         (mainnetEvent[orderBy.type] > xdaiEvent[orderBy.type] &&
           orderBy.order === OrderDirection.descending.val);
       if (mainnetNext) {
-        pushEvent(subgraphEvents, mainnetEvent, "mainnet");
+        pushEvent(subgraphEvents, mainnetEvent, 'mainnet');
         mainnetIndex++;
       } else {
-        pushEvent(subgraphEvents, xdaiEvent, "xdai");
+        pushEvent(subgraphEvents, xdaiEvent, 'xdai');
         xdaiIndex++;
       }
     }
@@ -202,10 +202,10 @@ function limitSubgraphEvents(events, limit) {
   for (let i = lastUsedIdx; i >= 0; i--) {
     const event = events[i];
     if (_mainnetIndex && _xdaiIndex) break;
-    if (_xdaiIndex === undefined && event.chainId.includes("xdai")) {
+    if (_xdaiIndex === undefined && event.chainId.includes('xdai')) {
       _xdaiIndex = i;
     }
-    if (_mainnetIndex === undefined && event.chainId.includes("mainnet")) {
+    if (_mainnetIndex === undefined && event.chainId.includes('mainnet')) {
       _mainnetIndex = i;
     }
   }
@@ -242,7 +242,7 @@ async function getEventsBySubgraphFirst(
       Math.min(i + 1000, eventIds.length)
     );
     const { items } = await getPaginatedEvents({
-      event_ids: eventIdsSlice.join(","),
+      event_ids: eventIdsSlice.join(','),
       limit: eventIdsSlice.length,
     });
     events = events.concat(items);
@@ -394,9 +394,9 @@ export async function getIndexPageData(
 export async function getActivityPageData() {
   const { upcoming, mostRecent, mostClaimed } = await getTop3Events();
 
-  if (mostRecent) mostRecent.heading = "Most Recent";
-  if (upcoming) upcoming.heading = "Upcoming Event";
-  if (mostClaimed) mostClaimed.heading = "Most Claimed Token";
+  if (mostRecent) mostRecent.heading = 'Most Recent';
+  if (upcoming) upcoming.heading = 'Upcoming Event';
+  if (mostClaimed) mostClaimed.heading = 'Most Claimed Token';
 
   return {
     mostRecent: mostRecent,
@@ -485,7 +485,7 @@ export async function getEventPageData(eventId, first, skip) {
   return {
     id: eventId,
     event,
-    tokens: uniqBy(tokens, "id").sort((a, b) => {
+    tokens: uniqBy(tokens, 'id').sort((a, b) => {
       return parseInt(a.id) - parseInt(b.id);
     }),
   };

@@ -1,33 +1,33 @@
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,
   faGlobe,
   faLaptop,
   faClock,
   faFire,
-} from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useState } from "react";
-import { MultiLineEllipsis } from "./multiLineEllipsis";
-import { Pill } from "./pill";
-import { useWindowWidth } from "@react-hook/window-size/throttled";
-import ReactModal from "react-modal";
-import Power from "../assets/images/power.svg";
-import Transfers from "../assets/images/transfers.svg";
-import Supply from "../assets/images/supply.svg";
-import { LazyImage } from "./LazyImage";
-import { isEmptyString } from "../utilities/utilities";
+} from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import { MultiLineEllipsis } from './multiLineEllipsis';
+import { Pill } from './pill';
+import { useWindowWidth } from '@react-hook/window-size/throttled';
+import ReactModal from 'react-modal';
+import Power from '../assets/images/power.svg';
+import Transfers from '../assets/images/transfers.svg';
+import Supply from '../assets/images/supply.svg';
+import { LazyImage } from './LazyImage';
+import { isEmptyString } from '../utilities/utilities';
 
-export function EventCard({ event, size = "s", type = "", power = 0 }) {
+export function EventCard({ event, size = 's', type = '', power = 0 }) {
   const width = useWindowWidth();
   const validateType = (type) => {
-    if (size !== "m") return "";
+    if (size !== 'm') return '';
     if (
-      type !== "most-recent" &&
-      type !== "upcoming" &&
-      type !== "most-claimed"
+      type !== 'most-recent' &&
+      type !== 'upcoming' &&
+      type !== 'most-claimed'
     )
-      return "";
+      return '';
     return type;
   };
 
@@ -35,10 +35,10 @@ export function EventCard({ event, size = "s", type = "", power = 0 }) {
 
   return (
     <Link
-      to={"/event/" + event.id}
+      to={'/event/' + event.id}
       className={`
       gallery-card
-      ${size === "l" ? "large" : size === "m" ? "medium" : "small"}`}
+      ${size === 'l' ? 'large' : size === 'm' ? 'medium' : 'small'}`}
     >
       <Header event={event} type={type} />
       <Content
@@ -85,12 +85,12 @@ function renderLocation(event, size) {
     return (
       <Pill
         className="ellipsis"
-        icon={size === "s" ? null : faLaptop}
-        text={"Virtual event "}
+        icon={size === 's' ? null : faLaptop}
+        text={'Virtual event '}
       />
     );
   }
-  let inPersonLocation = "In-person event ";
+  let inPersonLocation = 'In-person event ';
   if (!isEmptyString(event.city)) {
     inPersonLocation = event.city;
   } else if (!isEmptyString(event.country)) {
@@ -99,7 +99,7 @@ function renderLocation(event, size) {
   return (
     <Pill
       className="ellipsis"
-      icon={size === "s" ? null : faGlobe}
+      icon={size === 's' ? null : faGlobe}
       text={inPersonLocation}
     />
   );
@@ -124,7 +124,7 @@ function Content({ type, width, size, event, power }) {
     text.split(/\r?\n|\r|\n/g).map((item) => {
       return (
         <>
-          <p className={"discreet-paragraph"} key={item.toString()}>
+          <p className={'discreet-paragraph'} key={item.toString()}>
             {item}
           </p>
         </>
@@ -136,41 +136,41 @@ function Content({ type, width, size, event, power }) {
       <div
         className="content-first"
         style={{
-          overflow: "hidden",
-          width: "100%",
-          padding: "1rem",
+          overflow: 'hidden',
+          width: '100%',
+          padding: '1rem',
         }}
       >
         {/* event type */}
         <div
-          className={`${type === "" ? "hidden" : "pill event-type"} ${type}`}
+          className={`${type === '' ? 'hidden' : 'pill event-type'} ${type}`}
         >
-          {type === "most-recent" ? (
+          {type === 'most-recent' ? (
             <div>
               <FontAwesomeIcon
-                style={{ width: "1rem", marginRight: ".2rem" }}
-                icon={size === "s" ? null : faClock}
+                style={{ width: '1rem', marginRight: '.2rem' }}
+                icon={size === 's' ? null : faClock}
               />
               Most recent
             </div>
-          ) : type === "upcoming" ? (
+          ) : type === 'upcoming' ? (
             <div>
               <FontAwesomeIcon
-                style={{ width: "1rem", marginRight: ".2rem" }}
-                icon={size === "s" ? null : faCalendar}
+                style={{ width: '1rem', marginRight: '.2rem' }}
+                icon={size === 's' ? null : faCalendar}
               />
               Upcoming
             </div>
-          ) : type === "most-claimed" ? (
+          ) : type === 'most-claimed' ? (
             <div>
               <FontAwesomeIcon
-                style={{ width: "1rem", marginRight: ".2rem" }}
-                icon={size === "s" ? null : faFire}
+                style={{ width: '1rem', marginRight: '.2rem' }}
+                icon={size === 's' ? null : faFire}
               />
               Most claimed
             </div>
           ) : (
-            ""
+            ''
           )}
         </div>
 
@@ -178,22 +178,22 @@ function Content({ type, width, size, event, power }) {
         <h3
           className="h4 content-title"
           style={{
-            fontSize: "1rem",
-            textAlign: "center",
-            overflowWrap: "anywhere",
+            fontSize: '1rem',
+            textAlign: 'center',
+            overflowWrap: 'anywhere',
           }}
         >
           <MultiLineEllipsis
             text={event.name}
             lines={2}
             maxLengthPerLine={
-              size === "l"
+              size === 'l'
                 ? width >= 768
                   ? 403
                   : width >= 480
                   ? 303
                   : 203
-                : size === "m"
+                : size === 'm'
                 ? 262
                 : 229
             }
@@ -201,13 +201,13 @@ function Content({ type, width, size, event, power }) {
         </h3>
 
         {/* description */}
-        {size === "l" ? (
+        {size === 'l' ? (
           <div className="content-description">
             <div className="content-description-main">
               {nl2br(event.description)}
             </div>
             <span
-              onClick={() => window.open(event.event_url, "_blank")}
+              onClick={() => window.open(event.event_url, '_blank')}
               className="content-description-url ellipsis"
               target="_blank"
               rel="noopener noreferrer"
@@ -218,7 +218,7 @@ function Content({ type, width, size, event, power }) {
         ) : (
           /* id */
           <div className="content-id">
-            {"#"}
+            {'#'}
             {event.id}
           </div>
         )}
@@ -226,67 +226,67 @@ function Content({ type, width, size, event, power }) {
         {/* time and place */}
         <div className="content-time-place">
           <Pill
-            style={{ minWidth: size === "s" ? "none" : "100px" }}
+            style={{ minWidth: size === 's' ? 'none' : '100px' }}
             text={event.start_date}
-            icon={size === "s" ? null : faCalendar}
+            icon={size === 's' ? null : faCalendar}
           />
           {renderLocation(event, size)}
         </div>
       </div>
 
-      {size !== "l" && <hr />}
+      {size !== 'l' && <hr />}
 
       <div
         className="content-second"
         style={{
-          overflow: "hidden",
-          width: "100%",
-          padding: "1rem",
+          overflow: 'hidden',
+          width: '100%',
+          padding: '1rem',
         }}
       >
         {/* supply y transfers */}
         <div>
           <div className="title">
-            {size === "s" ? null : (
+            {size === 's' ? null : (
               <img
-                style={{ width: "0.7rem", marginRight: ".4rem" }}
+                style={{ width: '0.7rem', marginRight: '.4rem' }}
                 src={Supply}
                 alt="Supply"
               />
             )}
-            {"SUPPLY"}
+            {'SUPPLY'}
           </div>
-          <span className="supply-content" style={{ width: "fit-content" }}>
+          <span className="supply-content" style={{ width: 'fit-content' }}>
             {tokenCount === undefined
-              ? " -"
+              ? ' -'
               : tokenCount === 0
-              ? " None Claimed"
+              ? ' None Claimed'
               : tokenCount}
           </span>
         </div>
-        {size === "l" && (
+        {size === 'l' && (
           <div>
             <div className="title">
               <img
-                style={{ width: "0.7rem", marginRight: ".4rem" }}
+                style={{ width: '0.7rem', marginRight: '.4rem' }}
                 src={Power}
                 alt="Power"
               />
-              {"POWER"}
+              {'POWER'}
             </div>
             {power}
           </div>
         )}
         <div>
           <div className="title">
-            {size === "s" ? null : (
+            {size === 's' ? null : (
               <img
-                style={{ width: "0.7rem", marginRight: ".4rem" }}
+                style={{ width: '0.7rem', marginRight: '.4rem' }}
                 src={Transfers}
                 alt="Transfers"
               />
             )}
-            {"TRANSFERS"}
+            {'TRANSFERS'}
           </div>
           {transferCount}
         </div>
