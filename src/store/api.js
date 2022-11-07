@@ -3,9 +3,11 @@ export const MAINNET_SUBGRAPH_URL = process.env.REACT_APP_MAINNET_SUBGRAPH_URL;
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
 export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+const EVENTS_BUCKET_URL = process.env.REACT_APP_EVENTS_BUCKET_URL;
 
 export async function getEvents() {
-  return await fetchPOAPApi(`/events`)
+  const response = await fetch(EVENTS_BUCKET_URL);
+  return response.json();
 }
 
 export async function getEvent(id) {
