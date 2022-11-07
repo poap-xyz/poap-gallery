@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import './index.css'
+import "./index.css";
 import { ReactComponent as PlaceHolderImage } from "../../assets/images/placeholder.svg";
-import { LazyLoadComponent } from 'react-lazy-load-image-component';
+import { LazyLoadComponent } from "react-lazy-load-image-component";
 
 export const LazyImage = ({
   src,
@@ -9,7 +9,7 @@ export const LazyImage = ({
   width = "100%",
   height = "100%",
   containerStyles = {},
-  containerClasses = ""
+  containerClasses = "",
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 

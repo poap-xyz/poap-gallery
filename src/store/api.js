@@ -3,70 +3,78 @@ export const MAINNET_SUBGRAPH_URL = process.env.REACT_APP_MAINNET_SUBGRAPH_URL;
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
 export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const POAP_APP_URL = process.env.REACT_APP_POAP_APP_URL;
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const OrderType = {
   id: {
-    name: 'Id',
-    val: 'id'
+    name: "Id",
+    val: "id",
   },
   tokenCount: {
-    name: 'Supply',
-    val: 'tokenCount'
+    name: "Supply",
+    val: "tokenCount",
   },
   transferCount: {
-    name: 'Transfers',
-    val: 'transferCount'
+    name: "Transfers",
+    val: "transferCount",
   },
   date: {
-    name: 'Date',
-    val: 'start_date'
+    name: "Date",
+    val: "start_date",
   },
   city: {
-    name: 'City',
-    val: 'city'
+    name: "City",
+    val: "city",
   },
-}
+};
 export const OrderDirection = {
   ascending: {
-    name: 'Ascending',
-    val: 'asc'
+    name: "Ascending",
+    val: "asc",
   },
   descending: {
-    name: 'Descending',
-    val: 'desc'
+    name: "Descending",
+    val: "desc",
   },
-}
+};
 
-export const PAGE_LIMIT = 20
+export const PAGE_LIMIT = 20;
 
 export async function getPaginatedEvents({
-                                             name = undefined,
-                                             event_ids = undefined,
-                                             offset = undefined,
-                                             limit = undefined,
-                                             orderBy = undefined,
-                                             privateEvents = undefined
-                                         }) {
-    let queryParams = {
-        name, event_ids, limit, offset, private_event: privateEvents,
+  name = undefined,
+  event_ids = undefined,
+  offset = undefined,
+  limit = undefined,
+  orderBy = undefined,
+  privateEvents = undefined,
+}) {
+  let queryParams = {
+    name,
+    event_ids,
+    limit,
+    offset,
+    private_event: privateEvents,
+  };
+
+  if (orderBy?.type && orderBy?.order) {
+    queryParams = {
+      ...queryParams,
+      sort_field: orderBy.type,
+      sort_dir: orderBy.order,
     };
+  }
 
-    if (orderBy?.type && orderBy?.order) {
-        queryParams = {...queryParams, sort_field: orderBy.type, sort_dir: orderBy.order};
-    }
-
-    return await fetchPOAPApi('/paginated-events', queryParams);
+  return await fetchPOAPApi("/paginated-events", queryParams);
 }
 
 export async function getEvent(id) {
-    return await fetchPOAPApi(`/events/id/${id}`);
+  return await fetchPOAPApi(`/events/id/${id}`);
 }
 
 export async function getLayerEvents(url, first, skip, orderBy) {
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: `
@@ -77,34 +85,36 @@ export async function getLayerEvents(url, first, skip, orderBy) {
           transferCount
         }
       }
-      `
-    })
-  })
+      `,
+    }),
+  });
 
-	return res.json()
+  return res.json();
 }
 
 export async function getLayerEventsByIds(url, ids, first = null) {
-  const ids_str = ids.map(id => "\"" + id + "\"").join(',')
+  const ids_str = ids.map((id) => '"' + id + '"').join(",");
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: `
       {
-        events(where:{id_in: [${ids_str}]}${first && first > 0 ? `, first: ${first}` : ''}) {
+        events(where:{id_in: [${ids_str}]}${
+        first && first > 0 ? `, first: ${first}` : ""
+      }) {
           id
           tokenCount
           transferCount
         }
       }
-      `
-    })
-  })
+      `,
+    }),
+  });
 
-  return res.json()
+  return res.json();
 }
 
 export async function getMainnetEventsByIds(ids, first = null) {
@@ -113,7 +123,6 @@ export async function getMainnetEventsByIds(ids, first = null) {
 
 export async function getxDaiEventsByIds(ids, first = null) {
   return getLayerEventsByIds(XDAI_SUBGRAPH_URL, ids, first);
-
 }
 
 export async function getMainnetEvents(first, skip, orderBy) {
@@ -122,14 +131,13 @@ export async function getMainnetEvents(first, skip, orderBy) {
 
 export async function getxDaiEvents(first, skip, orderBy) {
   return getLayerEvents(XDAI_SUBGRAPH_URL, first, skip, orderBy);
-
 }
 
 export async function getLayerTokens(eventId, first, skip, url) {
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
 
     body: JSON.stringify({
@@ -149,27 +157,26 @@ export async function getLayerTokens(eventId, first, skip, url) {
             transferCount
           }
         }
-        `
-		})
-	})
-	return res.json()
+        `,
+    }),
+  });
+  return res.json();
 }
-
 
 export async function getxDaiTokens(eventId, first, skip) {
   return getLayerTokens(eventId, first, skip, XDAI_SUBGRAPH_URL);
 }
 
 export async function getMainnetTokens(eventId, first, skip) {
-	return getLayerTokens(eventId, first, skip, MAINNET_SUBGRAPH_URL);
+  return getLayerTokens(eventId, first, skip, MAINNET_SUBGRAPH_URL);
 }
 
 export async function getLayerOwners(owners, url) {
-  const owners_id = owners.map(owner => "\"" + owner + "\"").join(',')
+  const owners_id = owners.map((owner) => '"' + owner + '"').join(",");
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: `
@@ -179,10 +186,10 @@ export async function getLayerOwners(owners, url) {
           tokensOwned
         }
       }
-      `
-      })
-  })
-  return res.json()
+      `,
+    }),
+  });
+  return res.json();
 }
 
 export async function getXDaiOwners(owner) {
@@ -195,9 +202,9 @@ export async function getMainnetOwners(owner) {
 
 export async function getLayerTransfers(amount, url) {
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
 
     body: JSON.stringify({
@@ -221,10 +228,10 @@ export async function getLayerTransfers(amount, url) {
               timestamp
             }
           }
-          `
-    })
-  })
-  return res.json()
+          `,
+    }),
+  });
+  return res.json();
 }
 
 export async function getxDaiTransfers(amount) {
@@ -238,9 +245,9 @@ export async function getMainnetTransfers(amount) {
 export async function getMigrations(amount) {
   // Step 1: get most recently minted tokens in mainnet (since POAP only mints on layer 2, it's safe to assume they were migrated)
   const res = await fetch(MAINNET_SUBGRAPH_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
 
     body: JSON.stringify({
@@ -260,20 +267,20 @@ export async function getMigrations(amount) {
               created
             }
           }
-          `
-    })
-  })
-  return res.json()
+          `,
+    }),
+  });
+  return res.json();
 }
 
 export async function validateMigrations(migrations) {
   // Step 2: Verify the minted tokens have a burned counterpart in layer 2
   // TODO(sebas): add polygon check when we implement POAPs in the polygon chain
-  const ids = migrations.map(t => "\"" + t.id + "\"").join(',')
+  const ids = migrations.map((t) => '"' + t.id + '"').join(",");
   const res2 = await fetch(XDAI_SUBGRAPH_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
 
     body: JSON.stringify({
@@ -293,48 +300,48 @@ export async function validateMigrations(migrations) {
               created
             }
           }
-          `
-    })
-  })
-  return res2.json()
+          `,
+    }),
+  });
+  return res2.json();
 }
 
 export async function getTop3Events() {
-  return await fetchPOAPApi('/top-3-events');
+  return await fetchPOAPApi("/top-3-events");
 }
 
 function setQueryParamsToUrl(url, queryParams) {
-    if (!queryParams) {
-        return;
+  if (!queryParams) {
+    return;
+  }
+
+  for (const key in queryParams) {
+    const value = queryParams[key];
+
+    if (value === undefined) {
+      continue;
     }
 
-    for (const key in queryParams) {
-        const value = queryParams[key];
-
-        if (value === undefined) {
-            continue;
-        }
-
-        url.searchParams.append(key, value);
-    }
+    url.searchParams.append(key, value);
+  }
 }
 
 function buildPOAPApiHeaders(init) {
-    const headers = {'X-API-Key': POAP_API_API_KEY};
+  const headers = { "X-API-Key": POAP_API_API_KEY };
 
-    if (!init || !init.headers) {
-        return headers;
-    }
+  if (!init || !init.headers) {
+    return headers;
+  }
 
-    return {...(init.headers), ...headers};
+  return { ...init.headers, ...headers };
 }
 
 async function fetchPOAPApi(path, queryParams, init) {
-    const url = new URL(`${POAP_API_URL}${path}`);
-    const headers = buildPOAPApiHeaders(init);
+  const url = new URL(`${POAP_API_URL}${path}`);
+  const headers = buildPOAPApiHeaders(init);
 
-    setQueryParamsToUrl(url, queryParams);
+  setQueryParamsToUrl(url, queryParams);
 
-    const res = await fetch(url, {headers});
-    return res.json();
+  const res = await fetch(url, { headers });
+  return res.json();
 }
