@@ -15,7 +15,7 @@ import {
   selectMostRecent,
   selectUpcoming,
 } from '../store';
-import { getLastTransfers, POAP_API_URL, POAP_APP_URL } from '../store/api';
+import { getLastTransfers, POAP_APP_URL } from '../store/api';
 import { EventCard } from '../components/eventCard';
 import { Pill } from '../components/pill';
 import Migration from '../assets/images/migrate.svg';
@@ -140,7 +140,7 @@ function TokenRow({ transfer, dateFormat }) {
           rel="noopener noreferrer"
         >
           <LazyImage
-            src={`${POAP_API_URL}/token/${transfer.tokenId}/image`}
+            src={transfer.eventImage}
             width={80}
             height={80}
             containerClasses="circle-container"
@@ -212,7 +212,7 @@ function TokenRow({ transfer, dateFormat }) {
               rel="noopener noreferrer"
             >
               <LazyImage
-                src={`${POAP_API_URL}/token/${transfer.tokenId}/image`}
+                src={transfer.eventImage}
                 width={80}
                 height={80}
                 containerStyles={{ margin: '0 24px 0 14px' }}

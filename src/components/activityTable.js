@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getLastTransfers, POAP_API_URL, POAP_APP_URL } from '../store/api';
+import { getLastTransfers, POAP_APP_URL } from '../store/api';
 import { Pill } from './pill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
@@ -96,7 +96,7 @@ function Transfer({ transfer }) {
         >
           <div className="round-box-image">
             <LazyImage
-              src={`${POAP_API_URL}/token/${transfer.tokenId}/image`}
+              src={transfer.eventImage}
               width={50}
               height={50}
               containerClasses="circle-container"
