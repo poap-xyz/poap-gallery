@@ -200,46 +200,8 @@ export async function getMainnetOwners(owner) {
   return getLayerOwners(owner, MAINNET_SUBGRAPH_URL);
 }
 
-export async function getLayerTransfers(amount, url) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-
-    body: JSON.stringify({
-      query: `
-          {
-            transfers(first: ${amount}, orderBy: timestamp, orderDirection: desc) {
-              id
-              token {
-                id
-                transferCount
-                event {
-                  id
-                }
-              }
-              from {
-                id
-              }
-              to {
-                id
-              }
-              timestamp
-            }
-          }
-          `,
-    }),
-  });
-  return res.json();
-}
-
-export async function getxDaiTransfers(amount) {
-  return getLayerTransfers(amount, XDAI_SUBGRAPH_URL);
-}
-
-export async function getMainnetTransfers(amount) {
-  return getLayerTransfers(amount, MAINNET_SUBGRAPH_URL);
+export async function getLastTransfers(limit = 10) {
+  return await fetchPOAPApi('/activity', { limit });
 }
 
 export async function getMigrations(amount) {

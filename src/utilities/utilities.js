@@ -1,5 +1,4 @@
 import React from 'react';
-import { ZERO_ADDRESS } from '../store/api';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -63,16 +62,6 @@ export const debounce = (func, delay) => {
   };
 };
 
-export const transferType = (transfer) => {
-  return transfer.from?.id === ZERO_ADDRESS
-    ? transfer.network === 'mainnet'
-      ? 'Migration'
-      : 'Claim'
-    : transfer.to?.id === ZERO_ADDRESS
-    ? 'Burn'
-    : 'Transfer';
-};
-
 export function isEmptyString(value) {
   return !value || !value.trim();
 }
@@ -102,10 +91,6 @@ export const dateCell = (cell, dateFormat) => {
 
 export const sortInt = (e1, e2) =>
   Number.parseInt(e2.id) - Number.parseInt(e1.id);
-
-export const onlyUnique = (value, index, self) => {
-  return self.indexOf(value) === index;
-};
 
 export const toastInfoOptions = {
   icon: '',

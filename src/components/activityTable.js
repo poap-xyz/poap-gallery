@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  getMainnetTransfers,
-  getxDaiTransfers,
-  POAP_API_URL,
-  POAP_APP_URL,
-} from '../store/api';
+import { getLastTransfers, POAP_API_URL, POAP_APP_URL } from '../store/api';
 import { Pill } from './pill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
@@ -14,56 +9,27 @@ import ClaimIcon from '../assets/images/claim-icon.svg';
 import MigrateIcon from '../assets/images/migrate-icon.svg';
 import BurnIcon from '../assets/images/burn-icon.svg';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
-import { transferType, utcDateFromNow } from '../utilities/utilities';
+import { utcDateFromNow } from '../utilities/utilities';
 import { LazyImage } from './LazyImage';
 
 export default function ActivityTable() {
   const [loading, setLoading] = useState(false);
   const [transfers, setTransfers] = useState([]);
-  const [daitransfers, setDaiTransfers] = useState([]);
-  const [mainnetTransfers, setMainnetTransfers] = useState([]);
   const transferLimit = 3;
 
   useEffect(() => {
     setLoading(true);
-    getMainnetTransfers(transferLimit).then(
-      (result) => {
-        let transfers = result.data.transfers;
-        transfers.map((t) => (t.network = 'mainnet'));
-        setMainnetTransfers(transfers);
+    getLastTransfers(transferLimit).then(
+      (transfers) => {
+        setTransfers(transfers);
         setLoading(false);
       },
       (error) => {
         setLoading(false);
-        console.log('failed to query the graph', error);
+        console.log('failed to fetch last transfers', error);
       }
     );
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    getxDaiTransfers(transferLimit).then(
-      (result) => {
-        let transfers = result.data.transfers;
-        transfers.map((t) => (t.network = 'Gnosis'));
-        setDaiTransfers(transfers);
-        setLoading(false);
-      },
-      (error) => {
-        setLoading(false);
-        console.log('failed to query the graph', error);
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    let transfers = daitransfers.concat(mainnetTransfers);
-    transfers.sort((a, b) => {
-      return b.timestamp - a.timestamp;
-    });
-
-    setTransfers(transfers.slice(0, transferLimit));
-  }, [daitransfers, mainnetTransfers]);
+  }, [setLoading, getLastTransfers]);
 
   return (
     <div
@@ -97,7 +63,6 @@ export default function ActivityTable() {
 
 function Transfer({ transfer }) {
   const width = useWindowWidth();
-  const type = transferType(transfer);
   return (
     <div className="transfer">
       {width > 480 && (
@@ -109,21 +74,21 @@ function Transfer({ transfer }) {
           <img
             style={{ width: '37px', zIndex: 2 }}
             src={
-              type === 'Migration'
+              transfer.type === 'MIGRATION'
                 ? MigrateIcon
-                : type === 'Claim'
+                : transfer.type === 'CLAIM'
                 ? ClaimIcon
-                : type === 'Burn'
+                : transfer.type === 'BURN'
                 ? BurnIcon
                 : TransferIcon
             }
-            alt={type}
+            alt={transfer.type}
           />
         </>
       )}
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <a
-          href={`${POAP_APP_URL}/token/${transfer.token.id}`}
+          href={`${POAP_APP_URL}/token/${transfer.tokenId}`}
           target="_blank"
           style={{ margin: '.8rem 0', opacity: transfer.opacity }}
           className={`round-box ${transfer.opacity === 1 ? 'first' : ''}`}
@@ -131,74 +96,78 @@ function Transfer({ transfer }) {
         >
           <div className="round-box-image">
             <LazyImage
-              src={`${POAP_API_URL}/token/${transfer.token.id}/image`}
+              src={`${POAP_API_URL}/token/${transfer.tokenId}/image`}
               width={50}
               height={50}
               containerClasses="circle-container"
             />
           </div>
           <div className="round-box-content">
-            <Pill text={type} className={type} tooltip={false} />
-            {type === 'Claim' ? (
+            <Pill
+              text={transfer.type}
+              className={transfer.type}
+              tooltip={false}
+            />
+            {transfer.type === 'CLAIM' ? (
               <span>
                 {' '}
                 POAP claimed on event{' '}
                 <object>
-                  <Link to={`/event/${transfer.token.event.id}`}>
-                    #{transfer.token.event.id}
+                  <Link to={`/event/${transfer.eventId}`}>
+                    #{transfer.eventId}
                   </Link>
                 </object>{' '}
-                on {transfer.network}
+                on {transfer.chain}
               </span>
-            ) : type === 'Transfer' ? (
+            ) : transfer.type === 'TRANSFER' ? (
               <span>
                 POAP transferred from
                 <object>
                   <a
-                    href={`${POAP_APP_URL}/scan/${transfer.from.id}`}
+                    href={`${POAP_APP_URL}/scan/${transfer.from}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {' '}
-                    {transfer.from.id.substring(0, 8) + '…'}{' '}
+                    {transfer.from.substring(0, 8) + '…'}{' '}
                   </a>
                 </object>{' '}
                 to
                 <object>
                   <a
-                    href={`${POAP_APP_URL}/scan/${transfer.to.id}`}
+                    href={`${POAP_APP_URL}/scan/${transfer.to}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {' '}
-                    {transfer.to.id.substring(0, 8) + '…'}{' '}
+                    {transfer.to.substring(0, 8) + '…'}{' '}
                   </a>
                 </object>
-                on {transfer.network}
+                on {transfer.chain}
               </span>
-            ) : type === 'Migration' ? (
+            ) : transfer.type === 'MIGRATION' ? (
               <span>
                 {' '}
                 POAP migrated to
                 <object>
                   <a
-                    href={`${POAP_APP_URL}/scan/${transfer.to.id}`}
+                    href={`${POAP_APP_URL}/scan/${transfer.to}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {' '}
-                    {transfer.to.id.substring(0, 16) + '…'}{' '}
+                    {transfer.to.substring(0, 16) + '…'}{' '}
                   </a>
                 </object>
-                from {transfer.network} to Ethereum
+                from {transfer.chain} to Ethereum
               </span>
-            ) : type === 'Burn' ? (
+            ) : transfer.type === 'BURN' ? (
               <span>
                 POAP burned on event{' '}
-                <Link to={`/event/${transfer.token.event.id}`}>
-                  #{transfer.token.event.id}
+                <Link to={`/event/${transfer.eventId}`}>
+                  #{transfer.eventId}
                 </Link>{' '}
-                on {transfer.network}
+                on {transfer.chain}
               </span>
             ) : null}
           </div>
