@@ -195,15 +195,7 @@ function TokenRow({ transfer, dateFormat }) {
     <tr>
       <td className="mobile-row">
         <div className="recent-activity" style={{ width: '100%' }}>
-          {transfer.type === ActivityType.MIGRATION ? (
-            <img src={Migration} alt="Migration" />
-          ) : transfer.type === ActivityType.CLAIM ? (
-            <img src={Claim} alt="Claim" />
-          ) : transfer.type === ActivityType.BURN ? (
-            <img src={Burn} alt="Burn" />
-          ) : (
-            <img src={Transfer} alt="Transfer" />
-          )}
+          <TransferIcon transferType={transfer.type} />
           {width > 430 && (
             <a
               className="recent-activity-image"
@@ -279,6 +271,22 @@ function TokenRow({ transfer, dateFormat }) {
         </div>
       </td>
     </tr>
+  );
+}
+
+function TransferIcon(transferType) {
+  return (
+    <>
+      {transferType === ActivityType.MIGRATION ? (
+        <img src={Migration} alt="Migration" />
+      ) : transferType === ActivityType.CLAIM ? (
+        <img src={Claim} alt="Claim" />
+      ) : transferType === ActivityType.BURN ? (
+        <img src={Burn} alt="Burn" />
+      ) : (
+        <img src={Transfer} alt="Transfer" />
+      )}
+    </>
   );
 }
 
