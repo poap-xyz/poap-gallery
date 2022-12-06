@@ -205,10 +205,10 @@ export async function getLastTransfers(limit = 10) {
 }
 
 export const ActivityType = {
-  'CLAIM': 'CLAIM',
-  'MIGRATION': 'MIGRATION',
-  'TRANSFER': 'TRANSFER',
-  'BURN': 'BURN',
+  CLAIM: 'CLAIM',
+  MIGRATION: 'MIGRATION',
+  TRANSFER: 'TRANSFER',
+  BURN: 'BURN',
 };
 
 export async function getMigrations(amount) {
