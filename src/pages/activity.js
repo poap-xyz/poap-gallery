@@ -207,7 +207,7 @@ function TokenRow({ transfer, dateFormat }) {
           {width > 430 && (
             <a
               className="recent-activity-image"
-              href={`${POAP_APP_URL}/token/${transfer.token.id}`}
+              href={`${POAP_APP_URL}/token/${transfer.tokenId}`}
               target="_blank"
               rel="noopener noreferrer"
             >
