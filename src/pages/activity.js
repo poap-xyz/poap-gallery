@@ -354,7 +354,8 @@ function CreateTable({ transfers, loading }) {
   const tfers = [];
   for (let i = 0; i < transfers.length; i++) {
     const t = transfers[i];
-    tfers.push(<TokenRow key={t.id} transfer={t} dateFormat={dateFormat} />);
+    const k = `${t.eventId}-${t.tokenId}`;
+    tfers.push(<TokenRow key={k} transfer={t} dateFormat={dateFormat} />);
   }
   if (tfers && tfers.length) {
     tfers.push(

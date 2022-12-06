@@ -195,8 +195,9 @@ function Transfers({ transfers }) {
   const tfers = [];
   for (let i = 0; i < transfers.length; i++) {
     const t = transfers[i];
+    const k = `${t.eventId}-${t.tokenId}`;
     t.opacity = i === 0 ? 1.0 : i === 1 ? 0.7 : 0.3;
-    tfers.push(<Transfer key={t.id} transfer={t} />);
+    tfers.push(<Transfer key={k} transfer={t} />);
   }
   return tfers;
 }
