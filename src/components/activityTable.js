@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { getLastTransfers, POAP_APP_URL } from '../store/api';
+import { ActivityType, getLastTransfers, POAP_APP_URL } from '../store/api';
 import { Pill } from './pill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
@@ -83,11 +83,11 @@ function Transfer({ transfer }) {
           <img
             style={{ width: '37px', zIndex: 2 }}
             src={
-              transfer.type === 'MIGRATION'
+              transfer.type === ActivityType.MIGRATION
                 ? MigrateIcon
-                : transfer.type === 'CLAIM'
+                : transfer.type === ActivityType.CLAIM
                 ? ClaimIcon
-                : transfer.type === 'BURN'
+                : transfer.type === ActivityType.BURN
                 ? BurnIcon
                 : TransferIcon
             }
@@ -117,7 +117,7 @@ function Transfer({ transfer }) {
               className={transfer.type}
               tooltip={false}
             />
-            {transfer.type === 'CLAIM' ? (
+            {transfer.type === ActivityType.CLAIM ? (
               <span>
                 {' '}
                 POAP claimed on event{' '}
@@ -128,7 +128,7 @@ function Transfer({ transfer }) {
                 </object>{' '}
                 on {transfer.chain}
               </span>
-            ) : transfer.type === 'TRANSFER' ? (
+            ) : transfer.type === ActivityType.TRANSFER ? (
               <span>
                 POAP transferred from
                 <object>
@@ -154,7 +154,7 @@ function Transfer({ transfer }) {
                 </object>
                 on {transfer.chain}
               </span>
-            ) : transfer.type === 'MIGRATION' ? (
+            ) : transfer.type === ActivityType.MIGRATION ? (
               <span>
                 {' '}
                 POAP migrated to
@@ -170,7 +170,7 @@ function Transfer({ transfer }) {
                 </object>
                 from {transfer.chain} to Ethereum
               </span>
-            ) : transfer.type === 'BURN' ? (
+            ) : transfer.type === ActivityType.BURN ? (
               <span>
                 POAP burned on event{' '}
                 <Link to={`/event/${transfer.eventId}`}>

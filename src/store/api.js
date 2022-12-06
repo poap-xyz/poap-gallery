@@ -204,6 +204,13 @@ export async function getLastTransfers(limit = 10) {
   return await fetchPOAPApi('/activity', { limit });
 }
 
+export const ActivityType = {
+  'CLAIM': 'CLAIM',
+  'MIGRATION': 'MIGRATION',
+  'TRANSFER': 'TRANSFER',
+  'BURN': 'BURN',
+};
+
 export async function getMigrations(amount) {
   // Step 1: get most recently minted tokens in mainnet (since POAP only mints on layer 2, it's safe to assume they were migrated)
   const res = await fetch(MAINNET_SUBGRAPH_URL, {

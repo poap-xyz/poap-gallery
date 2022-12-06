@@ -15,7 +15,7 @@ import {
   selectMostRecent,
   selectUpcoming,
 } from '../store';
-import { getLastTransfers, POAP_APP_URL } from '../store/api';
+import { ActivityType, getLastTransfers, POAP_APP_URL } from '../store/api';
 import { EventCard } from '../components/eventCard';
 import { Pill } from '../components/pill';
 import Migration from '../assets/images/migrate.svg';
@@ -124,11 +124,11 @@ function TokenRow({ transfer, dateFormat }) {
   return width > 780 ? (
     <tr>
       <td className="recent-activity" style={{ width: '100%' }}>
-        {transfer.type === 'MIGRATION' ? (
+        {transfer.type === ActivityType.MIGRATION ? (
           <img src={Migration} alt="Migration" />
-        ) : transfer.type === 'CLAIM' ? (
+        ) : transfer.type === ActivityType.CLAIM ? (
           <img src={Claim} alt="Claim" />
-        ) : transfer.type === 'BURN' ? (
+        ) : transfer.type === ActivityType.BURN ? (
           <img src={Burn} alt="Burn" />
         ) : (
           <img src={Transfer} alt="Transfer" />
@@ -195,11 +195,11 @@ function TokenRow({ transfer, dateFormat }) {
     <tr>
       <td className="mobile-row">
         <div className="recent-activity" style={{ width: '100%' }}>
-          {transfer.type === 'Migration' ? (
-            <img src={Migration} alt="MIGRATION" />
-          ) : transfer.type === 'CLAIM' ? (
+          {transfer.type === ActivityType.MIGRATION ? (
+            <img src={Migration} alt="Migration" />
+          ) : transfer.type === ActivityType.CLAIM ? (
             <img src={Claim} alt="Claim" />
-          ) : transfer.type === 'BURN' ? (
+          ) : transfer.type === ActivityType.BURN ? (
             <img src={Burn} alt="Burn" />
           ) : (
             <img src={Transfer} alt="Transfer" />
@@ -285,7 +285,7 @@ function TokenRow({ transfer, dateFormat }) {
 function TokenRowDescription({ transfer }) {
   return (
     <div className="description">
-      {transfer.type === 'MIGRATION' ? (
+      {transfer.type === ActivityType.MIGRATION ? (
         <span>
           POAP migrated to
           <a
@@ -298,13 +298,13 @@ function TokenRowDescription({ transfer }) {
           </a>
           from {transfer.chain} to Ethereum
         </span>
-      ) : transfer.type === 'CLAIM' ? (
+      ) : transfer.type === ActivityType.CLAIM ? (
         <span>
           POAP claimed on event{' '}
           <Link to={`/event/${transfer.eventId}`}>#{transfer.eventId}</Link> on{' '}
           {transfer.chain}
         </span>
-      ) : transfer.type === 'BURN' ? (
+      ) : transfer.type === ActivityType.BURN ? (
         <span>
           POAP burned on event{' '}
           <Link to={`/event/${transfer.eventId}`}>#{transfer.eventId}</Link> on{' '}
