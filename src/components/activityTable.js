@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { getLastTransfers, POAP_APP_URL } from '../store/api';
 import { Pill } from './pill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,13 +10,20 @@ import ClaimIcon from '../assets/images/claim-icon.svg';
 import MigrateIcon from '../assets/images/migrate-icon.svg';
 import BurnIcon from '../assets/images/burn-icon.svg';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
-import { utcDateFromNow } from '../utilities/utilities';
+import { debounce, utcDateFromNow } from '../utilities/utilities';
 import { LazyImage } from './LazyImage';
 
 export default function ActivityTable() {
   const [loading, setLoading] = useState(false);
   const [transfers, setTransfers] = useState([]);
   const transferLimit = 3;
+
+  const toastNewTransfersError = () =>
+    toast.error('There was a problem loading recent activity', {});
+  const debouncedToastNewTransfersError = useCallback(
+    debounce(() => toastNewTransfersError(), 500),
+    []
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -25,11 +33,12 @@ export default function ActivityTable() {
         setLoading(false);
       },
       (error) => {
+        debouncedToastNewTransfersError();
         setLoading(false);
         console.log('failed to fetch last transfers', error);
       }
     );
-  }, [setLoading, getLastTransfers]);
+  }, [setLoading, getLastTransfers, debouncedToastNewTransfersError]);
 
   return (
     <div
