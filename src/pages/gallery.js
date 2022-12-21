@@ -33,9 +33,6 @@ export default function Gallery() {
   const events = useSelector(selectEvents);
   const indexFetchStatus = useSelector(selectIndexFetchStatus);
   const totalResultsAmount = useSelector(selectTotalResults);
-  const invalidEventsAmount = useSelector(
-    (state) => state.events.currentInvalidResults
-  );
 
   const [items, setItems] = useState(events);
   const [searchStatus, setSearchStatus] = useState(SEARCH_STATUS.NoSearch);
@@ -61,9 +58,8 @@ export default function Gallery() {
             type: orderType.val,
             order: orderDirection.val,
           },
-      nameFilter: nameFilter,
-      privateEvents: false,
-      reset: reset,
+      nameFilter,
+      reset,
     };
     dispatch(fetchIndexData(fetchDataArgs));
   };
@@ -192,7 +188,7 @@ export default function Gallery() {
                     fontSize: '1rem',
                   }}
                 >
-                  {totalResultsAmount - invalidEventsAmount} result(s)
+                  {totalResultsAmount} result(s)
                 </span>
               )}
             </div>

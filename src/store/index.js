@@ -38,10 +38,7 @@ const initialEventsState = {
   tokens: [],
   tokenId: null,
   apiSkip: 0,
-  mainnetSkip: 0,
-  xdaiSkip: 0,
   totalResults: 0,
-  currentInvalidResults: 0,
   page: 0,
 };
 
@@ -79,36 +76,16 @@ const eventsSlice = createSlice({
       }
     },
     [fetchIndexData.fulfilled]: (state, action) => {
-      const {
-        poapEvents,
-        apiSkip,
-        mainnetSkip,
-        xdaiSkip,
-        page,
-        total,
-        invalid,
-      } = action.payload;
+      const { poapEvents, apiSkip, page, total } = action.payload;
 
       if (page === 0) {
-        state.currentInvalidResults = invalid;
         state.events = poapEvents;
       } else {
-        state.currentInvalidResults += invalid;
-        poapEvents.forEach((poapE) => {
-          const match = state.events.find((e) => e.id === poapE.id);
-          if (match) {
-            match.tokenCount += poapE.tokenCount;
-            match.transferCount += poapE.transferCount;
-          } else {
-            state.events.push(poapE);
-          }
-        });
+        state.events = [...state.events, ...poapEvents];
       }
       state.page++;
 
       state.apiSkip = apiSkip;
-      state.mainnetSkip = mainnetSkip;
-      state.xdaiSkip = xdaiSkip;
       state.totalResults = total;
       state.status = FETCH_INDEX_PAGE_INFO_STATUS.SUCCEEDED;
     },
