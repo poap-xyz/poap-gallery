@@ -44,14 +44,8 @@ const initialEventsState = {
 
 export const fetchIndexData = createAsyncThunk(
   'events/fetchIndexEvents',
-  async ({ orderBy, reset, nameFilter, privateEvents = undefined }, thunkAPI) =>
-    getIndexPageData(
-      orderBy,
-      reset,
-      nameFilter,
-      privateEvents,
-      thunkAPI.getState()
-    )
+  async ({ orderBy, reset, nameFilter }, thunkAPI) =>
+    getIndexPageData(orderBy, reset, nameFilter, thunkAPI.getState())
 );
 export const fetchEventPageData = createAsyncThunk(
   'events/fetchEventPageData',
