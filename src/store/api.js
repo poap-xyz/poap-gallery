@@ -88,7 +88,7 @@ export async function getBlockchainPaginatedEvents({
     };
   }
 
-  return await fetchPOAPApi('/blockchain-paginated-events', queryParams);
+  return await fetchPOAPApi('/blockchain-events', queryParams);
 }
 
 export async function getEvent(id) {
