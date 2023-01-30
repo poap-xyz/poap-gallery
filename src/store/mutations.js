@@ -121,3 +121,9 @@ export async function getEventPageData(eventId, first, skip) {
     }),
   };
 }
+
+export async function getEventTokenData(eventId, first, skip) {
+  const eventTokens = await getEventTokens(eventId, first, skip);
+  const { tokens } = eventTokens;
+  return { id: eventId, tokens };
+}
