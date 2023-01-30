@@ -1,9 +1,6 @@
-export const XDAI_SUBGRAPH_URL = process.env.REACT_APP_XDAI_SUBGRAPH_URL;
-export const MAINNET_SUBGRAPH_URL = process.env.REACT_APP_MAINNET_SUBGRAPH_URL;
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
 export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const POAP_APP_URL = process.env.REACT_APP_POAP_APP_URL;
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const OrderType = {
   id: {
     name: 'Id',
