@@ -38,7 +38,7 @@ import { Spinner } from '../components/spinner';
 import { collectionlLinks, externalLinkSetter } from '../utilities/utilities';
 import { POAP_APP_URL } from '../store/api';
 
-const GRAPH_LIMIT = 300;
+const FETCH_POAPS_LIMIT = 300;
 const CSV_STATUS = {
   DownloadingData: 'DownloadingData',
   DownloadingLastDataChunk: 'DownloadingLastDataChunk',
@@ -119,8 +119,8 @@ export function Event() {
       dispatch(
         fetchEventPageData({
           eventId,
-          first: GRAPH_LIMIT,
-          skip: GRAPH_LIMIT * pageIndex,
+          first: FETCH_POAPS_LIMIT,
+          skip: FETCH_POAPS_LIMIT * pageIndex,
         })
       );
     }
@@ -128,7 +128,7 @@ export function Event() {
 
   useEffect(() => {
     // Call next batch of tokens (if there is more), then load the new tokens data
-    const totalPages = Math.ceil(event.tokenCount / GRAPH_LIMIT);
+    const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
     const hasMorePages = pageIndex < totalPages;
     const hasTokens = tokens && tokens.length > 0;
     if (event && hasTokens && hasMorePages) {
