@@ -36,7 +36,7 @@ const initialEventsState = {
   eventStatus: FETCH_EVENT_PAGE_INFO_STATUS.IDLE,
   eventError: null,
   tokens: [],
-  tokenId: null,
+  eventId: null,
   apiSkip: 0,
   totalResults: 0,
   page: 0,
@@ -92,13 +92,13 @@ const eventsSlice = createSlice({
       state.eventStatus = FETCH_EVENT_PAGE_INFO_STATUS.LOADING;
     },
     [fetchEventPageData.fulfilled]: (state, action) => {
-      if (state.tokenId === action.payload.id) {
+      if (state.eventId === action.payload.id) {
         state.tokens = current(state.tokens).concat(action.payload.tokens);
       } else {
         state.tokens = action.payload.tokens;
       }
 
-      state.tokenId = action.payload.id;
+      state.eventId = action.payload.id;
       state.event = action.payload.event;
       state.eventStatus = FETCH_EVENT_PAGE_INFO_STATUS.SUCCEEDED;
     },
