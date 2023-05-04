@@ -85,6 +85,7 @@ $height-content-first-large: calc(#{$height-content-large} - #{$height-content-s
         display: flex;
         flex-direction: row;
         justify-content: center;
+        align-items: center;
         gap: 6px;
       }
     }

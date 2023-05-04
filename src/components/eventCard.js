@@ -231,11 +231,14 @@ function Content({ type, width, size, event, power }) {
             icon={size === 's' ? null : faCalendar}
           />
           {event.start_date !== event.end_date && (
-            <Pill
-              style={{ minWidth: size === 's' ? 'none' : '100px' }}
-              text={event.end_date}
-              icon={size === 's' ? null : faCalendar}
-            />
+            <>
+              -
+              <Pill
+                style={{ minWidth: size === 's' ? 'none' : '100px' }}
+                text={event.end_date}
+                icon={size === 's' ? null : faCalendar}
+              />
+            </>
           )}
           {renderLocation(event, size)}
         </div>
