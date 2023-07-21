@@ -1,3 +1,7 @@
+import { PoapCompass } from '@poap-xyz/providers';
+import { PAGINATED_DROPS_QUERY } from './compass/queries/paginatedDrops';
+import { creatUndefinedOrder, createFilter } from './compass/utils';
+
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
 export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
 export const POAP_APP_URL = process.env.REACT_APP_POAP_APP_URL;
@@ -8,7 +12,7 @@ export const OrderType = {
   },
   tokenCount: {
     name: 'Supply',
-    val: 'token_count',
+    val: 'poap_count',
   },
   transferCount: {
     name: 'Transfers',
@@ -39,32 +43,39 @@ export const isBlockchainOrderByType = (orderBy) =>
 
 export const PAGE_LIMIT = 20;
 
+const compass = new PoapCompass('you_api_key');
+
 export async function getPaginatedEvents({
   name = undefined,
-  event_ids = undefined,
   offset = undefined,
   limit = undefined,
   orderBy = undefined,
-  privateEvents = undefined,
 }) {
-  let queryParams = {
-    name,
-    event_ids,
+  const variables = {
     limit,
     offset,
-    private_event: privateEvents,
-    with_power: true,
+    where: {
+      private: { _eq: 'false' },
+      stats_by_chain_aggregate: { count: { predicate: { _gte: 1 } } },
+      ...createFilter('name', name),
+    },
+    orderBy: creatUndefinedOrder(orderBy.type, orderBy.order),
   };
 
-  if (orderBy?.type && orderBy?.order) {
-    queryParams = {
-      ...queryParams,
-      sort_field: orderBy.type,
-      sort_dir: orderBy.order,
+  const { data } = await compass.request(PAGINATED_DROPS_QUERY, variables);
+  const drops = data.drops.map((drop) => {
+    return {
+      ...drop,
+      tokenCount: drop.stats_by_chain_aggregate.aggregate.sum
+        ? Number(drop.stats_by_chain_aggregate.aggregate.sum.poap_count)
+        : 0,
+      transferCount: drop.stats_by_chain_aggregate.aggregate.sum
+        ? Number(drop.stats_by_chain_aggregate.aggregate.sum.transfer_count)
+        : 0,
     };
-  }
+  });
 
-  return await fetchPOAPApi('/paginated-events', queryParams);
+  return { items: drops, total: 1000000 };
 }
 
 export async function getBlockchainPaginatedEvents({

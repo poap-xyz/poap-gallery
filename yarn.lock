@@ -1972,6 +1972,16 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@poap-xyz/providers@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@poap-xyz/providers/-/providers-0.0.28.tgz#d05dc30a7e30f1c0fe8a63225dbb55b21a356681"
+  integrity sha512-B6Buj+YDEfcwxn/AmHRorw4sEYFrN3mTjXWXhlp20VRDB0mC/ykYqTzUxbJ4TdJezP17OJoXf7QecRByi8bY6Q==
+
+"@poap-xyz/utils@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@poap-xyz/utils/-/utils-0.0.28.tgz#1567885d3f2b4e9c98f7717f8007eeb112b7f2c6"
+  integrity sha512-h2alte60eELMVTf/ZfrTvQO4UE2wFZRaNa1IEOYbkldzeWkJlZvdr4ad5OXoCZhB2mALvHmzEcJjyKxzYAEZrg==
+
 "@react-hook/debounce@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@react-hook/debounce/-/debounce-3.0.0.tgz#9eea8b5d81d4cb67cd72dd8657b3ff724afc7cad"

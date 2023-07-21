@@ -1,10 +1,10 @@
 import {
-  getBlockchainPaginatedEvents,
+  // getBlockchainPaginatedEvents,
   getEvent,
   getEventTokens,
   getPaginatedEvents,
   getTop3Events,
-  isBlockchainOrderByType,
+  // isBlockchainOrderByType,
   PAGE_LIMIT,
 } from './api';
 import { ensABI } from './abis';
@@ -50,21 +50,13 @@ export async function getIndexPageData(orderBy, reset, nameFilter, state) {
   while (events.length < PAGE_LIMIT && loopLimit > 0) {
     const batchSize =
       events.length > 0 ? PAGE_LIMIT - events.length : PAGE_LIMIT;
-    let paginatedResults;
-    if (isBlockchainOrderByType(orderBy)) {
-      paginatedResults = await getBlockchainPaginatedEvents({
-        offset: apiSkip,
-        limit: batchSize,
-        orderBy,
-      });
-    } else {
-      paginatedResults = await getPaginatedEvents({
-        name: nameFilter,
-        offset: apiSkip,
-        limit: batchSize,
-        orderBy,
-      });
-    }
+
+    const paginatedResults = await getPaginatedEvents({
+      name: nameFilter,
+      offset: apiSkip,
+      limit: batchSize,
+      orderBy,
+    });
     if (paginatedResults) {
       if (paginatedResults.items && paginatedResults.items.length > 0) {
         events = events.concat(paginatedResults.items);
