@@ -43,7 +43,10 @@ export const isBlockchainOrderByType = (orderBy) =>
 
 export const PAGE_LIMIT = 20;
 
-const compass = new PoapCompass('you_api_key');
+const compass = new PoapCompass(
+  'you_api_key',
+  'https://public.compass.poap.tech/v1/graphql'
+);
 
 export async function getPaginatedEvents({
   name = undefined,
