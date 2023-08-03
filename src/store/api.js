@@ -40,9 +40,6 @@ export const OrderDirection = {
     val: 'desc',
   },
 };
-export const isBlockchainOrderByType = (orderBy) =>
-  orderBy.type === OrderType.tokenCount.val ||
-  orderBy.type === OrderType.transferCount.val;
 
 export const PAGE_LIMIT = 20;
 
@@ -93,27 +90,6 @@ export async function getPaginatedEvents({
   });
 
   return { items: drops, total: 1000000 };
-}
-
-export async function getBlockchainPaginatedEvents({
-  offset = undefined,
-  limit = undefined,
-  orderBy = undefined,
-}) {
-  let queryParams = {
-    limit,
-    offset,
-  };
-
-  if (orderBy?.type && orderBy?.order) {
-    queryParams = {
-      ...queryParams,
-      sort_field: orderBy.type,
-      sort_dir: orderBy.order,
-    };
-  }
-
-  return await fetchPOAPApi('/blockchain-events', queryParams);
 }
 
 export async function getEvent(id) {

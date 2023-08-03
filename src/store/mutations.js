@@ -1,10 +1,8 @@
 import {
-  // getBlockchainPaginatedEvents,
   getEvent,
   getEventTokens,
   getPaginatedEvents,
   getTop3Events,
-  // isBlockchainOrderByType,
   PAGE_LIMIT,
 } from './api';
 import { ensABI } from './abis';
