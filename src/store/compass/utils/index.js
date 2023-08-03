@@ -1,7 +1,7 @@
 import { OrderType } from '../../api';
 
-export function createFilter(key, value) {
-  return value ? { [key]: { _ilike: `%${value}%` } } : {};
+export function createSearchFilter(key, value) {
+  return value ? { search: value } : {};
 }
 
 export function creatUndefinedOrder(key, value) {

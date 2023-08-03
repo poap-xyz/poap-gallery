@@ -1,6 +1,9 @@
 import { PoapCompass } from '@poap-xyz/providers';
-import { PAGINATED_DROPS_QUERY } from './compass/queries/paginatedDrops';
-import { creatUndefinedOrder, createFilter } from './compass/utils';
+import {
+  PAGINATED_DROPS_QUERY,
+  SEARCH_PAGINATED_DROPS_QUERY,
+} from './compass/queries/paginatedDrops';
+import { creatUndefinedOrder, createSearchFilter } from './compass/utils';
 
 export const POAP_API_URL = process.env.REACT_APP_POAP_API_URL;
 export const POAP_API_API_KEY = process.env.REACT_APP_POAP_API_API_KEY;
@@ -59,14 +62,25 @@ export async function getPaginatedEvents({
     offset,
     where: {
       private: { _eq: 'false' },
-      stats_by_chain_aggregate: { count: { predicate: { _gte: 1 } } },
-      ...createFilter('name', name),
+      stats_by_chain: { poap_count: { _gte: 1 } },
     },
     orderBy: creatUndefinedOrder(orderBy.type, orderBy.order),
+    ...createSearchFilter('name', name),
   };
 
-  const { data } = await compass.request(PAGINATED_DROPS_QUERY, variables);
-  const drops = data.drops.map((drop) => {
+  let graphqlDrops = [];
+  if (name) {
+    const response = await compass.request(
+      SEARCH_PAGINATED_DROPS_QUERY,
+      variables
+    );
+    graphqlDrops = response.data.search_drops;
+  } else {
+    const response = await compass.request(PAGINATED_DROPS_QUERY, variables);
+    graphqlDrops = response.data.drops;
+  }
+
+  const drops = graphqlDrops.map((drop) => {
     return {
       ...drop,
       tokenCount: drop.stats_by_chain_aggregate.aggregate.sum
