@@ -38,7 +38,7 @@ export const PAGINATED_DROPS_QUERY = `
 `;
 
 export const DROPS_COUNT = `
-  query PaginatedDrops(
+  query PaginatedCountDrops(
     $where: drops_bool_exp
   ) {
     drops_aggregate(where: $where) {
@@ -50,7 +50,7 @@ export const DROPS_COUNT = `
 `;
 
 export const SEARCH_PAGINATED_DROPS_QUERY = `
-query PaginatedDrops($limit: Int!, $offset: Int!, $orderBy: [drops_order_by!], $where: drops_bool_exp, $search: String = "") {
+query SearchPaginatedDrops($limit: Int!, $offset: Int!, $orderBy: [drops_order_by!], $where: drops_bool_exp, $search: String = "") {
   search_drops(limit: $limit, offset: $offset, order_by: $orderBy, where: $where, args: {search: $search}) {
     id
     fancy_id
@@ -84,7 +84,7 @@ query PaginatedDrops($limit: Int!, $offset: Int!, $orderBy: [drops_order_by!], $
 `;
 
 export const SEARCH_DROPS_COUNT = `
-  query PaginatedDrops(
+  query SearchPaginatedCountDrops(
     $where: drops_bool_exp,
     $search: String = ""
   ) {
