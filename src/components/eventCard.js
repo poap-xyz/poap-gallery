@@ -81,7 +81,7 @@ function Header({ type, event }) {
 }
 
 function renderLocation(event, size) {
-  if (event.virtual_event) {
+  if (event.virtual) {
     return (
       <Pill
         className="ellipsis"

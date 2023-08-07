@@ -25,6 +25,7 @@ export const PAGINATED_DROPS_QUERY = `
       created_date
       expiry_date
       end_date
+      virtual
       stats_by_chain_aggregate {
         aggregate {
           sum {
@@ -71,6 +72,7 @@ query SearchPaginatedDrops($limit: Int!, $offset: Int!, $orderBy: [drops_order_b
     created_date
     expiry_date
     end_date
+    virtual
     stats_by_chain_aggregate {
       aggregate {
         sum {
