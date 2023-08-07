@@ -96,7 +96,7 @@ export async function getPaginatedEvents({
         : 0,
     };
   });
-  console.log(total);
+
   return { items: drops, total };
 }
 
