@@ -16,7 +16,7 @@ import Power from '../assets/images/power.svg';
 import Transfers from '../assets/images/transfers.svg';
 import Supply from '../assets/images/supply.svg';
 import { LazyImage } from './LazyImage';
-import { isEmptyString } from '../utilities/utilities';
+import { isEmptyString, utcDateFormatted } from '../utilities/utilities';
 
 export function EventCard({ event, size = 's', type = '', power = 0 }) {
   const width = useWindowWidth();
@@ -227,7 +227,7 @@ function Content({ type, width, size, event, power }) {
         <div className="content-time-place">
           <Pill
             style={{ minWidth: size === 's' ? 'none' : '100px' }}
-            text={event.start_date}
+            text={utcDateFormatted(event.start_date)}
             icon={size === 's' ? null : faCalendar}
           />
           {event.start_date !== event.end_date && (
@@ -235,7 +235,7 @@ function Content({ type, width, size, event, power }) {
               -
               <Pill
                 style={{ minWidth: size === 's' ? 'none' : '100px' }}
-                text={event.end_date}
+                text={utcDateFormatted(event.end_date)}
                 icon={size === 's' ? null : faCalendar}
               />
             </>
