@@ -88,7 +88,7 @@ export async function getPaginatedEvents({
         : 0,
     };
   });
-
+  // The total is not used
   return { items: drops, total: 1000000 };
 }
 
