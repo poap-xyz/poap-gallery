@@ -1,6 +1,8 @@
 import { PoapCompass } from '@poap-xyz/providers';
 import {
+  DROPS_COUNT,
   PAGINATED_DROPS_QUERY,
+  SEARCH_DROPS_COUNT,
   SEARCH_PAGINATED_DROPS_QUERY,
 } from './compass/queries/paginatedDrops';
 import { creatUndefinedOrder, createSearchFilter } from './compass/utils';
@@ -65,16 +67,22 @@ export async function getPaginatedEvents({
     ...createSearchFilter('name', name),
   };
 
-  let graphqlDrops = [];
+  let graphqlDrops;
+  let total;
   if (name) {
-    const response = await compass.request(
-      SEARCH_PAGINATED_DROPS_QUERY,
-      variables
-    );
-    graphqlDrops = response.data.search_drops;
+    const results = await Promise.all([
+      compass.request(SEARCH_PAGINATED_DROPS_QUERY, variables),
+      compass.request(SEARCH_DROPS_COUNT, variables),
+    ]);
+    graphqlDrops = results[0].data.search_drops;
+    total = results[1].data.search_drops_aggregate.aggregate.count;
   } else {
-    const response = await compass.request(PAGINATED_DROPS_QUERY, variables);
-    graphqlDrops = response.data.drops;
+    const results = await Promise.all([
+      compass.request(PAGINATED_DROPS_QUERY, variables),
+      compass.request(DROPS_COUNT, variables),
+    ]);
+    graphqlDrops = results[0].data.drops;
+    total = results[1].data.drops_aggregate.aggregate.count;
   }
 
   const drops = graphqlDrops.map((drop) => {
@@ -88,8 +96,8 @@ export async function getPaginatedEvents({
         : 0,
     };
   });
-  // The total is not used
-  return { items: drops, total: 1000000 };
+  console.log(total);
+  return { items: drops, total };
 }
 
 export async function getEvent(id) {
