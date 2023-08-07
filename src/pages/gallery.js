@@ -86,8 +86,7 @@ export default function Gallery() {
         events.length ? SEARCH_STATUS.Success : SEARCH_STATUS.Failed
       );
     }
-
-    if (page > 0 && events.length === items.length) {
+    if (events.length === totalResultsAmount) {
       setMoreToLoad(false);
     } else {
       setMoreToLoad(true);
