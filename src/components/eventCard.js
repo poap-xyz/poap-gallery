@@ -17,7 +17,6 @@ import Transfers from '../assets/images/transfers.svg';
 import Supply from '../assets/images/supply.svg';
 import { LazyImage } from './LazyImage';
 import { isEmptyString } from '../utilities/utilities';
-import dayjs from 'dayjs';
 
 export function EventCard({ event, size = 's', type = '', power = 0 }) {
   const width = useWindowWidth();
@@ -228,7 +227,7 @@ function Content({ type, width, size, event, power }) {
         <div className="content-time-place">
           <Pill
             style={{ minWidth: size === 's' ? 'none' : '100px' }}
-            text={dayjs(event.start_date).format('DD-MMM-YYYY')}
+            text={event.start_date}
             icon={size === 's' ? null : faCalendar}
           />
           {event.start_date !== event.end_date && (
@@ -236,7 +235,7 @@ function Content({ type, width, size, event, power }) {
               -
               <Pill
                 style={{ minWidth: size === 's' ? 'none' : '100px' }}
-                text={dayjs(event.end_date).format('DD-MMM-YYYY')}
+                text={event.end_date}
                 icon={size === 's' ? null : faCalendar}
               />
             </>
