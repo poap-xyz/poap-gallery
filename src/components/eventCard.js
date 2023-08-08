@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,
@@ -34,7 +33,7 @@ export function EventCard({ event, size = 's', type = '', power = 0 }) {
   type = validateType(type);
 
   return (
-    <Link
+    <div
       to={'/event/' + event.id}
       className={`
       gallery-card
@@ -48,7 +47,7 @@ export function EventCard({ event, size = 's', type = '', power = 0 }) {
         size={size}
         power={power}
       />
-    </Link>
+    </div>
   );
 }
 
