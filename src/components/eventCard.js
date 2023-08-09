@@ -16,6 +16,7 @@ import Transfers from '../assets/images/transfers.svg';
 import Supply from '../assets/images/supply.svg';
 import { LazyImage } from './LazyImage';
 import { isEmptyString, utcDateFormatted } from '../utilities/utilities';
+import { Link } from 'react-router-dom/cjs/react-router-dom';
 
 export function EventCard({ event, size = 's', type = '', power = 0 }) {
   const width = useWindowWidth();
@@ -32,21 +33,38 @@ export function EventCard({ event, size = 's', type = '', power = 0 }) {
 
   type = validateType(type);
 
-  return (
+  const content = () => {
+    return (
+      <>
+        <Header event={event} type={type} />
+        <Content
+          event={event}
+          type={type}
+          width={width}
+          size={size}
+          power={power}
+        />
+      </>
+    );
+  };
+
+  return size !== 'l' ? (
+    <Link
+      to={'/event/' + event.id}
+      className={`
+        gallery-card
+        ${size === 'l' ? 'large' : size === 'm' ? 'medium' : 'small'}`}
+    >
+      {content()}
+    </Link>
+  ) : (
     <div
       to={'/event/' + event.id}
       className={`
       gallery-card
       ${size === 'l' ? 'large' : size === 'm' ? 'medium' : 'small'}`}
     >
-      <Header event={event} type={type} />
-      <Content
-        event={event}
-        type={type}
-        width={width}
-        size={size}
-        power={power}
-      />
+      {content()}
     </div>
   );
 }
