@@ -152,7 +152,7 @@ export const collectionlLinks = [
         alt={'Open external link'}
       />
     ),
-    tooltipText: 'View Collection in Zerion.io',
+    tooltipText: 'View Collection in Zapper.xyz',
   },
   {
     id: WELOOK_PARTNER.name,
