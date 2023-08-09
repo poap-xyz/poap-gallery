@@ -7,6 +7,7 @@ import { ReactComponent as Poap } from '../assets/images/POAP.svg';
 import { ReactComponent as PoapIn } from '../assets/images/poapin.svg';
 import { ReactComponent as Welook } from '../assets/images/welook.svg';
 import { ReactComponent as Zerion } from '../assets/images/zerion.svg';
+import { ReactComponent as Zapper } from '../assets/images/zapper.svg';
 
 //Partners
 const POAP_EXPLORE_PARTNER = {
@@ -17,6 +18,7 @@ const RAINBOW_PARTNER = { name: 'RAINBOW', url: 'https://rainbow.me' };
 const WELOOK_PARTNER = { name: 'WELOOK', url: 'https://welook.io' };
 const POAP_IN_PARTNER = { name: 'POAP_IN', url: 'https://poap.in/v' };
 const ZERION_PARTNER = { name: 'ZERION', url: 'https://app.zerion.io' };
+const ZAPPER_PARTNER = { name: 'ZAPPER', url: 'https://zapper.xyz' };
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -86,11 +88,11 @@ export const externalLinkSetter = (owner_id, name) => {
     [WELOOK_PARTNER.name]: `${WELOOK_PARTNER.url}/${owner_id}`,
     [POAP_IN_PARTNER.name]: `${POAP_IN_PARTNER.url}/${owner_id}`,
     [ZERION_PARTNER.name]: `${ZERION_PARTNER.url}/${owner_id}/nfts?collections=41`,
+    [ZAPPER_PARTNER.name]: `${ZAPPER_PARTNER.url}/nft/gnosis/0x22c1f6050e56d2876009903609a2cc3fef83b415?collectionOwners%5B%5D=${owner_id}`,
     default: '',
   };
   return collectionLinks[name] || collectionLinks['default'];
 };
-
 export const collectionlLinks = [
   {
     id: POAP_EXPLORE_PARTNER.name,
@@ -126,6 +128,21 @@ export const collectionlLinks = [
     id: ZERION_PARTNER.name,
     icon: (
       <Zerion
+        style={{
+          margin: '0 5px',
+          verticalAlign: 'middle',
+          width: '21px',
+          height: '21px',
+        }}
+        alt={'Open external link'}
+      />
+    ),
+    tooltipText: 'View Collection in Zerion.io',
+  },
+  {
+    id: ZAPPER_PARTNER.name,
+    icon: (
+      <Zapper
         style={{
           margin: '0 5px',
           verticalAlign: 'middle',
