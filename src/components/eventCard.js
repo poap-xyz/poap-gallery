@@ -223,14 +223,16 @@ function Content({ type, width, size, event, power }) {
             <div className="content-description-main">
               {nl2br(event.description)}
             </div>
-            <span
-              onClick={() => window.open(event.event_url, '_blank')}
-              className="content-description-url ellipsis"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {event.event_url}
-            </span>
+            {event.event_url && (
+              <a
+                href={event.event_url}
+                className="content-description-url ellipsis"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {event.event_url}
+              </a>
+            )}
           </div>
         ) : (
           /* id */
