@@ -1,12 +1,9 @@
 import { PoapCompass } from '@poap-xyz/providers';
 import {
   DROPS_COUNT,
-  MOST_MINTED_DROP_QUERY,
-  MOST_RECENT,
   PAGINATED_DROPS_QUERY,
   SEARCH_DROPS_COUNT,
   SEARCH_PAGINATED_DROPS_QUERY,
-  UPCOMING_DROP,
 } from './compass/queries/drops';
 import { creatUndefinedOrder, createSearchFilter } from './compass/utils';
 
@@ -131,27 +128,48 @@ export async function getTop3Events() {
       tokenCount:
         compassDrop.stats_by_chain_aggregate.aggregate.sum.poap_count ?? 0,
       transferCount:
-        compassDrop.stats_by_chain_aggregate.aggregate.sum.transferCount ?? 0,
-    };
-  };
-
-  const fromCompassStatsByChainToEventInfo = (compassStatsByChain) => {
-    return {
-      ...compassStatsByChain.drop,
-      tokenCount: compassStatsByChain.poap_count,
-      transferCount: compassStatsByChain.transfer_count,
+        compassDrop.stats_by_chain_aggregate.aggregate.sum.transfer_count ?? 0,
     };
   };
 
   const top3Events = await Promise.all([
-    compass.request(MOST_MINTED_DROP_QUERY, {}),
-    compass.request(UPCOMING_DROP, {}),
-    compass.request(MOST_RECENT, {}),
+    compass.request(PAGINATED_DROPS_QUERY, {
+      limit: 1,
+      offset: 0,
+      orderBy: [
+        {
+          stats_by_chain_aggregate: { sum: { poap_count: 'desc_nulls_last' } },
+        },
+      ],
+      where: {
+        private: { _eq: 'false' },
+      },
+    }),
+    // Upcoming
+    compass.request(PAGINATED_DROPS_QUERY, {
+      limit: 1,
+      offset: 0,
+      orderBy: [{ start_date: 'asc' }],
+      where: {
+        private: { _eq: 'false' },
+        start_date: { _gt: 'now' },
+        stats_by_chain: { poap_count: { _gte: 1 } },
+      },
+    }),
+    // Most recent
+    compass.request(PAGINATED_DROPS_QUERY, {
+      limit: 1,
+      offset: 0,
+      orderBy: [{ start_date: 'desc' }],
+      where: {
+        private: { _eq: 'false' },
+        start_date: { _lt: 'now' },
+        stats_by_chain: { poap_count: { _gte: 1 } },
+      },
+    }),
   ]);
   return {
-    mostClaimed: fromCompassStatsByChainToEventInfo(
-      top3Events[0].data.drops_stats_by_chain[0]
-    ),
+    mostClaimed: fromCompassDropToEventInfo(top3Events[0].data.drops[0]),
     upcoming: fromCompassDropToEventInfo(top3Events[1].data.drops[0]),
     mostRecent: fromCompassDropToEventInfo(top3Events[2].data.drops[0]),
   };
