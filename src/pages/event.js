@@ -570,25 +570,46 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
         if (validName) {
           if (data[i]) {
             _data[i].col2 = (
-              <div>
+              <p
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                }}
+              >
                 <a
                   href={PoapScanLink(tokens[i])}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-tip="View Collection in POAP.scan"
+                  style={{
+                    maxWidth: 120,
+                    width: '100%',
+                  }}
                 >
                   {' '}
-                  <ReactTooltip effect="solid" /> {validName}
+                  <ReactTooltip effect="solid" />
+                  <p
+                    style={{
+                      maxWidth: 120,
+                      width: '100%',
+                    }}
+                  >
+                    {validName}
+                  </p>
                 </a>
-                {collectionlLinks.map((link) => (
-                  <ExternalIconCell
-                    url={externalLinkSetter(tokens[i].owner.id, link.id)}
-                    key={link.id}
-                    icon={link.icon}
-                    tooltipText={link.tooltipText}
-                  />
-                ))}
-              </div>
+                <div>
+                  {collectionlLinks.map((link) => (
+                    <ExternalIconCell
+                      url={externalLinkSetter(tokens[i].owner.id, link.id)}
+                      key={link.id}
+                      icon={link.icon}
+                      tooltipText={link.tooltipText}
+                    />
+                  ))}
+                </div>
+              </p>
             );
             _mobileData[i].col1 = (
               <MobileRow token={tokens[i]} address={validName} />
