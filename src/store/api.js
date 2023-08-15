@@ -4,6 +4,7 @@ import {
   PAGINATED_DROPS_QUERY,
   SEARCH_DROPS_COUNT,
   SEARCH_PAGINATED_DROPS_QUERY,
+  TRANSFER_ACTIVITY_QUERY,
 } from './compass/queries/drops';
 import { creatUndefinedOrder, createSearchFilter } from './compass/utils';
 
@@ -111,7 +112,39 @@ export async function getEventTokens(id, limit, offset) {
 }
 
 export async function getLastTransfers(limit = 10) {
-  return await fetchPOAPApi('/activity', { limit });
+  const getTransferActivityType = (transfer) => {
+    if (
+      transfer.from_address === '0x0000000000000000000000000000000000000000'
+    ) {
+      if (['xdai', 'chiado'].includes(transfer.chain)) {
+        return ActivityType.CLAIM;
+      } else {
+        return ActivityType.MIGRATION;
+      }
+    }
+    if (transfer.to_address === '0x0000000000000000000000000000000000000000') {
+      return ActivityType.BURN;
+    }
+    return ActivityType.TRANSFER;
+  };
+
+  const transfersResponse = await compass.request(TRANSFER_ACTIVITY_QUERY, {
+    limit: limit,
+    orderBy: [{ timestamp: 'desc' }],
+  });
+  return transfersResponse.data.transfers.map((transfer) => {
+    return {
+      type: getTransferActivityType(transfer),
+      to: transfer.to_address,
+      owner: transfer.poap.collector_address,
+      tokenId: transfer.poap.id,
+      eventId: transfer.poap.drop.id,
+      eventImage: transfer.poap.drop.image_url,
+      transferCount: transfer.poap.drop_stats_by_chain.transfer_count,
+      timestamp: transfer.timestamp,
+      chain: transfer.chain,
+    };
+  });
 }
 
 export const ActivityType = {
