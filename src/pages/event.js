@@ -422,11 +422,23 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
       rel="noopener noreferrer"
       aria-label={tooltipText}
       data-cooltipz-dir="top"
-      style={{ position: 'relative', width: 27 }}
+      style={{
+        position: 'relative',
+        maxWidth: 175,
+        width: '100%',
+      }}
       onClick={handleIconClick}
       onContextMenu={handleIconClick}
     >
-      <span>{shrinkAddress(content, width > 768 ? 20 : 10)}</span>
+      <p
+        style={{
+          position: 'relative',
+          maxWidth: 175,
+          width: '100%',
+        }}
+      >
+        {shrinkAddress(content, width > 768 ? 20 : 10)}
+      </p>
     </a>
   );
 };
