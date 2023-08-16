@@ -133,7 +133,6 @@ export async function getLastTransfers(limit = 10) {
     orderBy: [{ timestamp: 'desc' }],
   });
   return transfersResponse.data.transfers.map((transfer) => {
-    console.log(transfer);
     return {
       type: getTransferActivityType(transfer),
       to: transfer.to_address,
