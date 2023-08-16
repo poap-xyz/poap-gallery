@@ -107,13 +107,11 @@ query TransferActivity($limit: Int!, $orderBy: [transfers_order_by!]) {
     timestamp
     poap {
       id
+      transfer_count
       collector_address
       drop {
         id
         image_url
-      }
-      drop_stats_by_chain {
-        transfer_count
       }
     }
   }

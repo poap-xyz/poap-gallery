@@ -133,14 +133,16 @@ export async function getLastTransfers(limit = 10) {
     orderBy: [{ timestamp: 'desc' }],
   });
   return transfersResponse.data.transfers.map((transfer) => {
+    console.log(transfer);
     return {
       type: getTransferActivityType(transfer),
       to: transfer.to_address,
+      from: transfer.from_address,
       owner: transfer.poap.collector_address,
       tokenId: transfer.poap.id,
       eventId: transfer.poap.drop.id,
       eventImage: transfer.poap.drop.image_url,
-      transferCount: transfer.poap.drop_stats_by_chain.transfer_count,
+      transferCount: transfer.poap.transfer_count,
       timestamp: transfer.timestamp,
       chain: transfer.chain,
     };
