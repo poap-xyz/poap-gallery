@@ -575,6 +575,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  textAlign: 'start',
                   width: '100%',
                 }}
               >
