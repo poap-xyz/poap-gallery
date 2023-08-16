@@ -585,7 +585,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   rel="noopener noreferrer"
                   data-tip="View Collection in POAP.scan"
                   style={{
-                    maxWidth: 170,
+                    maxWidth: 175,
                     width: '100%',
                   }}
                 >
@@ -593,7 +593,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   <ReactTooltip effect="solid" />
                   <p
                     style={{
-                      maxWidth: 170,
+                      maxWidth: 175,
                       width: '100%',
                     }}
                   >
