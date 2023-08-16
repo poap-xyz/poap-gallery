@@ -424,7 +424,7 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
       data-cooltipz-dir="top"
       style={{
         position: 'relative',
-        maxWidth: 160,
+        maxWidth: 140,
         width: '100%',
       }}
       onClick={handleIconClick}
@@ -433,11 +433,11 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
       <p
         style={{
           position: 'relative',
-          maxWidth: 160,
+          maxWidth: 140,
           width: '100%',
         }}
       >
-        {shrinkAddress(content, width > 768 ? 18 : 10)}
+        {shrinkAddress(content, width > 768 ? 16 : 10)}
       </p>
     </a>
   );
@@ -557,14 +557,21 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
               tooltipText="View Collection in POAP.scan"
               content={tokens[i].owner.id}
             />
-            {collectionlLinks.map((link) => (
-              <ExternalIconCell
-                url={externalLinkSetter(tokens[i].owner.id, link.id)}
-                key={link.id}
-                icon={link.icon}
-                tooltipText={link.tooltipText}
-              />
-            ))}
+            <div
+              style={{
+                minWidth: 210,
+                width: '100%',
+              }}
+            >
+              {collectionlLinks.map((link) => (
+                <ExternalIconCell
+                  url={externalLinkSetter(tokens[i].owner.id, link.id)}
+                  key={link.id}
+                  icon={link.icon}
+                  tooltipText={link.tooltipText}
+                />
+              ))}
+            </div>
           </p>
         ),
         col3: tokens[i].created,
@@ -605,7 +612,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   rel="noopener noreferrer"
                   data-tip="View Collection in POAP.scan"
                   style={{
-                    maxWidth: 160,
+                    maxWidth: 140,
                     width: '100%',
                   }}
                 >
@@ -613,14 +620,19 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   <ReactTooltip effect="solid" />
                   <p
                     style={{
-                      maxWidth: 160,
+                      maxWidth: 140,
                       width: '100%',
                     }}
                   >
                     {validName}
                   </p>
                 </a>
-                <div>
+                <div
+                  style={{
+                    minWidth: 210,
+                    width: '100%',
+                  }}
+                >
                   {collectionlLinks.map((link) => (
                     <ExternalIconCell
                       url={externalLinkSetter(tokens[i].owner.id, link.id)}
