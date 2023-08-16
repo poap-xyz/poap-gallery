@@ -424,7 +424,7 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
       data-cooltipz-dir="top"
       style={{
         position: 'relative',
-        maxWidth: 175,
+        maxWidth: 170,
         width: '100%',
       }}
       onClick={handleIconClick}
@@ -433,7 +433,7 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
       <p
         style={{
           position: 'relative',
-          maxWidth: 175,
+          maxWidth: 170,
           width: '100%',
         }}
       >
@@ -597,7 +597,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   rel="noopener noreferrer"
                   data-tip="View Collection in POAP.scan"
                   style={{
-                    maxWidth: 175,
+                    maxWidth: 170,
                     width: '100%',
                   }}
                 >
@@ -605,7 +605,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   <ReactTooltip effect="solid" />
                   <p
                     style={{
-                      maxWidth: 175,
+                      maxWidth: 170,
                       width: '100%',
                     }}
                   >
