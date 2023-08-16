@@ -585,7 +585,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   rel="noopener noreferrer"
                   data-tip="View Collection in POAP.scan"
                   style={{
-                    maxWidth: 120,
+                    maxWidth: 170,
                     width: '100%',
                   }}
                 >
