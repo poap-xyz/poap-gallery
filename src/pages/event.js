@@ -543,7 +543,15 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
           />
         ),
         col2: (
-          <div>
+          <p
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'start',
+              width: '100%',
+            }}
+          >
             <ExternalLinkCell
               url={PoapScanLink(tokens[i])}
               tooltipText="View Collection in POAP.scan"
@@ -557,7 +565,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                 tooltipText={link.tooltipText}
               />
             ))}
-          </div>
+          </p>
         ),
         col3: tokens[i].created,
         col4: tokens[i].transferCount,
