@@ -593,7 +593,7 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
                   <ReactTooltip effect="solid" />
                   <p
                     style={{
-                      maxWidth: 120,
+                      maxWidth: 170,
                       width: '100%',
                     }}
                   >
