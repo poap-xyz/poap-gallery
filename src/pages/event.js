@@ -19,8 +19,6 @@ import {
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { Helmet } from 'react-helmet';
-import { useDispatch, useSelector } from 'react-redux';
-import { FETCH_EVENT_PAGE_INFO_STATUS, fetchEventPageData } from '../store';
 import { CSVLink } from 'react-csv';
 import { Loader } from '../components/loader';
 import { EventCard } from '../components/eventCard';
@@ -36,8 +34,11 @@ import { Spinner } from '../components/spinner';
 import { collectionlLinks, externalLinkSetter } from '../utilities/utilities';
 import { getDrop, POAP_APP_URL } from '../store/api';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { getEventTokenData } from '../store/mutations';
 
 const FETCH_POAPS_LIMIT = 100;
+const BATCH_SIZE = 5;
+
 const CSV_STATUS = {
   DownloadingData: 'DownloadingData',
   DownloadingLastDataChunk: 'DownloadingLastDataChunk',
@@ -67,15 +68,12 @@ export default function Events() {
 export function Event() {
   const params = useParams();
   const { eventId } = params;
-  const dispatch = useDispatch();
   const { trackPageView, trackLink } = useMatomo();
-
-  const tokens = useSelector((state) => state.events.tokens);
-  const loadingEvent = useSelector((state) => state.events.eventStatus);
-  const errorEvent = useSelector((state) => state.events.eventError);
 
   const [pageIndex, setPageIndex] = useState(0);
   const [event, setEvent] = useState(undefined);
+  const [tokens, setTokens] = useState([]);
+  const [loadingTokensFailed, setLoadingTokensFailed] = useState(false);
   const [csv_data, setCsv_data] = useState([]);
   const [canDownloadCsv, setCanDownloadCsv] = useState(CSV_STATUS.NoTokens);
   const [tableIsLoading, setTableIsLoading] = useState(true);
@@ -87,16 +85,6 @@ export function Event() {
     canDownloadCsv === CSV_STATUS.DownloadingData;
   const csvReady = () => canDownloadCsv === CSV_STATUS.Ready;
   const csvFailed = () => canDownloadCsv === CSV_STATUS.Failed;
-
-  const succeededLoadingEvent = () =>
-    loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.SUCCEEDED;
-  const isLoadingEvent = () =>
-    loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.LOADING;
-  const failedLoadingEvent = () =>
-    loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.FAILED;
-  const isIdle = () =>
-    loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.IDLE ||
-    loadingEvent === undefined;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -110,7 +98,6 @@ export function Event() {
 
   useEffect(() => {
     if (
-      succeededLoadingEvent() &&
       event &&
       event?.name &&
       event?.id &&
@@ -122,23 +109,48 @@ export function Event() {
       });
       setTrackedEvent(event.id);
     }
-  }, [event, succeededLoadingEvent, trackedEvent, setTrackedEvent]);
+  }, [event, trackedEvent, setTrackedEvent]);
 
   useEffect(() => {
     // Get new batch of tokens
-    if (eventId) {
-      dispatch(
-        fetchEventPageData({
-          eventId,
-          first: FETCH_POAPS_LIMIT,
-          skip: FETCH_POAPS_LIMIT * pageIndex,
-        })
-      );
+    if (event) {
+      // Call next batch of tokens (if there is more), then load the new tokens data
+      const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
+      // We start the count from 0 so we add one
+      const hasMorePages = pageIndex < totalPages;
+      if (hasMorePages) {
+        const batchSize =
+          pageIndex + BATCH_SIZE < totalPages
+            ? BATCH_SIZE
+            : totalPages - pageIndex;
+        try {
+          Promise.all(
+            Array.from(Array(batchSize).keys()).map((i) => {
+              return getEventTokenData(
+                eventId,
+                FETCH_POAPS_LIMIT,
+                FETCH_POAPS_LIMIT * (pageIndex + i)
+              );
+            })
+          ).then((newTokensPage) => {
+            const allTokens = [...tokens];
+            // Check the pages are not undefined
+            newTokensPage.forEach((page) => {
+              if (page) allTokens.push(...page);
+            });
+            setTokens(allTokens);
+            setPageIndex(pageIndex + batchSize);
+          });
+        } catch (e) {
+          console.error(e);
+          setLoadingTokensFailed(true);
+        }
+      }
     }
-  }, [dispatch, eventId, pageIndex]);
+  }, [eventId, event, pageIndex]);
 
   useEffect(() => {
-    if (!event) return;
+    if (!event || !tokens) return;
     // Call next batch of tokens (if there is more), then load the new tokens data
     const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
     // We start the count from 0 so we add one
@@ -150,7 +162,6 @@ export function Event() {
       } else {
         setCanDownloadCsv(CSV_STATUS.DownloadingData);
       }
-      setPageIndex(pageIndex + 1);
     }
 
     let _csv_data = [];
@@ -176,10 +187,10 @@ export function Event() {
   }, [event, tokens, pageIndex, setPageIndex]);
 
   useEffect(() => {
-    if (succeededLoadingEvent()) {
+    if (event) {
       setCanDownloadCsv(CSV_STATUS.Ready);
     }
-    setTableIsLoading(!succeededLoadingEvent());
+    setTableIsLoading(!event);
   }, [tokens]);
 
   const defaultEventErrorMessage = 'Token not found';
@@ -191,6 +202,8 @@ export function Event() {
     setTableIsLoading(true);
     setCanDownloadCsv(CSV_STATUS.NoTokens);
     setPageIndex(0);
+    setEvent(undefined);
+    setTokens([]);
   };
   const onPageChangeHandler = () => {
     resetState();
@@ -208,14 +221,14 @@ export function Event() {
         <meta property="og:title" content="POAP Gallery - Event" />
       </Helmet>
       <Foliage />
-      {(isLoadingEvent() || isIdle()) && (
+      {!event && !loadingTokensFailed && (
         <div className={'center'}>
           <Loader />
         </div>
       )}
-      {failedLoadingEvent() && (
+      {loadingTokensFailed && (
         <div className={'token-not-found'}>
-          <h2>{errorEvent || defaultEventErrorMessage}</h2>
+          <h2>{loadingTokensFailed || defaultEventErrorMessage}</h2>
           <div>
             <img
               alt="warning sign"
@@ -225,7 +238,7 @@ export function Event() {
           </div>
         </div>
       )}
-      {succeededLoadingEvent() && (
+      {event && tokens && !loadingTokensFailed && (
         <div className="container">
           <div
             style={{
