@@ -22,9 +22,7 @@ import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { FETCH_EVENT_PAGE_INFO_STATUS, fetchEventPageData } from '../store';
 import { CSVLink } from 'react-csv';
-import { getEnsData } from '../store/mutations';
 import { Loader } from '../components/loader';
-import _ from 'lodash';
 import { EventCard } from '../components/eventCard';
 import { Foliage } from '../components/foliage';
 import {
@@ -43,7 +41,6 @@ const FETCH_POAPS_LIMIT = 300;
 const CSV_STATUS = {
   DownloadingData: 'DownloadingData',
   DownloadingLastDataChunk: 'DownloadingLastDataChunk',
-  ReadyWithoutEns: 'ReadyWithoutEns',
   Ready: 'Ready',
   Failed: 'Failed',
   NoTokens: 'NoTokens',
@@ -80,7 +77,6 @@ export function Event() {
 
   const [pageIndex, setPageIndex] = useState(0);
   const [csv_data, setCsv_data] = useState([]);
-  const [ensNames, setEnsNames] = useState([]);
   const [canDownloadCsv, setCanDownloadCsv] = useState(CSV_STATUS.NoTokens);
   const [tableIsLoading, setTableIsLoading] = useState(true);
   const [trackedEvent, setTrackedEvent] = useState(null);
@@ -97,14 +93,7 @@ export function Event() {
     canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk ||
     canDownloadCsv === CSV_STATUS.DownloadingData;
   const csvReady = () => canDownloadCsv === CSV_STATUS.Ready;
-  const csvOnlyMissingEns = () => canDownloadCsv === CSV_STATUS.ReadyWithoutEns;
   const csvFailed = () => canDownloadCsv === CSV_STATUS.Failed;
-
-  const readyToResolveENS = () =>
-    canDownloadCsv === CSV_STATUS.DownloadingLastDataChunk ||
-    canDownloadCsv === CSV_STATUS.ReadyWithoutEns ||
-    canDownloadCsv === CSV_STATUS.Ready ||
-    canDownloadCsv === CSV_STATUS.Failed;
 
   const succeededLoadingEvent = () =>
     loadingEvent === FETCH_EVENT_PAGE_INFO_STATUS.SUCCEEDED;
@@ -176,7 +165,7 @@ export function Event() {
       _csv_data.push([
         tokens[i].id,
         tokens[i].owner.id,
-        null,
+        tokens[i].owner.ens,
         utcDateFull(tokens[i].created),
         tokens[i].transferCount,
         tokens[i].owner.tokensOwned,
@@ -186,41 +175,8 @@ export function Event() {
   }, [event, tokens, pageIndex, setPageIndex]);
 
   useEffect(() => {
-    // Merge ens data
-    if (ensNames.length > 0) {
-      // TODO: probably there is a better way to merge
-      let _csv_data = _.cloneDeep(csv_data);
-      for (let i = 0; i < tokens.length; i++) {
-        let validName = ensNames[i];
-        if (validName) {
-          if (_csv_data[i + 1]) {
-            _csv_data[i + 1][2] = validName; // i+1 is there to compensate for the first array which is just the csv titles
-          }
-        }
-      }
-      setCsv_data(_csv_data);
-    }
-  }, [ensNames]);
-
-  const validationCSVDownload = async () => {
-    setCanDownloadCsv(CSV_STATUS.ReadyWithoutEns);
-    let ownerIds = tokens.map((t) => t.owner.id);
-    try {
-      const ensData = await getEnsData(ownerIds);
-      if (ensData.length > 0) {
-        setEnsNames(ensData);
-        setCanDownloadCsv(CSV_STATUS.Ready);
-      } else {
-        setCanDownloadCsv(CSV_STATUS.Failed);
-      }
-    } catch (e) {
-      setCanDownloadCsv(CSV_STATUS.Failed);
-    }
-  };
-
-  useEffect(() => {
-    if (succeededLoadingEvent() && readyToResolveENS()) {
-      validationCSVDownload();
+    if (succeededLoadingEvent()) {
+      setCanDownloadCsv(CSV_STATUS.Ready);
     }
     setTableIsLoading(!succeededLoadingEvent());
   }, [tokens]);
@@ -234,7 +190,6 @@ export function Event() {
     setTableIsLoading(true);
     setCanDownloadCsv(CSV_STATUS.NoTokens);
     setPageIndex(0);
-    setEnsNames([]);
   };
   const onPageChangeHandler = () => {
     resetState();
@@ -336,7 +291,7 @@ export function Event() {
             <div className="table-title">
               Collections <span>({tokens.length})</span>
             </div>
-            {(csvReady() || csvOnlyMissingEns() || csvFailed()) && (
+            {(csvReady() || csvFailed()) && (
               <CSVLink
                 onClick={() => {
                   const url = new URL(window.location.href);
@@ -349,17 +304,13 @@ export function Event() {
                 filename={`${event.name}.csv`}
                 target="_blank"
                 data-tip={`${
-                  csvOnlyMissingEns()
-                    ? 'Please wait if you want the ens names too'
-                    : csvFailed()
-                    ? "Ens names couldn't be fetched"
-                    : ''
+                  csvFailed() ? "Ens names couldn't be fetched" : ''
                 }`}
                 className={'btn csv-button'}
                 data={csv_data}
               >
                 <span className={'no-margin'}>{`Download CSV${
-                  csvOnlyMissingEns() || csvFailed() ? ' (without ENS)' : ''
+                  csvFailed() ? ' (without ENS)' : ''
                 }`}</span>
                 <ReactTooltip effect={'solid'} />
               </CSVLink>
@@ -378,7 +329,6 @@ export function Event() {
           <div className="table-container">
             <TableContainer
               tokens={tokens}
-              ensNames={ensNames}
               loading={tableIsLoading}
               pageCount={pageCount}
             />
@@ -431,7 +381,7 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
   );
 };
 
-function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
+function TableContainer({ tokens, pageCount: pc, loading }) {
   const [data, setData] = useState([]);
   const [mobileData, setMobileData] = useState([]);
 
@@ -532,11 +482,24 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
         ),
         col2: (
           <div>
-            <ExternalLinkCell
-              url={PoapScanLink(tokens[i])}
-              tooltipText="View Collection in POAP.scan"
-              content={tokens[i].owner.id}
-            />
+            {!tokens[i].owner.ens && (
+              <ExternalLinkCell
+                url={PoapScanLink(tokens[i])}
+                tooltipText="View Collection in POAP.scan"
+                content={tokens[i].owner.id}
+              />
+            )}
+            {tokens[i].owner.ens && (
+              <a
+                href={PoapScanLink(tokens[i])}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-tip="View Collection in POAP.scan"
+              >
+                {' '}
+                <ReactTooltip effect="solid" /> {tokens[i].owner.ens}
+              </a>
+            )}
             {collectionlLinks.map((link) => (
               <ExternalIconCell
                 url={externalLinkSetter(tokens[i].owner.id, link.id)}
@@ -552,54 +515,19 @@ function TableContainer({ tokens, ensNames, pageCount: pc, loading }) {
         col5: tokens[i].owner.tokensOwned,
       });
       _mobileData.push({
-        col1: <MobileRow token={tokens[i]} address={tokens[i].owner.id} />,
+        col1: (
+          <MobileRow
+            token={tokens[i]}
+            address={
+              tokens[i].owner.ens ? tokens[i].owner.ens : tokens[i].owner.id
+            }
+          />
+        ),
       });
     }
     setData(_data);
     setMobileData(_mobileData);
   }, [tokens]);
-
-  useEffect(() => {
-    // Merge ens data
-    if (ensNames.length > 0) {
-      // TODO: probably there is a better way to merge
-      let _data = _.cloneDeep(data);
-      let _mobileData = _.cloneDeep(mobileData);
-      for (let i = 0; i < tokens.length; i++) {
-        let validName = ensNames[i];
-        if (validName) {
-          if (data[i]) {
-            _data[i].col2 = (
-              <div>
-                <a
-                  href={PoapScanLink(tokens[i])}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-tip="View Collection in POAP.scan"
-                >
-                  {' '}
-                  <ReactTooltip effect="solid" /> {validName}
-                </a>
-                {collectionlLinks.map((link) => (
-                  <ExternalIconCell
-                    url={externalLinkSetter(tokens[i].owner.id, link.id)}
-                    key={link.id}
-                    icon={link.icon}
-                    tooltipText={link.tooltipText}
-                  />
-                ))}
-              </div>
-            );
-            _mobileData[i].col1 = (
-              <MobileRow token={tokens[i]} address={validName} />
-            );
-          }
-        }
-      }
-      setData(_data);
-      setMobileData(_mobileData);
-    }
-  }, [ensNames]);
 
   const [dateFormat, setDateFormat] = useState('timeago');
   const toggleDateFormat = () => {

@@ -5,32 +5,7 @@ import {
   getTop3Events,
   PAGE_LIMIT,
 } from './api';
-import { ensABI } from './abis';
-import _, { parseInt, uniqBy } from 'lodash';
-import { ethers } from 'ethers';
-
-const { REACT_APP_RPC_PROVIDER_URL, REACT_APP_ENS_CONTRACT } = process.env;
-const provider = new ethers.providers.StaticJsonRpcProvider(
-  REACT_APP_RPC_PROVIDER_URL
-);
-const ReverseRecords = new ethers.Contract(
-  REACT_APP_ENS_CONTRACT,
-  ensABI,
-  provider
-);
-
-// TODO: Refactor to render as it returns data rather than waiting all in batch
-export async function getEnsData(ownerIds) {
-  const chunked = _.chunk(ownerIds, 1200);
-  let allnames = [];
-  for (let i = 0; i < chunked.length; i++) {
-    const chunk = chunked[i];
-    let names = await ReverseRecords.getNames(chunk);
-    const validNames = names.map((name) => name !== '' && name);
-    allnames = _.concat(allnames, validNames);
-  }
-  return allnames;
-}
+import { parseInt, uniqBy } from 'lodash';
 
 export async function getIndexPageData(orderBy, reset, nameFilter, state) {
   let page, apiSkip;
