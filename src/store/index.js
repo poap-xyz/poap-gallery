@@ -3,14 +3,8 @@ import {
   combineReducers,
   configureStore,
   createAsyncThunk,
-  current,
 } from '@reduxjs/toolkit';
-import {
-  getIndexPageData,
-  getEventPageData,
-  getActivityPageData,
-  getEventTokenData,
-} from './mutations';
+import { getIndexPageData, getActivityPageData } from './mutations';
 
 export const FETCH_INFO_STATUS = {
   IDLE: 'IDLE',
@@ -48,16 +42,6 @@ export const fetchIndexData = createAsyncThunk(
   async ({ orderBy, reset, nameFilter }, thunkAPI) =>
     getIndexPageData(orderBy, reset, nameFilter, thunkAPI.getState())
 );
-export const fetchEventPageData = createAsyncThunk(
-  'events/fetchEventPageData',
-  async ({ eventId, first, skip }) => {
-    if (skip === 0) {
-      return getEventPageData(eventId, first, skip);
-    } else {
-      return getEventTokenData(eventId, first, skip);
-    }
-  }
-);
 export const fetchActivityPageData = createAsyncThunk(
   'events/fetchActivityPageData',
   async () => getActivityPageData()
@@ -93,28 +77,6 @@ const eventsSlice = createSlice({
     [fetchIndexData.rejected]: (state, action) => {
       state.eventError = action.error.message;
       state.status = FETCH_INDEX_PAGE_INFO_STATUS.FAILED;
-      console.warn(action.error);
-    },
-    [fetchEventPageData.pending]: (state) => {
-      state.eventStatus = FETCH_EVENT_PAGE_INFO_STATUS.LOADING;
-    },
-    [fetchEventPageData.fulfilled]: (state, action) => {
-      if (state.eventId === action.payload.id) {
-        state.tokens = current(state.tokens).concat(action.payload.tokens);
-      } else {
-        state.tokens = action.payload.tokens;
-      }
-
-      state.eventId = action.payload.id;
-      if (action.payload.event) {
-        // Event data is only retrieved the first page of tokens.
-        state.event = action.payload.event;
-      }
-      state.eventStatus = FETCH_EVENT_PAGE_INFO_STATUS.SUCCEEDED;
-    },
-    [fetchEventPageData.rejected]: (state, action) => {
-      state.eventError = action.error.message;
-      state.eventStatus = FETCH_EVENT_PAGE_INFO_STATUS.FAILED;
       console.warn(action.error);
     },
     [fetchActivityPageData.pending]: () => {

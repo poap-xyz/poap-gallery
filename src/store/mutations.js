@@ -4,7 +4,6 @@ import {
   getTop3Events,
   PAGE_LIMIT,
 } from './api';
-import { parseInt, uniqBy } from 'lodash';
 
 export async function getIndexPageData(orderBy, reset, nameFilter, state) {
   let page, apiSkip;
@@ -64,18 +63,6 @@ export async function getActivityPageData() {
     mostRecent: mostRecent,
     mostClaimed: mostClaimed,
     upcoming: upcoming,
-  };
-}
-
-export async function getEventPageData(eventId, first, skip) {
-  // Get the tokens info
-  let [eventTokens] = await Promise.all([getEventTokens(eventId, first, skip)]);
-  const { tokens } = eventTokens;
-
-  return {
-    tokens: uniqBy(tokens, 'id').sort((a, b) => {
-      return parseInt(a.id) - parseInt(b.id);
-    }),
   };
 }
 
