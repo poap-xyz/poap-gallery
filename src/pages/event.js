@@ -111,58 +111,57 @@ export function Event() {
     }
   }, [event, trackedEvent, setTrackedEvent]);
 
+  function getNextBatch(batchSize) {
+    try {
+      return Promise.all(
+        Array.from(Array(batchSize).keys()).map((i) => {
+          return getEventTokenData(
+            eventId,
+            FETCH_POAPS_LIMIT,
+            FETCH_POAPS_LIMIT * (pageIndex + i)
+          );
+        })
+      );
+    } catch (e) {
+      console.error(e);
+      setLoadingTokensFailed(true);
+    }
+    return Promise.resolve([]);
+  }
+
   useEffect(() => {
     // Get new batch of tokens
     if (event) {
       // Call next batch of tokens (if there is more), then load the new tokens data
       const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
-      // We start the count from 0 so we add one
       const hasMorePages = pageIndex < totalPages;
+
       if (hasMorePages) {
+        setCanDownloadCsv(CSV_STATUS.DownloadingData);
+
         const batchSize =
           pageIndex + BATCH_SIZE < totalPages
             ? BATCH_SIZE
             : totalPages - pageIndex;
-        try {
-          Promise.all(
-            Array.from(Array(batchSize).keys()).map((i) => {
-              return getEventTokenData(
-                eventId,
-                FETCH_POAPS_LIMIT,
-                FETCH_POAPS_LIMIT * (pageIndex + i)
-              );
-            })
-          ).then((newTokensPage) => {
-            const allTokens = [...tokens];
-            // Check the pages are not undefined
-            newTokensPage.forEach((page) => {
-              if (page) allTokens.push(...page);
-            });
-            setTokens(allTokens);
-            setPageIndex(pageIndex + batchSize);
+
+        getNextBatch(batchSize).then((newTokenResponses) => {
+          const fetchedTokens = [];
+          // Check the pages are not undefined
+          newTokenResponses.forEach((response) => {
+            if (response) fetchedTokens.push(...response);
           });
-        } catch (e) {
-          console.error(e);
-          setLoadingTokensFailed(true);
-        }
+
+          setTokens([...fetchedTokens, ...tokens]);
+          setPageIndex(pageIndex + batchSize);
+        });
+      } else {
+        setCanDownloadCsv(CSV_STATUS.Ready);
       }
     }
   }, [eventId, event, pageIndex]);
 
   useEffect(() => {
     if (!event || !tokens) return;
-    // Call next batch of tokens (if there is more), then load the new tokens data
-    const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
-    // We start the count from 0 so we add one
-    const hasMorePages = pageIndex + 1 < totalPages;
-    const hasTokens = tokens && tokens.length > 0;
-    if (event && hasTokens && hasMorePages) {
-      if (pageIndex + 1 === totalPages) {
-        setCanDownloadCsv(CSV_STATUS.DownloadingLastDataChunk);
-      } else {
-        setCanDownloadCsv(CSV_STATUS.DownloadingData);
-      }
-    }
 
     let _csv_data = [];
     _csv_data.push([
@@ -185,13 +184,6 @@ export function Event() {
     }
     setCsv_data(_csv_data);
   }, [event, tokens, pageIndex, setPageIndex]);
-
-  useEffect(() => {
-    if (event) {
-      setCanDownloadCsv(CSV_STATUS.Ready);
-    }
-    setTableIsLoading(!event);
-  }, [tokens]);
 
   const defaultEventErrorMessage = 'Token not found';
 
