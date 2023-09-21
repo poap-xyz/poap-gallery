@@ -1,5 +1,4 @@
 import {
-  getEvent,
   getEventTokens,
   getPaginatedEvents,
   getTop3Events,
@@ -70,17 +69,10 @@ export async function getActivityPageData() {
 
 export async function getEventPageData(eventId, first, skip) {
   // Get the tokens info
-  let [eventTokens, event] = await Promise.all([
-    getEventTokens(eventId, first, skip),
-    getEvent(eventId),
-  ]);
-  const { tokens, total, transferCount } = eventTokens;
-  event.tokenCount = total;
-  event.transferCount = transferCount;
+  let [eventTokens] = await Promise.all([getEventTokens(eventId, first, skip)]);
+  const { tokens } = eventTokens;
 
   return {
-    id: eventId,
-    event,
     tokens: uniqBy(tokens, 'id').sort((a, b) => {
       return parseInt(a.id) - parseInt(b.id);
     }),

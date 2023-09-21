@@ -34,10 +34,10 @@ import {
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { Spinner } from '../components/spinner';
 import { collectionlLinks, externalLinkSetter } from '../utilities/utilities';
-import { POAP_APP_URL } from '../store/api';
+import { getDrop, POAP_APP_URL } from '../store/api';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 
-const FETCH_POAPS_LIMIT = 300;
+const FETCH_POAPS_LIMIT = 100;
 const CSV_STATUS = {
   DownloadingData: 'DownloadingData',
   DownloadingLastDataChunk: 'DownloadingLastDataChunk',
@@ -73,20 +73,13 @@ export function Event() {
   const tokens = useSelector((state) => state.events.tokens);
   const loadingEvent = useSelector((state) => state.events.eventStatus);
   const errorEvent = useSelector((state) => state.events.eventError);
-  const event = useSelector((state) => state.events.event);
 
   const [pageIndex, setPageIndex] = useState(0);
+  const [event, setEvent] = useState(undefined);
   const [csv_data, setCsv_data] = useState([]);
   const [canDownloadCsv, setCanDownloadCsv] = useState(CSV_STATUS.NoTokens);
   const [tableIsLoading, setTableIsLoading] = useState(true);
   const [trackedEvent, setTrackedEvent] = useState(null);
-  const pageCount = useMemo(
-    () =>
-      event.tokenCount % 50 !== 0
-        ? Math.floor(event.tokenCount / 50) + 1
-        : event.tokenCount,
-    [event]
-  );
   const power = calculatePower(csv_data);
 
   const csvDownloading = () =>
@@ -108,6 +101,12 @@ export function Event() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (event) return;
+
+    getDrop(eventId).then(setEvent);
+  }, [event]);
 
   useEffect(() => {
     if (
@@ -139,6 +138,7 @@ export function Event() {
   }, [dispatch, eventId, pageIndex]);
 
   useEffect(() => {
+    if (!event) return;
     // Call next batch of tokens (if there is more), then load the new tokens data
     const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
     // We start the count from 0 so we add one
@@ -331,7 +331,7 @@ export function Event() {
             <TableContainer
               tokens={tokens}
               loading={tableIsLoading}
-              pageCount={pageCount}
+              pageCount={0}
             />
           </div>
         </div>

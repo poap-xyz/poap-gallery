@@ -101,8 +101,28 @@ export async function getPaginatedEvents({
   return { items: drops, total };
 }
 
-export async function getEvent(id) {
-  return await fetchPOAPApi(`/events/id/${id}`);
+export async function getDrop(id) {
+  const paginatedResult = await compass.request(PAGINATED_DROPS_QUERY, {
+    limit: 1,
+    offset: 0,
+    where: {
+      id: { _eq: parseInt(id) },
+    },
+  });
+
+  if (paginatedResult.data.drops.length === 0) return undefined;
+
+  const drop = paginatedResult.data.drops[0];
+  console.log(drop);
+  return {
+    ...drop,
+    tokenCount: drop.stats_by_chain_aggregate.aggregate.sum
+      ? Number(drop.stats_by_chain_aggregate.aggregate.sum.poap_count)
+      : 0,
+    transferCount: drop.stats_by_chain_aggregate.aggregate.sum
+      ? Number(drop.stats_by_chain_aggregate.aggregate.sum.transfer_count)
+      : 0,
+  };
 }
 
 export async function getEventTokens(id, limit, offset) {
