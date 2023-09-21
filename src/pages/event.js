@@ -141,7 +141,8 @@ export function Event() {
   useEffect(() => {
     // Call next batch of tokens (if there is more), then load the new tokens data
     const totalPages = Math.ceil(event.tokenCount / FETCH_POAPS_LIMIT);
-    const hasMorePages = pageIndex < totalPages;
+    // We start the count from 0 so we add one
+    const hasMorePages = pageIndex + 1 < totalPages;
     const hasTokens = tokens && tokens.length > 0;
     if (event && hasTokens && hasMorePages) {
       if (pageIndex + 1 === totalPages) {
