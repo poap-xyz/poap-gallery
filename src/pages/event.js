@@ -32,9 +32,8 @@ import {
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { Spinner } from '../components/spinner';
 import { collectionlLinks, externalLinkSetter } from '../utilities/utilities';
-import { getDrop, POAP_APP_URL } from '../store/api';
+import { getDrop, getEventTokens, POAP_APP_URL } from '../store/api';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { getEventTokenData } from '../store/mutations';
 
 const FETCH_POAPS_LIMIT = 100;
 const BATCH_SIZE = 5;
@@ -71,7 +70,7 @@ export function Event() {
   const { trackPageView, trackLink } = useMatomo();
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [event, setEvent] = useState(undefined);
+  const [event, setEvent] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [loadingTokensFailed, setLoadingTokensFailed] = useState(false);
   const [csv_data, setCsv_data] = useState([]);
@@ -111,11 +110,11 @@ export function Event() {
     }
   }, [event, trackedEvent, setTrackedEvent]);
 
-  function getNextBatch(batchSize) {
+  async function getNextTokenBatch(batchSize) {
     try {
-      return Promise.all(
+      return await Promise.all(
         Array.from(Array(batchSize).keys()).map((i) => {
-          return getEventTokenData(
+          return getEventTokens(
             eventId,
             FETCH_POAPS_LIMIT,
             FETCH_POAPS_LIMIT * (pageIndex + i)
@@ -144,11 +143,11 @@ export function Event() {
             ? BATCH_SIZE
             : totalPages - pageIndex;
 
-        getNextBatch(batchSize).then((newTokenResponses) => {
+        getNextTokenBatch(batchSize).then((newTokenResponses) => {
           const fetchedTokens = [];
           // Check the pages are not undefined
           newTokenResponses.forEach((response) => {
-            if (response) fetchedTokens.push(...response);
+            if (response) fetchedTokens.push(...response.tokens);
           });
 
           setTokens([...fetchedTokens, ...tokens]);
@@ -333,11 +332,7 @@ export function Event() {
             )}
           </div>
           <div className="table-container">
-            <TableContainer
-              tokens={tokens}
-              loading={tableIsLoading}
-              pageCount={0}
-            />
+            <TableContainer tokens={tokens} loading={tableIsLoading} />
           </div>
         </div>
       )}
@@ -387,7 +382,7 @@ const ExternalLinkCell = ({ url, tooltipText = null, content }) => {
   );
 };
 
-function TableContainer({ tokens, pageCount: pc, loading }) {
+function TableContainer({ tokens, loading }) {
   const [data, setData] = useState([]);
   const [mobileData, setMobileData] = useState([]);
 
@@ -562,7 +557,6 @@ function TableContainer({ tokens, pageCount: pc, loading }) {
     {
       columns,
       data,
-      pageCount: pc,
       initialState: {
         pageSize: length,
         sortBy: [
@@ -588,7 +582,6 @@ function TableContainer({ tokens, pageCount: pc, loading }) {
     {
       columns: mobileColumns,
       data: mobileData,
-      pageCount: pc,
       initialState: { pageSize: length },
     },
     useSortBy,

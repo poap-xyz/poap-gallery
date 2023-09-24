@@ -113,7 +113,6 @@ export async function getDrop(id) {
   if (paginatedResult.data.drops.length === 0) return undefined;
 
   const drop = paginatedResult.data.drops[0];
-  console.log(drop);
   return {
     ...drop,
     tokenCount: drop.stats_by_chain_aggregate.aggregate.sum

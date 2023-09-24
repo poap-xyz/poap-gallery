@@ -1,9 +1,4 @@
-import {
-  getEventTokens,
-  getPaginatedEvents,
-  getTop3Events,
-  PAGE_LIMIT,
-} from './api';
+import { getPaginatedEvents, getTop3Events, PAGE_LIMIT } from './api';
 
 export async function getIndexPageData(orderBy, reset, nameFilter, state) {
   let page, apiSkip;
@@ -64,10 +59,4 @@ export async function getActivityPageData() {
     mostClaimed: mostClaimed,
     upcoming: upcoming,
   };
-}
-
-export async function getEventTokenData(eventId, first, skip) {
-  const eventTokens = await getEventTokens(eventId, first, skip);
-  const { tokens } = eventTokens;
-  return tokens;
 }
