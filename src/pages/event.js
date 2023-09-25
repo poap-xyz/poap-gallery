@@ -155,6 +155,7 @@ export function Event() {
         });
       } else {
         setCanDownloadCsv(CSV_STATUS.Ready);
+        setTableIsLoading(false);
       }
     }
   }, [eventId, event, pageIndex]);
