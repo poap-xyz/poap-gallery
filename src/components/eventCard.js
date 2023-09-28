@@ -223,14 +223,14 @@ function Content({ type, width, size, event, power }) {
             <div className="content-description-main">
               {nl2br(event.description)}
             </div>
-            {event.event_url && (
+            {event.drop_url && (
               <a
-                href={event.event_url}
+                href={event.drop_url}
                 className="content-description-url ellipsis"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {event.event_url}
+                {event.drop_url}
               </a>
             )}
           </div>
