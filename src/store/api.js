@@ -187,6 +187,8 @@ export function getChainName(chain) {
 
 export async function getTop3Events() {
   const fromCompassDropToEventInfo = (compassDrop) => {
+    if (!compassDrop) return;
+
     return {
       ...compassDrop,
       tokenCount:
