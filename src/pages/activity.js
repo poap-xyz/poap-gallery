@@ -88,6 +88,9 @@ export default function Activity() {
     );
   }, [setLoading, getLastTransfers, debouncedToastNewTransfersError]);
 
+  let gridClassName = 'gallery-grid activity-grid';
+  if (!upcoming) gridClassName = 'gallery-grid no-show-one activity-grid';
+
   return (
     <main id="site-main" role="main" className="app-content activity-main">
       <Helmet>
@@ -104,7 +107,7 @@ export default function Activity() {
         }}
       >
         <div
-          className="gallery-grid activity-grid"
+          className={gridClassName}
           style={{
             padding: '0 4rem',
             display: 'grid',

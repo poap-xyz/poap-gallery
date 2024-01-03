@@ -371,6 +371,11 @@
     grid-template-columns: repeat(3, 295px);
     place-items: center;
   }
+
+  .gallery-grid.no-show-one {
+    grid-template-columns: repeat(2, 295px);
+    place-items: center;
+  }
 }
 
 .gallery-grid.activity-grid {
