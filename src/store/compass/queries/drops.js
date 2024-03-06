@@ -26,6 +26,12 @@ export const PAGINATED_DROPS_QUERY = `
       expiry_date
       end_date
       virtual
+      drop_image {
+        gateways {
+          url
+          type
+        }
+      }
       stats_by_chain_aggregate {
         aggregate {
           sum {

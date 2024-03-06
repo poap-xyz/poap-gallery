@@ -113,8 +113,13 @@ export async function getDrop(id) {
   if (paginatedResult.data.drops.length === 0) return undefined;
 
   const drop = paginatedResult.data.drops[0];
+
+  const dropImage = mapDropImage(drop.drop_image);
+
   return {
     ...drop,
+    image_url: dropImage?.crop || drop.image_url,
+    original_image_url: dropImage?.original || drop.image_url,
     tokenCount: drop.stats_by_chain_aggregate.aggregate.sum
       ? Number(drop.stats_by_chain_aggregate.aggregate.sum.poap_count)
       : 0,
@@ -122,6 +127,19 @@ export async function getDrop(id) {
       ? Number(drop.stats_by_chain_aggregate.aggregate.sum.transfer_count)
       : 0,
   };
+}
+
+function mapDropImage(dropImage) {
+  if (!dropImage) {
+    return null;
+  }
+
+  const images = dropImage.gateways.reduce(
+    (acc, gateway) => ({ ...acc, [gateway.type.toLowerCase()]: gateway.url }),
+    {}
+  );
+
+  return { ...images };
 }
 
 export async function getEventTokens(id, limit, offset) {

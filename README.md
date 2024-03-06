@@ -29,6 +29,7 @@ git clone https://github.com/poap-xyz/poap-gallery.git
 cd
 yarn
 cp .env.template .env // Add your own REACT_APP_RPC_PROVIDER_URL
+yarn start
 ```
 
 ## How to run with functions locally

@@ -91,7 +91,7 @@ function Header({ type, event }) {
         contentLabel="Fullscreen event image"
         onRequestClose={toggleModal}
       >
-        <LazyImage src={event.image_url} alt="POAP" />
+        <LazyImage src={event.original_image_url} alt="POAP" />
       </ReactModal>
     </div>
   );
