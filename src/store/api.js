@@ -46,10 +46,10 @@ export const OrderDirection = {
 
 export const PAGE_LIMIT = 20;
 
-const compass = new PoapCompass(
-  'you_api_key',
-  'https://public.compass.poap.tech/v1/graphql'
-);
+const compass = new PoapCompass({
+  apiKey: 'you_api_key',
+  baseUrl: 'https://public.compass.poap.tech/v1/graphql',
+});
 
 export async function getPaginatedEvents({
   name = undefined,

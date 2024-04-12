@@ -1630,15 +1630,18 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@poap-xyz/providers@^0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@poap-xyz/providers/-/providers-0.0.28.tgz#d05dc30a7e30f1c0fe8a63225dbb55b21a356681"
-  integrity sha512-B6Buj+YDEfcwxn/AmHRorw4sEYFrN3mTjXWXhlp20VRDB0mC/ykYqTzUxbJ4TdJezP17OJoXf7QecRByi8bY6Q==
+"@poap-xyz/providers@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@poap-xyz/providers/-/providers-0.2.0.tgz#6cdee26c83316963c2e151b9a2d0d645cc1af399"
+  integrity sha512-PYgCQnkQbxN2KPk9G4m7PbcYf3SqG/8sTfWvohy8jnun79lfa+6v50LJVCYaKSU40EYu8l5n1Ak0gxJcmhyP0w==
+  dependencies:
+    "@poap-xyz/utils" "0.2.0"
+    axios "^1.3.5"
 
-"@poap-xyz/utils@^0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@poap-xyz/utils/-/utils-0.0.28.tgz#1567885d3f2b4e9c98f7717f8007eeb112b7f2c6"
-  integrity sha512-h2alte60eELMVTf/ZfrTvQO4UE2wFZRaNa1IEOYbkldzeWkJlZvdr4ad5OXoCZhB2mALvHmzEcJjyKxzYAEZrg==
+"@poap-xyz/utils@0.2.0", "@poap-xyz/utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@poap-xyz/utils/-/utils-0.2.0.tgz#3dfd09927ea462812c8967daa0eea92c56dbabbf"
+  integrity sha512-a6nP7TTojUpnYlAOoZAK7mGxOf8ZO75tMF4O3irJd+jYitVpqMufH4oPzRULT7BXen2TdnV/gIg/n1orJ3ozlg==
 
 "@react-hook/debounce@^3.0.0":
   version "3.0.0"
@@ -2865,6 +2868,15 @@ axios@^0.21.1:
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
+
+axios@^1.3.5:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
+  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
+  dependencies:
+    follow-redirects "^1.15.6"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -4768,6 +4780,11 @@ follow-redirects@^1.0.0, follow-redirects@^1.14.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
+follow-redirects@^1.15.6:
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
+
 for-each@^0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/for-each/-/for-each-0.3.3.tgz#69b447e88a0a5d32c3e7084f3f1710034b21376e"
@@ -4803,6 +4820,15 @@ form-data@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-3.0.1.tgz#ebd53791b78356a99af9a300d4282c4d5eb9755f"
   integrity sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    mime-types "^2.1.12"
+
+form-data@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
@@ -7795,6 +7821,11 @@ proxy-addr@~2.0.7:
   dependencies:
     forwarded "0.2.0"
     ipaddr.js "1.9.1"
+
+proxy-from-env@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 psl@^1.1.28, psl@^1.1.33:
   version "1.9.0"
