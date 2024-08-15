@@ -6,8 +6,8 @@ import Gallery from './pages/gallery'
 import Activity from './pages/activity'
 import Tokens from './pages/event'
 
-import Header from './components/header'
 import Footer from './components/footer'
+import Header from './components/header'
 
 
 function App() {
